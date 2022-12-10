@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">FileBox</string>
+    <string name="label_input_email_sign_in">Email</string>
+    <string name="placeholder_input_email_sign_in">Input your email</string>
+    <string name="label_input_password_sign_in">Password</string>
+    <string name="placeholder_input_password_sign_in">Input your password</string>
+    <string name="button_sign_in">Sign In now</string>
+    <string name="already_have_account">Already have account?</string>
+    <string name="create_account">Create one</string>
+</resources>
