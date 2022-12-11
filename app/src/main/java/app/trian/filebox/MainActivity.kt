@@ -1,20 +1,11 @@
 package app.trian.filebox
 
+import android.content.res.Configuration
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.areNavigationBarsVisible
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.navigationBars
-import androidx.compose.foundation.layout.navigationBarsIgnoringVisibility
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeContent
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.navigation.compose.rememberNavController
 import app.trian.filebox.components.FileBoxBottomNavigation
 import app.trian.filebox.feature.folder.Folder
@@ -22,7 +13,6 @@ import app.trian.filebox.feature.home.Home
 import app.trian.filebox.feature.profile.Profile
 import app.trian.filebox.feature.signin.SignIn
 import app.trian.filebox.feature.signup.SignUp
-import app.trian.filebox.ui.theme.FileBoxTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -34,34 +24,43 @@ class MainActivity : ComponentActivity() {
         setContent {
             val router = rememberNavController()
             val appState = rememberFileBoxApplication()
+            val config = LocalConfiguration.current
 
-            router.addOnDestinationChangedListener { controller, destination, arguments ->
+            router.addOnDestinationChangedListener { _, destination, _ ->
                 with(appState) {
-                    setActiveBottomNav(destination.route.orEmpty())
+                    setCurrentRoute(destination.route.orEmpty())
                     when (destination.route) {
                         in listOf(
                             Home.routeName,
                             Folder.routeName,
                             Profile.routeName
                         ) -> {
-                            showBottomNav(BottomBarType.BASIC)
+                            if (config.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                                showNavRail()
+                                hideBottomBar()
+                            } else {
+                                hideNavRail()
+                                changeBottomBar(BottomBarType.BASIC)
+                            }
                             showAppbar()
                         }
                         in listOf(
                             SignIn.routeName,
                             SignUp.routeName
                         ) -> {
-                            hideBottomNav()
+                            hideNavRail()
+                            hideBottomBar()
                             hideAppbar()
                         }
                         else -> {
-                            hideBottomNav()
+                            hideNavRail()
+                            hideBottomBar()
                             hideAppbar()
                         }
                     }
                 }
-
             }
+
             BaseContainer(
                 topBar = {
                     if (appState.showAppbar) {
@@ -73,9 +72,7 @@ class MainActivity : ComponentActivity() {
                     }
                 },
                 bottomBar = {
-                    when (appState.bottomNavType) {
-                        BottomBarType.BLANK -> Unit
-                        BottomBarType.RAIL -> {}
+                    when (appState.bottomBarType) {
                         BottomBarType.BASIC -> {
                             FileBoxBottomNavigation(
                                 items = listOf(
@@ -83,57 +80,31 @@ class MainActivity : ComponentActivity() {
                                     FileBoxBottomNavigation.Folder(),
                                     FileBoxBottomNavigation.Profile()
                                 ),
-                                currentRoute = appState.currentBottomNav,
+                                currentRoute = appState.activeRoute,
                                 onItemClick = {
                                     router.navigate(it) {
                                         launchSingleTop = true
                                     }
-                                    appState.setActiveBottomNav(it)
+                                    appState.setCurrentRoute(it)
                                 }
                             )
                         }
+                        else -> {}
                     }
                 },
-                content = {
-                    Column(modifier = Modifier.padding(it)) {
-                        AppNavigation(
-                            navController = router,
-                            appState = appState,
-                            startDestination = SignIn.routeName,
-                        )
-                    }
-                }
-            )
-        }
-    }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun BaseContainer(
-    topBar: @Composable () -> Unit = {},
-    bottomBar: @Composable () -> Unit = {},
-    snackbarHost: @Composable () -> Unit = {},
-    content: @Composable (PaddingValues) -> Unit = {}
-) {
-    FileBoxTheme {
-
-        // A surface container using the 'background' color from the theme
-        Surface(
-            modifier = Modifier
-                .fillMaxSize(),
-            color = MaterialTheme.colorScheme.background,
-        ) {
-            Scaffold(
-                contentColor = MaterialTheme.colorScheme.background,
-                containerColor = MaterialTheme.colorScheme.background,
-                topBar = topBar,
-                bottomBar = bottomBar,
-                snackbarHost = snackbarHost,
-                contentWindowInsets = WindowInsets.navigationBars
+                snackbarHost = {
+                    SnackbarHost(hostState = appState.snackbarHostState)
+                },
+                appState = appState,
+                router = router
             ) {
-                content.invoke(it)
+                AppNavigation(
+                    navController = router,
+                    appState = appState,
+                    startDestination = SignIn.routeName,
+                )
             }
         }
     }
 }
+
