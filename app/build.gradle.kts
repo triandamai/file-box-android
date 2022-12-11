@@ -1,6 +1,7 @@
 plugins {
     id("com.android.application")
     id("com.google.dagger.hilt.android")
+    id("com.google.gms.google-services")
     kotlin("android")
     kotlin("kapt")
 }
@@ -76,6 +77,14 @@ dependencies {
     implementation(Deps.AndroidX.Work.workRuntime)
     implementation(Deps.AndroidX.Hilt.hiltWork)
     kapt(Deps.AndroidX.Hilt.hiltCompiler)
+    with(Deps.Com.Google.Firebase){
+        implementation(platform(firebaseBom))
+        implementation(firebaseAnalytics)
+        implementation(firebaseAuth)
+        implementation(firebaseFirestore)
+        implementation(firebaseStorage)
+    }
+    implementation(Deps.Org.Jetbrains.Kotlinx.kotlinxCoroutineAndroid)
 
     testImplementation(Deps.Junit.jUnit)
     androidTestImplementation(Deps.AndroidX.Test.extJunit)

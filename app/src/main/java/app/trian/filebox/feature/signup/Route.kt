@@ -11,7 +11,12 @@ object SignUp{
     const val routeName = "sign_up"
 }
 fun NavHostController.navigateToSignIn(){
-    this.navigate(SignIn.routeName,)
+    this.navigate(SignIn.routeName){
+        launchSingleTop = true
+        popUpTo(SignUp.routeName){
+            inclusive = true
+        }
+    }
 }
 
 fun NavGraphBuilder.routeSignUp(

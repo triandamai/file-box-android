@@ -14,11 +14,18 @@ object SignIn{
 }
 
 fun NavHostController.navigateToSignUp(){
-    this.navigate(SignUp.routeName)
+    this.navigate(SignUp.routeName){
+        launchSingleTop = true
+    }
 }
 
 fun NavHostController.navigateToHome(){
-    this.navigate(Home.routeName)
+    this.navigate(Home.routeName){
+        launchSingleTop = true
+        popUpTo(SignIn.routeName){
+            inclusive = true
+        }
+    }
 }
 
 
@@ -30,7 +37,7 @@ fun NavGraphBuilder.routeSignIn(
         val viewModel = hiltViewModel<SignInViewModel>()
         ScreenSignIn(
             goToSignUp = { router.navigateToSignUp() },
-            onLogin = {_,_->router.navigateToHome()}
+            onSubmit = { _, _->router.navigateToHome()}
         )
     }
 }

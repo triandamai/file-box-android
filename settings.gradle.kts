@@ -13,6 +13,6 @@ dependencyResolutionManagement {
     }
 }
 
-//rootProject.buildFileName = "build.build.gradle.kts.kts"
+rootProject.buildFileName = "build.gradle.kts"
 rootProject.name = "FileBox"
 include(":app")

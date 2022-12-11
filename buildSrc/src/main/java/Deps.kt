@@ -5,6 +5,20 @@ object Deps {
                 val hiltAndroid by lazy{"com.google.dagger:hilt-android:2.44"}
                 val hiltAndroidCompiler by lazy{"com.google.dagger:hilt-android-compiler:2.44"}
             }
+            object Firebase{
+                val firebaseBom by lazy {"com.google.firebase:firebase-bom:31.1.0"}
+                val firebaseAnalytics by lazy { "com.google.firebase:firebase-analytics-ktx" }
+                val firebaseFirestore by lazy {"com.google.firebase:firebase-firestore-ktx"}
+                val firebaseAuth by lazy { "com.google.firebase:firebase-auth-ktx" }
+                val firebaseStorage by lazy { "com.google.firebase:firebase-storage-ktx" }
+            }
+        }
+    }
+    object Org{
+        object Jetbrains{
+            object Kotlinx{
+                val kotlinxCoroutineAndroid by lazy { "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4" }
+            }
         }
     }
     object AndroidX{

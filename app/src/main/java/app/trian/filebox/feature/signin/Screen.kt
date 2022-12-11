@@ -20,7 +20,7 @@ import app.trian.filebox.components.TextWithAction
 internal fun ScreenSignIn(
     modifier: Modifier = Modifier,
     goToSignUp: () -> Unit = {},
-    onLogin: (String, String) -> Unit = { _, _ -> }
+    onSubmit: (String, String) -> Unit = { _, _ -> }
 ) {
     var email by remember {
         mutableStateOf("")
@@ -55,7 +55,7 @@ internal fun ScreenSignIn(
         Spacer(modifier = modifier.height(24.dp))
         Button(
             onClick = {
-                onLogin(email, password)
+                onSubmit(email, password)
             },
             colors = ButtonDefaults.buttonColors(
 

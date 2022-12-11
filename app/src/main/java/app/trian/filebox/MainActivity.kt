@@ -3,7 +3,15 @@ package app.trian.filebox
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.areNavigationBarsVisible
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.navigationBars
+import androidx.compose.foundation.layout.navigationBarsIgnoringVisibility
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeContent
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -54,56 +62,48 @@ class MainActivity : ComponentActivity() {
                 }
 
             }
-
-            FileBoxTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier
-                        .fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    Scaffold(
-                        topBar = {
-                            if (appState.showAppbar) {
-                                TopAppBar(
-                                    title = {
-                                        Text(text = "File Box")
+            BaseContainer(
+                topBar = {
+                    if (appState.showAppbar) {
+                        TopAppBar(
+                            title = {
+                                Text(text = "File Box")
+                            }
+                        )
+                    }
+                },
+                bottomBar = {
+                    when (appState.bottomNavType) {
+                        BottomBarType.BLANK -> Unit
+                        BottomBarType.RAIL -> {}
+                        BottomBarType.BASIC -> {
+                            FileBoxBottomNavigation(
+                                items = listOf(
+                                    FileBoxBottomNavigation.Home(),
+                                    FileBoxBottomNavigation.Folder(),
+                                    FileBoxBottomNavigation.Profile()
+                                ),
+                                currentRoute = appState.currentBottomNav,
+                                onItemClick = {
+                                    router.navigate(it) {
+                                        launchSingleTop = true
                                     }
-                                )
-                            }
-                        },
-                        bottomBar = {
-                            when (appState.bottomNavType) {
-                                BottomBarType.BLANK -> Unit
-                                BottomBarType.RAIL -> {}
-                                BottomBarType.BASIC -> {
-                                    FileBoxBottomNavigation(
-                                        items = listOf(
-                                            FileBoxBottomNavigation.Home(),
-                                            FileBoxBottomNavigation.Folder(),
-                                            FileBoxBottomNavigation.Profile()
-                                        ),
-                                        currentRoute = appState.currentBottomNav,
-                                        onItemClick = {
-                                            router.navigate(it) {
-                                                launchSingleTop = true
-                                            }
-                                            appState.setActiveBottomNav(it)
-                                        }
-                                    )
+                                    appState.setActiveBottomNav(it)
                                 }
-                            }
-                        },
-                    ) {
+                            )
+                        }
+                    }
+                },
+                content = {
+                    Column(modifier = Modifier.padding(it)) {
                         AppNavigation(
-                            padding = it,
                             navController = router,
                             appState = appState,
                             startDestination = SignIn.routeName,
                         )
                     }
                 }
-            }
+            )
         }
     }
 }
@@ -114,7 +114,7 @@ fun BaseContainer(
     topBar: @Composable () -> Unit = {},
     bottomBar: @Composable () -> Unit = {},
     snackbarHost: @Composable () -> Unit = {},
-    content: @Composable () -> Unit = {}
+    content: @Composable (PaddingValues) -> Unit = {}
 ) {
     FileBoxTheme {
 
@@ -129,10 +129,10 @@ fun BaseContainer(
                 containerColor = MaterialTheme.colorScheme.background,
                 topBar = topBar,
                 bottomBar = bottomBar,
-                snackbarHost = snackbarHost
+                snackbarHost = snackbarHost,
+                contentWindowInsets = WindowInsets.navigationBars
             ) {
-                it.calculateBottomPadding()
-                content.invoke()
+                content.invoke(it)
             }
         }
     }

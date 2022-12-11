@@ -13,13 +13,10 @@ import app.trian.filebox.feature.signup.routeSignUp
 
 @Composable
 fun AppNavigation(
-    padding: PaddingValues,
     navController: NavHostController = rememberNavController(),
     appState: FileBoxState = rememberFileBoxApplication(),
     startDestination: String = ""
 ) {
-    padding.calculateTopPadding()
-
     NavHost(
         navController = navController,
         startDestination = startDestination
