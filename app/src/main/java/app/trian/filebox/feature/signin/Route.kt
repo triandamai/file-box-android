@@ -59,18 +59,17 @@ fun NavGraphBuilder.routeSignIn(
         ScreenSignIn(
             goToSignUp = { router.navigateToSignUp() },
             onSubmit = { email, password->
-                appState.onBottomBarClick("heheh")
-//                isLoading = true
-//                viewModel.signInWithEmailAndPassword(email, password){
-//                    success,message->
-//                    if(success){
-//                        router.navigateToHome()
-//                    }else{
-//                        scope.launch {
-//                            appState.snackbarHostState.showSnackbar(message)
-//                        }
-//                    }
-//                }
+                isLoading = true
+                viewModel.signInWithEmailAndPassword(email, password){
+                    success,message->
+                    if(success){
+                        router.navigateToHome()
+                    }else{
+                        scope.launch {
+                            appState.snackbarHostState.showSnackbar(message)
+                        }
+                    }
+                }
             }
         )
     }
