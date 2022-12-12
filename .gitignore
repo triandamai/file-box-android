@@ -14,9 +14,6 @@
 .cxx
 local.properties
 
-/buildSrc/build
-/app/build/
-/app/
 /app/google-services.json
 
 # Built application files
