@@ -1,5 +1,10 @@
 package app.trian.filebox.feature.signin
 
+import android.Manifest
+import android.util.Log
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -14,6 +19,7 @@ import app.trian.filebox.composables.BottomBarListener
 import app.trian.filebox.feature.home.Home
 import app.trian.filebox.feature.signup.SignUp
 import kotlinx.coroutines.launch
+import java.security.Permission
 
 
 object SignIn{
@@ -46,6 +52,27 @@ fun NavGraphBuilder.routeSignIn(
             mutableStateOf(false)
         }
         val scope = rememberCoroutineScope()
+
+        val launcher = rememberLauncherForActivityResult(
+            contract = ActivityResultContracts.RequestMultiplePermissions(),
+            onResult = {data->
+                Log.e("sas",data.toString())
+                val isGranted1 = data[Manifest.permission.READ_EXTERNAL_STORAGE]!!
+                val isGranted = data[Manifest.permission.READ_EXTERNAL_STORAGE]!!
+                if(isGranted && isGranted1) {
+                    viewModel.readFile()
+                }
+            }
+        )
+
+        LaunchedEffect(key1 = Unit, block = {
+            scope.launch {
+                launcher.launch(arrayOf(
+                    Manifest.permission.READ_EXTERNAL_STORAGE,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+                ))
+            }
+        })
 
 
 
