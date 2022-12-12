@@ -47,10 +47,12 @@ fun CardItemFolder() {
             color = MaterialTheme.colorScheme.onBackground
         ),
         shape = RoundedCornerShape(12.dp),
-        modifier = Modifier.padding(
-            horizontal = 8.dp,
-            vertical = 8.dp
-        ).height(200.dp)
+        modifier = Modifier
+            .padding(
+                horizontal = 8.dp,
+                vertical = 8.dp
+            )
+            .height(200.dp)
     ) {
         Column(
             Modifier
