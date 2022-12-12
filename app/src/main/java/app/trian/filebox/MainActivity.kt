@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.material3.*
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.navigation.compose.rememberNavController
 import app.trian.filebox.components.FileBoxBottomNavigation
@@ -14,6 +15,7 @@ import app.trian.filebox.feature.profile.Profile
 import app.trian.filebox.feature.signin.SignIn
 import app.trian.filebox.feature.signup.SignUp
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -25,6 +27,7 @@ class MainActivity : ComponentActivity() {
             val router = rememberNavController()
             val appState = rememberFileBoxApplication()
             val config = LocalConfiguration.current
+            val scope = rememberCoroutineScope()
 
 
 
@@ -84,6 +87,9 @@ class MainActivity : ComponentActivity() {
                                 ),
                                 currentRoute = appState.activeRoute,
                                 onItemClick = {
+                                    scope.launch {
+                                        appState.onBottomBarClick("Route -> "+it)
+                                    }
                                     router.navigate(it) {
                                         launchSingleTop = true
                                     }

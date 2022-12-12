@@ -40,9 +40,7 @@ fun NavGraphBuilder.routeSignUp(
         })
         ScreenSignUp(
             goToSingIn = {router.navigateToSignIn()},
-            onSubmit = {_,_->
-                appState.onBottomBarClick("ahahah")
-            }
+            onSubmit = {_,_-> }
         )
     }
 }
