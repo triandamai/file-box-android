@@ -1,6 +1,8 @@
 package app.trian.filebox
 
+import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarResult
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -20,7 +22,7 @@ class FileBoxState internal constructor() {
     var activeRoute by mutableStateOf("")
     var snackbarHostState by mutableStateOf(SnackbarHostState())
 
-    private var onBottomBarListener:BottomBarListener<String>? = null
+    private var onBottomBarListener: BottomBarListener<String>? = null
 
 
     fun hideAppbar() {
@@ -65,13 +67,33 @@ class FileBoxState internal constructor() {
         }
     }
 
-    fun  addBottomBarListener(listener: BottomBarListener<String>){
-         onBottomBarListener = listener
+    fun addBottomBarListener(listener: BottomBarListener<String>) {
+        onBottomBarListener = listener
     }
 
-    fun onBottomBarClick(data:String){
+    fun onBottomBarClick(data: String) {
         onBottomBarListener?.onItemClicked(data)
     }
+
+    suspend fun showSnackbar(message: String): SnackbarResult = with(snackbarHostState) {
+        showSnackbar(message)
+    }
+
+    suspend fun showSnackbar(
+        message: String,
+        actionLabel: String? = null,
+        withDismissAction: Boolean = false,
+        duration: SnackbarDuration =
+            if (actionLabel == null) SnackbarDuration.Short else SnackbarDuration.Indefinite
+    ) = with(snackbarHostState) {
+        showSnackbar(
+            message = message,
+            actionLabel = actionLabel,
+            withDismissAction = withDismissAction,
+            duration = duration
+        )
+    }
+
 }
 
 @Composable

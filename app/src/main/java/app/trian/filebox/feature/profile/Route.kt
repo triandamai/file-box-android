@@ -26,12 +26,6 @@ fun NavGraphBuilder.routeProfile(
     composable(Profile.routeName) {
         val viewModel = hiltViewModel<ProfileViewModel>()
         val scope = rememberCoroutineScope()
-        appState.addBottomBarListener(object : BottomBarListener<String> {
-            override fun onItemClicked(data: String) {
-
-            }
-
-        })
         ScreenProfile()
     }
 }

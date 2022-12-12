@@ -24,12 +24,6 @@ fun NavGraphBuilder.routeHome(
     ) {
         val viewModel = hiltViewModel<HomeViewModel>()
         val scope = rememberCoroutineScope()
-        appState.addBottomBarListener(object : BottomBarListener<String> {
-            override fun onItemClicked(data: String) {
-
-            }
-
-        })
 
         ScreenHome()
     }
