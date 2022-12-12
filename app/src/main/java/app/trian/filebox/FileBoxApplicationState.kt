@@ -6,6 +6,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import app.trian.filebox.composables.BottomBarListener
 
 enum class BottomBarType {
     BLANK,
@@ -19,6 +20,7 @@ class FileBoxState internal constructor() {
     var activeRoute by mutableStateOf("")
     var snackbarHostState by mutableStateOf(SnackbarHostState())
 
+    private var onBottomBarListener:BottomBarListener<String>? = null
 
 
     fun hideAppbar() {
@@ -61,6 +63,14 @@ class FileBoxState internal constructor() {
         if (activeRoute != route) {
             activeRoute = route
         }
+    }
+
+    fun  addBottomBarListener(listener: BottomBarListener<String>){
+         onBottomBarListener = listener
+    }
+
+    fun onBottomBarClick(data:String){
+        onBottomBarListener?.onItemClicked(data)
     }
 }
 

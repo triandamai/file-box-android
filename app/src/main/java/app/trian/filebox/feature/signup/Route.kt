@@ -1,11 +1,14 @@
 package app.trian.filebox.feature.signup
 
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import app.trian.filebox.FileBoxState
+import app.trian.filebox.composables.BottomBarListener
 import app.trian.filebox.feature.signin.SignIn
+import kotlinx.coroutines.launch
 
 object SignUp{
     const val routeName = "sign_up"
@@ -25,8 +28,21 @@ fun NavGraphBuilder.routeSignUp(
 ) {
     composable(SignUp.routeName){
         val viewModel = hiltViewModel<SignUpViewModel>()
+        val scope = rememberCoroutineScope()
+
+        appState.addBottomBarListener(object : BottomBarListener<String> {
+            override fun onItemClicked(data: String) {
+                scope.launch {
+                    appState.snackbarHostState.showSnackbar("Sign up -> $data")
+                }
+            }
+
+        })
         ScreenSignUp(
-            goToSingIn = {router.navigateToSignIn()}
+            goToSingIn = {router.navigateToSignIn()},
+            onSubmit = {_,_->
+                appState.onBottomBarClick("ahahah")
+            }
         )
     }
 }

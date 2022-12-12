@@ -26,6 +26,8 @@ class MainActivity : ComponentActivity() {
             val appState = rememberFileBoxApplication()
             val config = LocalConfiguration.current
 
+
+
             router.addOnDestinationChangedListener { _, destination, _ ->
                 with(appState) {
                     setCurrentRoute(destination.route.orEmpty())

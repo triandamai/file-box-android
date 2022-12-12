@@ -10,10 +10,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import app.trian.filebox.FileBoxState
 import app.trian.filebox.R
 import app.trian.filebox.components.AnnotationTextItem
 import app.trian.filebox.components.TextWithAction
+import app.trian.filebox.composables.BottomBarListener
+import app.trian.filebox.rememberFileBoxApplication
 import app.trian.filebox.ui.theme.FileBoxTheme
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -31,6 +35,9 @@ internal fun ScreenSignUp(
     var name by remember {
         mutableStateOf("")
     }
+
+
+
     Column(
         modifier = Modifier
             .fillMaxSize()

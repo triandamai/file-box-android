@@ -10,6 +10,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import app.trian.filebox.FileBoxState
+import app.trian.filebox.composables.BottomBarListener
 import app.trian.filebox.feature.home.Home
 import app.trian.filebox.feature.signup.SignUp
 import kotlinx.coroutines.launch
@@ -46,20 +47,30 @@ fun NavGraphBuilder.routeSignIn(
         }
         val scope = rememberCoroutineScope()
 
+        appState.addBottomBarListener(object : BottomBarListener<String> {
+            override fun onItemClicked(data: String) {
+                scope.launch {
+                    appState.snackbarHostState.showSnackbar(data)
+                }
+            }
+
+        })
+
         ScreenSignIn(
             goToSignUp = { router.navigateToSignUp() },
             onSubmit = { email, password->
-                isLoading = true
-                viewModel.signInWithEmailAndPassword(email, password){
-                    success,message->
-                    if(success){
-                        router.navigateToHome()
-                    }else{
-                        scope.launch {
-                            appState.snackbarHostState.showSnackbar(message)
-                        }
-                    }
-                }
+                appState.onBottomBarClick("heheh")
+//                isLoading = true
+//                viewModel.signInWithEmailAndPassword(email, password){
+//                    success,message->
+//                    if(success){
+//                        router.navigateToHome()
+//                    }else{
+//                        scope.launch {
+//                            appState.snackbarHostState.showSnackbar(message)
+//                        }
+//                    }
+//                }
             }
         )
     }
