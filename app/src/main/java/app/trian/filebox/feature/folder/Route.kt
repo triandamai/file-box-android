@@ -8,6 +8,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import app.trian.filebox.FileBoxState
 import app.trian.filebox.composables.BottomBarListener
+import app.trian.filebox.feature.detail_folder.DetailFolder
 import app.trian.filebox.feature.home.HomeViewModel
 import kotlinx.coroutines.launch
 
@@ -16,6 +17,11 @@ object Folder {
     const val routeName = "folder"
 }
 
+fun NavHostController.navigateToDetailFolder(folderId:String)= with(this){
+    navigate(DetailFolder.getRouteName(folderId)){
+        launchSingleTop = true
+    }
+}
 
 fun NavGraphBuilder.routeFolder(
     router: NavHostController,
