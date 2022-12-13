@@ -34,11 +34,7 @@ class StorageRepositoryImpl @Inject constructor(
         )
         val cursor = with(appContext) {
             contentResolver.query(
-                uri,
-                projection,
-                null,
-                null,
-                null
+                uri, projection, null, null, null
 
             )
         }
@@ -56,8 +52,7 @@ class StorageRepositoryImpl @Inject constructor(
                     val size = it.getString(sizeColumn)
                     val date = it.getString(dateColumn)
                     val contentUri = ContentUris.withAppendedId(
-                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                        id
+                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI, id
                     )
                     // add the URI to the list
                     // generate the thumbnail
@@ -65,9 +60,7 @@ class StorageRepositoryImpl @Inject constructor(
 
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                             (this as Context).contentResolver.loadThumbnail(
-                                contentUri,
-                                Size(480, 480),
-                                null
+                                contentUri, Size(480, 480), null
                             )
                         } else {
                             null
@@ -84,7 +77,8 @@ class StorageRepositoryImpl @Inject constructor(
                             id = id,
                             thumb = thumbnail,
                             uri = contentUri,
-                            path = ""
+                            path = "",
+                            mime = ""
                         )
                     )
 
@@ -107,11 +101,7 @@ class StorageRepositoryImpl @Inject constructor(
         )
         val cursor = with(appContext) {
             contentResolver.query(
-                uri,
-                projection,
-                null,
-                null,
-                null
+                uri, projection, null, null, null
 
             )
         }
@@ -129,16 +119,13 @@ class StorageRepositoryImpl @Inject constructor(
                     val date = it.getString(dateColumn)
 
                     val contentUri = ContentUris.withAppendedId(
-                        MediaStore.Video.Media.EXTERNAL_CONTENT_URI,
-                        id
+                        MediaStore.Video.Media.EXTERNAL_CONTENT_URI, id
                     )
                     // add the URI to the list
                     // generate the thumbnail
                     val thumbnail = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                         (this as Context).contentResolver.loadThumbnail(
-                            contentUri,
-                            Size(480, 480),
-                            null
+                            contentUri, Size(480, 480), null
                         )
                     } else {
                         null
@@ -152,7 +139,8 @@ class StorageRepositoryImpl @Inject constructor(
                             id = id,
                             thumb = thumbnail,
                             uri = contentUri,
-                            path = ""
+                            path = "",
+                            mime = ""
                         )
                     )
 
@@ -172,23 +160,27 @@ class StorageRepositoryImpl @Inject constructor(
 
         val cursor = with(appContext) {
             contentResolver.query(
-                uri!!,
-                arrayOf(
+                uri!!, arrayOf(
                     MediaStore.Files.FileColumns._ID,
                     MediaStore.Files.FileColumns.DISPLAY_NAME,
                     MediaStore.Files.FileColumns.MIME_TYPE,
                     MediaStore.Files.FileColumns.DATA,
-                ),
-                """
+                    MediaStore.Files.FileColumns.SIZE,
+                    MediaStore.Files.FileColumns.DATE_ADDED,
+                ), """
                     ${MediaStore.Files.FileColumns.MIME_TYPE}=? 
-                     OR ${MediaStore.Files.FileColumns.MIME_TYPE}=?
-                     OR ${MediaStore.Files.FileColumns.MIME_TYPE}=?
-                     
-                """.trimIndent(),
-                arrayOf(
+                    OR ${MediaStore.Files.FileColumns.MIME_TYPE}=?
+                    OR ${MediaStore.Files.FileColumns.MIME_TYPE}=?
+                    OR ${MediaStore.Files.FileColumns.MIME_TYPE}=?
+                    OR ${MediaStore.Files.FileColumns.MIME_TYPE}=?
+                    OR ${MediaStore.Files.FileColumns.MIME_TYPE}=?
+                """.trimIndent(), arrayOf(
                     MimeTypeMap.getSingleton().getMimeTypeFromExtension("js"),
                     MimeTypeMap.getSingleton().getMimeTypeFromExtension("pdf"),
-                    MimeTypeMap.getSingleton().getMimeTypeFromExtension("html")
+                    MimeTypeMap.getSingleton().getMimeTypeFromExtension("html"),
+                    MimeTypeMap.getSingleton().getMimeTypeFromExtension("jpg"),
+                    MimeTypeMap.getSingleton().getMimeTypeFromExtension("jpeg"),
+                    MimeTypeMap.getSingleton().getMimeTypeFromExtension("png")
                 ), null
             )
         }
@@ -199,22 +191,54 @@ class StorageRepositoryImpl @Inject constructor(
                 val nameColumn = it.getColumnIndexOrThrow(MediaStore.Files.FileColumns.DISPLAY_NAME)
                 val mimeColumn = it.getColumnIndexOrThrow(MediaStore.Files.FileColumns.MIME_TYPE)
                 val dataColumn = it.getColumnIndexOrThrow(MediaStore.Files.FileColumns.DATA)
+                val sizeColumn = it.getColumnIndexOrThrow(MediaStore.Images.Media.SIZE)
+                val dateColumn = it.getColumnIndexOrThrow(MediaStore.Images.Media.DATE_ADDED)
 
                 while (it.moveToNext()) {
 
                     val id = it.getLong(idColumn)
                     val name = it.getString(nameColumn)
                     val mime = it.getString(mimeColumn)
-                    val data = it.getString(dataColumn)
+                    val dataPath = it.getString(dataColumn)
+                    val size = it.getString(sizeColumn)
+                    val date = it.getString(dateColumn)
+                    var rs = ""
+                    dataPath.split("/").apply {
+                        val getFolder = this[this.size -2]
+                        rs = if(getFolder == "0") "Internal" else getFolder
+                    }
+                    val contentUri = ContentUris.withAppendedId(
+                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI, id
+                    )
+                    // add the URI to the list
+                    // generate the thumbnail
+                    val thumbnail = try {
 
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                            appContext.contentResolver.loadThumbnail(
+                                contentUri, Size(480, 480), null
+                            )
+                        } else {
+                            null
+                        }
+                    } catch (e: Exception) {
+                        null
+                    }
 
-                    Log.e("ee4", name.toString())
-                    Log.e("ee4", mime.toString())
-                    Log.e("ee4", data.toString())
-
-
+                    val fileModel = FileModel(
+                        id = id,
+                        name=name,
+                        mime=mime,
+                        size = size,
+                        uri = contentUri,
+                        thumb = thumbnail,
+                        date = date,
+                        path = rs
+                    )
+                    data.add(fileModel)
                 }
             }
+            Log.e("ee4", data.toString())
             emit(data)
         }
     }.flowOn(Dispatchers.IO)

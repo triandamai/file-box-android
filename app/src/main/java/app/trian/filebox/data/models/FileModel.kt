@@ -10,5 +10,6 @@ data class FileModel(
     var date:String,
     var uri:Uri,
     var thumb:Bitmap?,
-    var path:String
+    var path:String,
+    var mime:String
 )
