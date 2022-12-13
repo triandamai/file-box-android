@@ -215,9 +215,10 @@ class StorageRepositoryImpl @Inject constructor(
                     val thumbnail = try {
 
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                            appContext.contentResolver.loadThumbnail(
+                            val loadThumbnail = appContext.contentResolver.loadThumbnail(
                                 contentUri, Size(480, 480), null
                             )
+                            loadThumbnail
                         } else {
                             null
                         }

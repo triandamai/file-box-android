@@ -6,6 +6,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -18,6 +19,8 @@ class UserRepositoryImpl @Inject constructor(
         email: String,
         password: String
     ): Flow<Pair<Boolean, String>> = flow {
+        firebaseFirestore.collection("").get().await()
+        firebaseAuth.currentUser
         emit(Pair(false, "gagall"))
     }.flowOn(Dispatchers.IO)
 

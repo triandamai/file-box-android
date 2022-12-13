@@ -2,6 +2,7 @@ plugins {
     id("com.android.application")
     id("com.google.dagger.hilt.android")
     id("com.google.gms.google-services")
+    id("io.gitlab.arturbosch.detekt")
     kotlin("android")
     kotlin("kapt")
 }
