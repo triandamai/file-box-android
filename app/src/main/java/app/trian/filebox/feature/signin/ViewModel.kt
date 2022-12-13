@@ -17,9 +17,6 @@ class SignInViewModel @Inject constructor(
     private val userRepository: UserRepository,
     private val storageRepository: StorageRepository
 ) : ViewModel() {
-    init {
-
-    }
 
     fun readFile() = with(viewModelScope) {
         launch {

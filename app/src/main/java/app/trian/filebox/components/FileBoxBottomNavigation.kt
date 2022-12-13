@@ -18,7 +18,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationBarDefaults
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationRail
 import androidx.compose.material3.NavigationRailItem
@@ -48,7 +47,8 @@ fun FileBoxBottomNavigation(
                     Icon(
                         it.icon,
                         contentDescription = "Menu ${it.name}",
-                        tint = if (currentRoute == it.routeName) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.tertiary
+                        tint = if (currentRoute == it.routeName) MaterialTheme.colorScheme.primary
+                        else MaterialTheme.colorScheme.tertiary
                     )
                 }
             )
@@ -74,7 +74,8 @@ fun FileBoxNavigationRail(
                     Icon(
                         it.icon,
                         contentDescription = "Menu ${it.name}",
-                        tint = if (currentRoute == it.routeName) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.tertiary
+                        tint = if (currentRoute == it.routeName) MaterialTheme.colorScheme.primary
+                        else MaterialTheme.colorScheme.tertiary
                     )
                 })
         }
@@ -96,7 +97,8 @@ fun FileBoxBottomBar(
                     Icon(
                         it.icon,
                         contentDescription = "Menu ${it.name}",
-                        tint = if (currentRoute == it.routeName) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.tertiary
+                        tint = if (currentRoute == it.routeName) MaterialTheme.colorScheme.primary
+                        else MaterialTheme.colorScheme.tertiary
                     )
                 }
             }
@@ -189,7 +191,9 @@ fun PreviewBottomNavigationRail() {
                 )
             )
             Column(
-                modifier = Modifier.fillMaxWidth().fillMaxHeight(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .fillMaxHeight(),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {

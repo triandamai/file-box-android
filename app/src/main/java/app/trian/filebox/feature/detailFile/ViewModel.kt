@@ -1,4 +1,4 @@
-package app.trian.filebox.feature.detail_file
+package app.trian.filebox.feature.detailFile
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel

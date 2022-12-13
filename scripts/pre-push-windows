@@ -1,4 +1,4 @@
-#!/bin/sh
+#!C:/Program\ Files/Git/usr/bin/sh.exe
 #
 # This hook is for Android project git repos.
 #
@@ -21,7 +21,7 @@ fi
 
 # Perform lint check
 echo "Performing pre-commit lint check of ""$dirToLint"
-./gradlew detekt
+$dirToLint./gradlew detekt --daemon
 detektStatus=$?
 
 lintStatus=1

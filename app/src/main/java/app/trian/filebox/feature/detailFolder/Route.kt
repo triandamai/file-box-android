@@ -1,17 +1,13 @@
-package app.trian.filebox.feature.detail_folder
+package app.trian.filebox.feature.detailFolder
 
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NamedNavArgument
-import androidx.navigation.NavArgument
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import app.trian.filebox.FileBoxState
-import app.trian.filebox.feature.blank.BlankViewModel
 import app.trian.filebox.feature.home.ScreenHome
-import app.trian.filebox.feature.signin.SignIn
 
 
 object DetailFolder {

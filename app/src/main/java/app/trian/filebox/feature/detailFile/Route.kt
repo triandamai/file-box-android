@@ -1,4 +1,4 @@
-package app.trian.filebox.feature.detail_file
+package app.trian.filebox.feature.detailFile
 
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
@@ -7,12 +7,12 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import app.trian.filebox.FileBoxState
-import app.trian.filebox.feature.detail_folder.DetailFolder
+import app.trian.filebox.feature.detailFolder.DetailFolder
 import app.trian.filebox.feature.home.ScreenHome
 
 
 object DetailFile {
-    const val routeName = "detail_file"
+    const val routeName = "detailFile"
     const val argKey = "fileId"
 
     fun routeName() = "$routeName/{$argKey}"

@@ -88,8 +88,12 @@ fun NavGraphBuilder.routeSignIn(
             return if(SDK_INT >= Build.VERSION_CODES.R){
                 Environment.isExternalStorageManager()
             }else{
-                val read = (ContextCompat.checkSelfPermission(ctx,Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
-                val write = ContextCompat.checkSelfPermission(ctx,Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+                val read = (ContextCompat.checkSelfPermission(ctx,
+                    Manifest.permission.READ_EXTERNAL_STORAGE) ==
+                        PackageManager.PERMISSION_GRANTED)
+                val write = ContextCompat.checkSelfPermission(ctx,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE) ==
+                        PackageManager.PERMISSION_GRANTED
 
                 return (read && write)
             }

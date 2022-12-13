@@ -95,3 +95,20 @@ dependencies {
 kapt {
     correctErrorTypes = true
 }
+
+//https://dev.to/akdevcraft/git-pre-hook-setup-pre-push-hook-for-gradle-project-example-1nn6
+//https://emmanuelkehinde.io/setting-up-git-pre-commit-pre-push-hook-for-ktlint-check/
+tasks.create<Copy>("installGitHook"){
+    var suffix = "macos"
+    if(org.apache.tools.ant.taskdefs.condition.Os.isFamily(org.apache.tools.ant.taskdefs.condition.Os.FAMILY_WINDOWS)){
+        suffix = "windows"
+    }
+
+    copy{
+        from(File(rootProject.rootDir,"scripts/pre-push-$suffix"))
+        into{ File(rootProject.rootDir,".git/hooks") }
+        rename("pre-push-$suffix","pre-push")
+    }
+
+    fileMode = "775".toInt(8)
+}

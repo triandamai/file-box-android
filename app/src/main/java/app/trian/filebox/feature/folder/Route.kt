@@ -8,7 +8,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import app.trian.filebox.FileBoxState
 import app.trian.filebox.composables.BottomBarListener
-import app.trian.filebox.feature.detail_folder.DetailFolder
+import app.trian.filebox.feature.detailFolder.DetailFolder
 import app.trian.filebox.feature.home.HomeViewModel
 import kotlinx.coroutines.launch
 

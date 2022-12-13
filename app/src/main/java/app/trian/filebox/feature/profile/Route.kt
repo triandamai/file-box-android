@@ -24,8 +24,8 @@ fun NavGraphBuilder.routeProfile(
     appState: FileBoxState
 ) {
     composable(Profile.routeName) {
-        val viewModel = hiltViewModel<ProfileViewModel>()
-        val scope = rememberCoroutineScope()
+//        val viewModel = hiltViewModel<ProfileViewModel>()
+//        val scope = rememberCoroutineScope()
         ScreenProfile()
     }
 }

@@ -19,3 +19,7 @@ tasks.create<Delete>("cleanRp"){
             rootProject.buildDir
     )
 }
+
+tasks.getByPath(":app:preBuild").dependsOn("installGitHook")
+
+

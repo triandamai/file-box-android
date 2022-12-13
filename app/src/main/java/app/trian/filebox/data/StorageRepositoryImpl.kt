@@ -57,10 +57,13 @@ class StorageRepositoryImpl @Inject constructor(
                     // add the URI to the list
                     // generate the thumbnail
                     val thumbnail = try {
-
+                        val widthSize = 480
+                        val heightSize = 480
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                            (this as Context).contentResolver.loadThumbnail(
-                                contentUri, Size(480, 480), null
+                            val widthSize = 480
+                            val heightSize = 480
+                            appContext.contentResolver.loadThumbnail(
+                                contentUri, Size(widthSize, heightSize), null
                             )
                         } else {
                             null
@@ -124,8 +127,10 @@ class StorageRepositoryImpl @Inject constructor(
                     // add the URI to the list
                     // generate the thumbnail
                     val thumbnail = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                        (this as Context).contentResolver.loadThumbnail(
-                            contentUri, Size(480, 480), null
+                        val widthSize = 480
+                        val heightSize = 480
+                        appContext.contentResolver.loadThumbnail(
+                            contentUri, Size(widthSize, heightSize), null
                         )
                     } else {
                         null
@@ -204,8 +209,8 @@ class StorageRepositoryImpl @Inject constructor(
                     val date = it.getString(dateColumn)
                     var rs = ""
                     dataPath.split("/").apply {
-                        val getFolder = this[this.size -2]
-                        rs = if(getFolder == "0") "Internal" else getFolder
+                        val getFolder = this[this.size - 2]
+                        rs = if (getFolder == "0") "Internal" else getFolder
                     }
                     val contentUri = ContentUris.withAppendedId(
                         MediaStore.Images.Media.EXTERNAL_CONTENT_URI, id
@@ -215,8 +220,10 @@ class StorageRepositoryImpl @Inject constructor(
                     val thumbnail = try {
 
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                            val widthSize = 480
+                            val heightSize = 480
                             val loadThumbnail = appContext.contentResolver.loadThumbnail(
-                                contentUri, Size(480, 480), null
+                                contentUri, Size(widthSize, heightSize), null
                             )
                             loadThumbnail
                         } else {
@@ -228,8 +235,8 @@ class StorageRepositoryImpl @Inject constructor(
 
                     val fileModel = FileModel(
                         id = id,
-                        name=name,
-                        mime=mime,
+                        name = name,
+                        mime = mime,
                         size = size,
                         uri = contentUri,
                         thumb = thumbnail,
