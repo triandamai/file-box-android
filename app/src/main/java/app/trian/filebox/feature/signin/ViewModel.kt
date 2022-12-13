@@ -23,8 +23,7 @@ class SignInViewModel @Inject constructor(
 
     fun readFile() = with(viewModelScope) {
         launch {
-            storageRepository.getListImage().onEach {
-                Log.e("bsa", it.toString())
+            storageRepository.getAllFiles().onEach {
                 it.map {
                     Log.e("bsa", it.toString())
                 }

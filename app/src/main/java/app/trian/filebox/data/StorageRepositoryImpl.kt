@@ -4,7 +4,10 @@ import android.content.ContentUris
 import android.content.Context
 import android.os.Build
 import android.provider.MediaStore
+import android.util.Log
 import android.util.Size
+import android.webkit.MimeTypeMap
+import androidx.annotation.RequiresApi
 import app.trian.filebox.data.models.FileModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
@@ -13,6 +16,7 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 import javax.inject.Singleton
+
 
 @Singleton
 class StorageRepositoryImpl @Inject constructor(
@@ -151,6 +155,62 @@ class StorageRepositoryImpl @Inject constructor(
                             path = ""
                         )
                     )
+
+
+                }
+            }
+            emit(data)
+        }
+    }.flowOn(Dispatchers.IO)
+
+    //https://stackoverflow.com/questions/62782648/android-11-scoped-storage-permissions
+    // in android 10 or higher MediaStore.Files. have restriction(scoped storage) only  show vide,image , and video
+    @RequiresApi(Build.VERSION_CODES.Q)
+    override suspend fun getAllFiles(): Flow<List<FileModel>> = flow<List<FileModel>> {
+        val uri = MediaStore.Files.getContentUri(MediaStore.VOLUME_EXTERNAL)
+
+
+        val cursor = with(appContext) {
+            contentResolver.query(
+                uri!!,
+                arrayOf(
+                    MediaStore.Files.FileColumns._ID,
+                    MediaStore.Files.FileColumns.DISPLAY_NAME,
+                    MediaStore.Files.FileColumns.MIME_TYPE,
+                    MediaStore.Files.FileColumns.DATA,
+                ),
+                """
+                    ${MediaStore.Files.FileColumns.MIME_TYPE}=? 
+                     OR ${MediaStore.Files.FileColumns.MIME_TYPE}=?
+                     OR ${MediaStore.Files.FileColumns.MIME_TYPE}=?
+                     
+                """.trimIndent(),
+                arrayOf(
+                    MimeTypeMap.getSingleton().getMimeTypeFromExtension("js"),
+                    MimeTypeMap.getSingleton().getMimeTypeFromExtension("pdf"),
+                    MimeTypeMap.getSingleton().getMimeTypeFromExtension("html")
+                ), null
+            )
+        }
+        val data = mutableListOf<FileModel>()
+        cursor?.use {
+            it.let {
+                val idColumn = it.getColumnIndexOrThrow(MediaStore.Files.FileColumns._ID)
+                val nameColumn = it.getColumnIndexOrThrow(MediaStore.Files.FileColumns.DISPLAY_NAME)
+                val mimeColumn = it.getColumnIndexOrThrow(MediaStore.Files.FileColumns.MIME_TYPE)
+                val dataColumn = it.getColumnIndexOrThrow(MediaStore.Files.FileColumns.DATA)
+
+                while (it.moveToNext()) {
+
+                    val id = it.getLong(idColumn)
+                    val name = it.getString(nameColumn)
+                    val mime = it.getString(mimeColumn)
+                    val data = it.getString(dataColumn)
+
+
+                    Log.e("ee4", name.toString())
+                    Log.e("ee4", mime.toString())
+                    Log.e("ee4", data.toString())
 
 
                 }

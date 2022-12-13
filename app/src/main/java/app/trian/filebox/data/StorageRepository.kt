@@ -7,4 +7,5 @@ import kotlinx.coroutines.flow.Flow
 interface StorageRepository {
     suspend fun getListImage(): Flow<List<FileModel>>
     suspend fun getListVideo(): Flow<List<FileModel>>
+    suspend fun getAllFiles():Flow<List<FileModel>>
 }
