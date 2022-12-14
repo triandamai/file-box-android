@@ -56,9 +56,6 @@ fun NavGraphBuilder.routeSignIn(
             contract = ActivityResultContracts.RequestMultiplePermissions(),
             onResult = { data ->
 
-                if (data.isGranted()) {
-
-                }
             }
         )
 
