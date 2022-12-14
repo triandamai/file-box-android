@@ -7,7 +7,6 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import app.trian.filebox.FileBoxState
-import app.trian.filebox.feature.detailFolder.DetailFolder
 import app.trian.filebox.feature.home.ScreenHome
 
 
