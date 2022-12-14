@@ -26,7 +26,7 @@ fun BaseContainer(
     snackbarHost: @Composable () -> Unit = {},
     appState: FileBoxState = rememberFileBoxApplication(),
     router: NavHostController = rememberNavController(),
-    content:@Composable ()-> Unit ={}
+    content: @Composable () -> Unit = {}
 ) {
     FileBoxTheme {
         // A surface container using the 'background' color from the theme
