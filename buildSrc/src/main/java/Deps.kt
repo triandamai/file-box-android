@@ -32,6 +32,8 @@ object Deps {
             val uiTooling by lazy{"androidx.compose.ui:ui-tooling"}
             val uiTestJunit4 by lazy{"androidx.compose.ui:ui-test-junit4"}
             val uiTestManifest by lazy{"androidx.compose.ui:ui-test-manifest"}
+
+            val composeRuntimeLiveData by lazy {"androidx.compose.runtime:runtime-livedata:1.3.2"}
         }
         object Work{
             val workRuntime by lazy { "androidx.work:work-runtime-ktx:2.7.1" }
@@ -50,6 +52,7 @@ object Deps {
         }
         object Lifecycle{
             val runtimeLifecycleKtx by lazy { "androidx.lifecycle:lifecycle-runtime-ktx:2.3.1" }
+//            val runtimeLiveDataKtx by lazy {"androidx.lifecycle:lifecycle-livedata-ktx:2.5.1"}
         }
         object Activity{
             val activityCompose by lazy{"androidx.activity:activity-compose:1.3.1"}

@@ -3,8 +3,8 @@ package app.trian.filebox.feature.signin
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import app.trian.filebox.data.StorageRepository
-import app.trian.filebox.data.UserRepository
+import app.trian.filebox.data.repository.StorageRepository
+import app.trian.filebox.data.repository.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
@@ -14,21 +14,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SignInViewModel @Inject constructor(
-    private val userRepository: UserRepository,
-    private val storageRepository: StorageRepository
+    private val userRepository: UserRepository
 ) : ViewModel() {
 
-    fun readFile() = with(viewModelScope) {
-        launch {
-            storageRepository.getAllFiles().onEach {
-                it.map {
-                    Log.e("bsa", it.toString())
-                }
-
-            }.collect()
-
-        }
-    }
 
     fun signInWithEmailAndPassword(
         email: String,

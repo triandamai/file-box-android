@@ -1,9 +1,9 @@
 package app.trian.filebox.di
 
-import app.trian.filebox.data.StorageRepository
-import app.trian.filebox.data.StorageRepositoryImpl
-import app.trian.filebox.data.UserRepository
-import app.trian.filebox.data.UserRepositoryImpl
+import app.trian.filebox.data.repository.StorageRepository
+import app.trian.filebox.data.repository.StorageRepositoryImpl
+import app.trian.filebox.data.repository.UserRepository
+import app.trian.filebox.data.repository.UserRepositoryImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -13,8 +13,8 @@ import dagger.hilt.components.SingletonComponent
 @InstallIn(SingletonComponent::class)
 interface RepositoryModule {
     @Binds
-    fun bindUserRepository(impl:UserRepositoryImpl):UserRepository
+    fun bindUserRepository(impl: UserRepositoryImpl): UserRepository
 
     @Binds
-    fun bindStorageRepository(impl:StorageRepositoryImpl):StorageRepository
+    fun bindStorageRepository(impl: StorageRepositoryImpl): StorageRepository
 }

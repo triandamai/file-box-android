@@ -6,6 +6,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import app.trian.filebox.feature.folder.routeFolder
 import app.trian.filebox.feature.home.routeHome
+import app.trian.filebox.feature.homeSend.HomeSend.routeHomeSend
 import app.trian.filebox.feature.profile.routeProfile
 import app.trian.filebox.feature.signin.routeSignIn
 import app.trian.filebox.feature.signup.routeSignUp
@@ -37,6 +38,10 @@ fun AppNavigation(
             appState = appState
         )
         routeProfile(
+            router = navController,
+            appState = appState
+        )
+        routeHomeSend(
             router = navController,
             appState = appState
         )

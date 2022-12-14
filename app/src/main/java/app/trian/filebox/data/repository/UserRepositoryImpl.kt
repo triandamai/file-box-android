@@ -1,4 +1,4 @@
-package app.trian.filebox.data
+package app.trian.filebox.data.repository
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore

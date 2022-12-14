@@ -69,6 +69,7 @@ dependencies {
         implementation(materialIconExtended)
         implementation(materialWindowSizeClass)
     }
+    implementation(Deps.AndroidX.Compose.composeRuntimeLiveData)
     with(Deps.Com.Google.Dagger){
         implementation(hiltAndroid)
         kapt(hiltAndroidCompiler)

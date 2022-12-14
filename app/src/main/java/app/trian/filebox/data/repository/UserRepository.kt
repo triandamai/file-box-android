@@ -1,4 +1,4 @@
-package app.trian.filebox.data
+package app.trian.filebox.data.repository
 
 import kotlinx.coroutines.flow.Flow
 
