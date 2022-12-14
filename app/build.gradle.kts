@@ -117,5 +117,6 @@ tasks.create<Copy>("installGitHook"){
         rename("pre-commit-$suffix","pre-commit")
     }
 
+    //make file executable
     fileMode = "775".toInt(8)
 }

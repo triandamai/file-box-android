@@ -1,47 +1,16 @@
-#!/bin/sh
-#
-# This hook is for Android project git repos.
-#
-# You can use git config variables to customize this hook.
-# -----------------------------------------------------------
-# Change hooks.lintTargetDirectory to point at a non . directory
-# Change hooks.lintArgs to add any custom lint arguments you prefer
+#!/usr/bin/env bash
+LC_ALL=C
 
-# Get custom info
-dirToLint=$(git config hooks.lintTargetDirectory)
-lintArgs=$(git config hooks.lintArgs)
-projectDir=$(git rev-parse --show-toplevel)
-lintReportPath="/lint-report.html"
+local_branch="$(git rev-parse --abbrev-ref HEAD)"
 
-# If user has not defined a preferred directory to lint against, make it .
-if [ -z "$dirToLint"]
-  then
-  dirToLint="."
-fi
+valid_branch_regex="^(main|feature|bugfix|improvement|library|prerelease|release|hotfix)\/[a-z0-9._-]+$"
 
-# Perform lint check
-echo "Performing pre-commit lint check of ""$dirToLint"
-./gradlew detekt --daemon
-detektStatus=$?
+message="There is something wrong with your branch name. Branch names in this project must adhere to this contract: $valid_branch_regex. Your commit will be rejected. You should rename your branch to a valid name and try again."
 
-lintStatus=1
-if [ $detektStatus -eq 0 ]
+if [[ ! $local_branch =~ $valid_branch_regex ]]
 then
-  echo "Android Detekt Success."
-  lintStatus=$?
-
-  if [ $lintStatus -ne 0 ]
-  then
-    echo "Android Lint failure, git push aborted."
-    echo "Open ${projectDir}${lintReportPath} in a browser to see Lint Report"
+    echo "$message"
     exit 1
-  fi
-else
-  echo "Android Detekt failure, git push aborted."
-  exit 1
 fi
 
-echo "LintStatus ${lintStatus}"
-echo "DetektStatus ${detektStatus}"
-
-exit $lintStatus
+exit 0
