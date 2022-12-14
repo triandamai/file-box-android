@@ -4,12 +4,12 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
-import app.trian.filebox.feature.folder.routeFolder
-import app.trian.filebox.feature.home.routeHome
+import app.trian.filebox.feature.folder.Folder.routeFolder
+import app.trian.filebox.feature.home.Home.routeHome
 import app.trian.filebox.feature.homeSend.HomeSend.routeHomeSend
-import app.trian.filebox.feature.profile.routeProfile
-import app.trian.filebox.feature.signin.routeSignIn
-import app.trian.filebox.feature.signup.routeSignUp
+import app.trian.filebox.feature.profile.Profile.routeProfile
+import app.trian.filebox.feature.signin.SignIn.routeSignIn
+import app.trian.filebox.feature.signup.SignUp.routeSignUp
 
 @Composable
 fun AppNavigation(

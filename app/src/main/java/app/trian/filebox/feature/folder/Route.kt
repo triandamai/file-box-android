@@ -15,33 +15,33 @@ import kotlinx.coroutines.launch
 
 object Folder {
     const val routeName = "folder"
-}
 
-fun NavHostController.navigateToDetailFolder(folderId:String)= with(this){
-    navigate(DetailFolder.getRouteName(folderId)){
-        launchSingleTop = true
+    private fun NavHostController.navigateToDetailFolder(folderId:String)= with(this){
+        navigate(DetailFolder.getRouteName(folderId)){
+            launchSingleTop = true
+        }
     }
-}
 
-fun NavGraphBuilder.routeFolder(
-    router: NavHostController,
-    appState: FileBoxState
-) {
-    composable(Folder.routeName) {
-        val viewModel = hiltViewModel<HomeViewModel>()
-        val scope = rememberCoroutineScope()
-        LaunchedEffect(key1 = appState.snackbarHostState, block = {
-            with(appState) {
-                addBottomBarListener(object : BottomBarListener<String> {
-                    override fun onItemClicked(data: String) {
-                        scope.launch {
-                            snackbarHostState.showSnackbar(data)
+    fun NavGraphBuilder.routeFolder(
+        router: NavHostController,
+        appState: FileBoxState
+    ) {
+        composable(routeName) {
+            val viewModel = hiltViewModel<HomeViewModel>()
+            val scope = rememberCoroutineScope()
+            LaunchedEffect(key1 = appState.snackbarHostState, block = {
+                with(appState) {
+                    addBottomBarListener(object : BottomBarListener<String> {
+                        override fun onItemClicked(data: String) {
+                            scope.launch {
+                                snackbarHostState.showSnackbar(data)
+                            }
                         }
-                    }
 
-                })
-            }
-        })
-        ScreenFolder()
+                    })
+                }
+            })
+            ScreenFolder()
+        }
     }
 }

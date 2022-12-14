@@ -22,75 +22,73 @@ import app.trian.filebox.feature.signup.SignUp
 
 object SignIn {
     const val routeName = "sign_in"
-}
 
-fun NavHostController.navigateToSignUp() {
-    this.navigate(SignUp.routeName) {
-        launchSingleTop = true
-    }
-}
-
-fun NavHostController.navigateToHome() {
-    this.navigate(HomeSend.routeName) {
-        launchSingleTop = true
-        popUpTo(SignIn.routeName) {
-            inclusive = true
+    private fun NavHostController.navigateToSignUp() {
+        this.navigate(SignUp.routeName) {
+            launchSingleTop = true
         }
     }
-}
 
-
-fun NavGraphBuilder.routeSignIn(
-    router: NavHostController,
-    appState: FileBoxState
-) {
-    composable(SignIn.routeName) {
-        val viewModel = hiltViewModel<SignInViewModel>()
-        var isLoading by remember {
-            mutableStateOf(false)
+    private fun NavHostController.navigateToHome() {
+        this.navigate(HomeSend.routeName) {
+            launchSingleTop = true
+            popUpTo(SignIn.routeName) {
+                inclusive = true
+            }
         }
-        val scope = rememberCoroutineScope()
+    }
 
-        val launcher = rememberLauncherForActivityResult(
-            contract = ActivityResultContracts.RequestMultiplePermissions(),
-            onResult = { data ->
-
+    fun NavGraphBuilder.routeSignIn(
+        router: NavHostController,
+        appState: FileBoxState
+    ) {
+        composable(routeName) {
+            val viewModel = hiltViewModel<SignInViewModel>()
+            var isLoading by remember {
+                mutableStateOf(false)
             }
-        )
+            val scope = rememberCoroutineScope()
 
-        val launcherManage = rememberLauncherForActivityResult(
-            contract = ActivityResultContracts.StartActivityForResult(),
-            onResult = { data ->
+            val launcher = rememberLauncherForActivityResult(
+                contract = ActivityResultContracts.RequestMultiplePermissions(),
+                onResult = { data ->
 
-            }
-        )
-        val ctx = LocalContext.current
+                }
+            )
 
+            val launcherManage = rememberLauncherForActivityResult(
+                contract = ActivityResultContracts.StartActivityForResult(),
+                onResult = { data ->
 
-        LaunchedEffect(key1 = Unit, block = {
-            with(ctx) {
-                checkPermissionManageStorage(
-                    openPermission = {
-                        launcher.launch(
-                            permissionReadWrite
-                        )
-                    },
-                    openIntent = {
-                        launcherManage.launch(it)
-                    }
-                )
-
-            }
-
-        })
+                }
+            )
+            val ctx = LocalContext.current
 
 
+            LaunchedEffect(key1 = Unit, block = {
+                with(ctx) {
+                    checkPermissionManageStorage(
+                        openPermission = {
+                            launcher.launch(
+                                permissionReadWrite
+                            )
+                        },
+                        openIntent = {
+                            launcherManage.launch(it)
+                        }
+                    )
 
-        ScreenSignIn(
-            goToSignUp = { router.navigateToSignUp() },
-            onSubmit = { email, password ->
-                isLoading = true
-                router.navigateToHome()
+                }
+
+            })
+
+
+
+            ScreenSignIn(
+                goToSignUp = { router.navigateToSignUp() },
+                onSubmit = { email, password ->
+                    isLoading = true
+                    router.navigateToHome()
 //                viewModel.signInWithEmailAndPassword(email, password){
 //                    success,message->
 //                    if(success){
@@ -101,7 +99,12 @@ fun NavGraphBuilder.routeSignIn(
 //                        }
 //                    }
 //                }
-            }
-        )
+                }
+            )
+        }
     }
 }
+
+
+
+

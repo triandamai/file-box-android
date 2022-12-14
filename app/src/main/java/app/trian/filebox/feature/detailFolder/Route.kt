@@ -16,7 +16,7 @@ object DetailFolder {
 
     fun routeName() = "$routeName/{$argKey}"
 
-    fun getArg()= listOf(
+    fun getArg() = listOf(
         navArgument(
             name = argKey,
             builder = {
@@ -25,22 +25,23 @@ object DetailFolder {
         )
     )
 
-    fun getRouteName(folderId:String) = routeName
+    fun getRouteName(folderId: String) = routeName
         .plus("/")
         .plus(folderId)
 
-}
-
-
-fun NavGraphBuilder.routeDetailFolder(
-    router: NavHostController,
-    appState: FileBoxState
-) {
-    composable(
-        DetailFolder.routeName(),
-        arguments = DetailFolder.getArg()
+    fun NavGraphBuilder.routeDetailFolder(
+        router: NavHostController,
+        appState: FileBoxState
     ) {
-        val viewModel = hiltViewModel<DetailFolderViewModel>()
-        ScreenHome()
+        composable(
+            routeName(),
+            arguments = getArg()
+        ) {
+            val viewModel = hiltViewModel<DetailFolderViewModel>()
+            ScreenHome()
+        }
     }
+
 }
+
+

@@ -29,18 +29,19 @@ object DetailFile {
     fun getRouteName(folderId: String) = routeName
         .plus("/")
         .plus(folderId)
-}
 
-
-fun NavGraphBuilder.routeDetailFile(
-    router: NavHostController,
-    appState: FileBoxState
-) {
-    composable(
-        DetailFile.routeName(),
-        arguments = DetailFolder.getArg()
+    fun NavGraphBuilder.routeDetailFile(
+        router: NavHostController,
+        appState: FileBoxState
     ) {
-        val viewModel = hiltViewModel<DetailFileViewModel>()
-        ScreenHome()
+        composable(
+            routeName(),
+            arguments = getArg()
+        ) {
+            val viewModel = hiltViewModel<DetailFileViewModel>()
+            ScreenHome()
+        }
     }
 }
+
+
