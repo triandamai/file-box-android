@@ -10,19 +10,20 @@ import app.trian.filebox.FileBoxState
 
 object Home {
     const val routeName = "home"
-}
 
-
-fun NavGraphBuilder.routeHome(
-    router: NavHostController,
-    appState: FileBoxState
-) {
-    composable(
-        Home.routeName,
+    fun NavGraphBuilder.routeHome(
+        router: NavHostController,
+        appState: FileBoxState
     ) {
-        val viewModel = hiltViewModel<HomeViewModel>()
-        val scope = rememberCoroutineScope()
+        composable(
+            routeName,
+        ) {
+            val viewModel = hiltViewModel<HomeViewModel>()
+            val scope = rememberCoroutineScope()
 
-        ScreenHome()
+            ScreenHome()
+        }
     }
 }
+
+

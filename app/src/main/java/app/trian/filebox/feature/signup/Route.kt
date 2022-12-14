@@ -12,35 +12,36 @@ import kotlinx.coroutines.launch
 
 object SignUp{
     const val routeName = "sign_up"
-}
-fun NavHostController.navigateToSignIn(){
-    this.navigate(SignIn.routeName){
-        launchSingleTop = true
-        popUpTo(SignUp.routeName){
-            inclusive = true
+
+    private fun NavHostController.navigateToSignIn(){
+        this.navigate(SignIn.routeName){
+            launchSingleTop = true
+            popUpTo(routeName){
+                inclusive = true
+            }
         }
     }
-}
 
-fun NavGraphBuilder.routeSignUp(
-    router: NavHostController,
-    appState: FileBoxState
-) {
-    composable(SignUp.routeName){
-        val viewModel = hiltViewModel<SignUpViewModel>()
-        val scope = rememberCoroutineScope()
+    fun NavGraphBuilder.routeSignUp(
+        router: NavHostController,
+        appState: FileBoxState
+    ) {
+        composable(routeName){
+            val viewModel = hiltViewModel<SignUpViewModel>()
+            val scope = rememberCoroutineScope()
 
-        appState.addBottomBarListener(object : BottomBarListener<String> {
-            override fun onItemClicked(data: String) {
-                scope.launch {
-                    appState.snackbarHostState.showSnackbar("Sign up -> $data")
+            appState.addBottomBarListener(object : BottomBarListener<String> {
+                override fun onItemClicked(data: String) {
+                    scope.launch {
+                        appState.snackbarHostState.showSnackbar("Sign up -> $data")
+                    }
                 }
-            }
 
-        })
-        ScreenSignUp(
-            goToSingIn = {router.navigateToSignIn()},
-            onSubmit = {_,_-> }
-        )
+            })
+            ScreenSignUp(
+                goToSingIn = {router.navigateToSignIn()},
+                onSubmit = {_,_-> }
+            )
+        }
     }
 }

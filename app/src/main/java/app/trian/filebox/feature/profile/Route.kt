@@ -8,16 +8,17 @@ import app.trian.filebox.FileBoxState
 
 object Profile {
     const val routeName = "profile"
-}
 
-
-fun NavGraphBuilder.routeProfile(
-    router: NavHostController,
-    appState: FileBoxState
-) {
-    composable(Profile.routeName) {
+    fun NavGraphBuilder.routeProfile(
+        router: NavHostController,
+        appState: FileBoxState
+    ) {
+        composable(routeName) {
 //        val viewModel = hiltViewModel<ProfileViewModel>()
 //        val scope = rememberCoroutineScope()
-        ScreenProfile()
+            ScreenProfile()
+        }
     }
 }
+
+

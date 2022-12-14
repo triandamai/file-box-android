@@ -11,8 +11,9 @@ import dagger.hilt.android.HiltAndroidApp
 import javax.inject.Inject
 
 @HiltAndroidApp
-class FileBoxApplication:Application(), Configuration.Provider {
-    @Inject lateinit var workerFactory: HiltWorkerFactory
+class FileBoxApplication : Application(), Configuration.Provider {
+    @Inject
+    lateinit var workerFactory: HiltWorkerFactory
 
     override fun onCreate() {
         super.onCreate()

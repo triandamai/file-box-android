@@ -91,7 +91,7 @@ class MainActivity : ComponentActivity() {
                                 currentRoute = appState.activeRoute,
                                 onItemClick = {
                                     scope.launch {
-                                        appState.onBottomBarClick("Route -> "+it)
+                                        appState.onBottomBarClick("Route -> " + it)
                                     }
                                     router.navigate(it) {
                                         launchSingleTop = true
