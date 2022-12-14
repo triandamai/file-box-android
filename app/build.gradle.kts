@@ -111,5 +111,11 @@ tasks.create<Copy>("installGitHook"){
         rename("pre-push-$suffix","pre-push")
     }
 
+    copy{
+        from(File(rootProject.rootDir,"scripts/pre-commit-$suffix"))
+        into{ File(rootProject.rootDir,".git/hooks") }
+        rename("pre-commit-$suffix","pre-commit")
+    }
+
     fileMode = "775".toInt(8)
 }
