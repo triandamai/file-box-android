@@ -1,9 +1,7 @@
 package app.trian.filebox.feature.signin
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import app.trian.filebox.data.repository.StorageRepository
 import app.trian.filebox.data.repository.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collect

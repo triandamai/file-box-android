@@ -15,7 +15,6 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import app.trian.filebox.FileBoxState
 import app.trian.filebox.composables.checkPermissionManageStorage
-import app.trian.filebox.composables.isGranted
 import app.trian.filebox.composables.permissionReadWrite
 import app.trian.filebox.feature.homeSend.HomeSend
 import app.trian.filebox.feature.signup.SignUp
