@@ -6,12 +6,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Tab
-import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import app.trian.filebox.BaseContainer
 import app.trian.filebox.components.CardItemFile
@@ -24,7 +21,7 @@ import app.trian.filebox.data.models.FileModel
 internal fun ScreenHomeSend(
     modifier: Modifier = Modifier,
     allFiles: Map<String, List<FileModel>> = mapOf(),
-    title:List<String> = listOf()
+    title: List<String> = listOf()
 ) {
     LazyColumn(
         modifier = modifier.fillMaxSize(),
@@ -61,7 +58,7 @@ internal fun ScreenHomeSend(
 fun PreviewScreenHomeSend() {
     BaseContainer {
         ScreenHomeSend(
-            title = listOf("All","Images","Audio","Video","Other")
+            title = listOf("All", "Images", "Audio", "Video", "Other")
         )
     }
 }
