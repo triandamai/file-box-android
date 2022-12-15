@@ -32,7 +32,7 @@ object SignIn {
     private fun NavHostController.navigateToHome() {
         this.navigate(HomeSend.routeName) {
             launchSingleTop = true
-            popUpTo(SignIn.routeName) {
+            popUpTo(routeName) {
                 inclusive = true
             }
         }

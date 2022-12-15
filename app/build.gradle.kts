@@ -87,6 +87,13 @@ dependencies {
         implementation(firebaseStorage)
     }
     implementation(Deps.Org.Jetbrains.Kotlinx.kotlinxCoroutineAndroid)
+    with(Deps.AndroidX.Room){
+        implementation(roomRuntime)
+        kapt(roomCompiler)
+        implementation(roomKtx)
+        implementation(roomPaging)
+        testImplementation(roomTesting)
+    }
 
     testImplementation(Deps.Junit.jUnit)
     androidTestImplementation(Deps.AndroidX.Test.extJunit)

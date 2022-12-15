@@ -5,6 +5,7 @@ import android.content.ContentUris
 import android.content.Context
 import android.os.Build
 import android.provider.MediaStore
+import android.util.Log
 import android.util.Size
 import app.trian.filebox.data.models.FileModel
 
@@ -13,6 +14,8 @@ class StorageDataSource {
     // in android 10 or higher MediaStore.Files. have restriction(scoped storage) only  show vide,image , and video
     @SuppressLint("InlinedApi")
     suspend fun getAllFiles(appContext: Context): List<FileModel> {
+
+
         val data = mutableListOf<FileModel>()
         val uri = MediaStore.Files.getContentUri(MediaStore.VOLUME_EXTERNAL)
 
@@ -45,6 +48,7 @@ class StorageDataSource {
 
         cursor?.use {
             it.let {
+
                 val idColumn = it.getColumnIndexOrThrow(MediaStore.Files.FileColumns._ID)
                 val nameColumn = it.getColumnIndexOrThrow(MediaStore.Files.FileColumns.DISPLAY_NAME)
                 val mimeColumn = it.getColumnIndexOrThrow(MediaStore.Files.FileColumns.MIME_TYPE)
@@ -53,7 +57,7 @@ class StorageDataSource {
                 val dateColumn = it.getColumnIndexOrThrow(MediaStore.Images.Media.DATE_ADDED)
 
                 while (it.moveToNext()) {
-
+                    Log.e("sasa3","sas")
                     val id = it.getLong(idColumn)
                     val name = it.getString(nameColumn)
                     val mime = it.getString(mimeColumn)

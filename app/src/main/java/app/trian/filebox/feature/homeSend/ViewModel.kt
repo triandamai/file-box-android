@@ -1,5 +1,6 @@
 package app.trian.filebox.feature.homeSend
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -27,7 +28,9 @@ class HomeSendViewModel @Inject constructor(
 
     fun getAllFiles() = with(viewModelScope) {
         launch {
+
             getAllFilesUseCase().onEach {
+                Log.e("sasa",it.toString())
                     _allFiles.postValue(it)
                 }.collect()
         }

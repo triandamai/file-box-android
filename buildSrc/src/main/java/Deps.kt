@@ -47,6 +47,14 @@ object Deps {
             private const val nav_version = "2.5.3"
             val navigationCompose by lazy {"androidx.navigation:navigation-compose:$nav_version"}
         }
+        object Room{
+            private const val roomVersion = "2.4.3"
+            val roomRuntime by lazy { "androidx.room:room-runtime:$roomVersion" }
+            val roomCompiler by lazy { "androidx.room:room-compiler:$roomVersion" }
+            val roomKtx by lazy { "androidx.room:room-ktx:$roomVersion" }
+            val roomTesting by lazy { "androidx.room:room-testing:$roomVersion" }
+            val roomPaging by lazy { "androidx.room:room-paging:$roomVersion" }
+        }
         object Core{
             val coreKtx by lazy { "androidx.core:core-ktx:1.7.0" }
         }
