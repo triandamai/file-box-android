@@ -1,6 +1,5 @@
 package app.trian.filebox.data.repository
 
-import android.annotation.SuppressLint
 import android.content.Context
 import app.trian.filebox.data.datasource.StorageDataSource
 import app.trian.filebox.data.models.FileModel
@@ -23,5 +22,6 @@ class StorageRepositoryImpl @Inject constructor(
 //    override suspend fun getAllFiles(): Map<String, List<FileModel>> =
 //        StorageDataSource().getAllFiles(appContext).groupBy { it.path }
 
-    override suspend fun getImages(): Flow<List<FileModel>> = StorageDataSource().getImages(appContext)
+    override suspend fun getImages(): Flow<List<FileModel>> =
+        StorageDataSource().getImages(appContext)
 }

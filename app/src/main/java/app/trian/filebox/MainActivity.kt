@@ -8,7 +8,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.navigation.compose.rememberNavController
 import app.trian.filebox.components.FileBoxBottomNavigation
@@ -18,7 +17,6 @@ import app.trian.filebox.feature.homeSend.HomeSend
 import app.trian.filebox.feature.signin.SignIn
 import app.trian.filebox.feature.signup.SignUp
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {

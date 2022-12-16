@@ -22,17 +22,13 @@ class HomeSendViewModel @Inject constructor(
     val allFiles: LiveData<Map<String, List<FileModel>>> get() = _allFiles
 
 
-    init {
-
-    }
-
     fun getAllFiles() = with(viewModelScope) {
         launch {
 
             getAllFilesUseCase().onEach {
-                Log.e("sasa",it.toString())
-                    _allFiles.postValue(it)
-                }.collect()
+                Log.e("sasa", it.toString())
+                _allFiles.postValue(it)
+            }.collect()
         }
     }
 

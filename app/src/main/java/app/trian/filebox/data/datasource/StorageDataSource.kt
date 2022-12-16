@@ -5,7 +5,6 @@ import android.content.ContentUris
 import android.content.Context
 import android.os.Build
 import android.provider.MediaStore
-import android.util.Log
 import android.util.Size
 import app.trian.filebox.data.models.FileModel
 import kotlinx.coroutines.Dispatchers
@@ -189,6 +188,6 @@ class StorageDataSource {
 
             emit(data)
         }
-        }.flowOn(Dispatchers.IO)
+    }.flowOn(Dispatchers.IO)
 
-    }
+}
