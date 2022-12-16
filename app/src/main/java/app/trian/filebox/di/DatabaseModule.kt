@@ -20,4 +20,7 @@ object DatabaseModule {
         FileBoxDatabase::class.java,
         FileBoxDatabase.dbName
     ).build()
+
+    @Provides
+    fun provideImagesDao(db:FileBoxDatabase) = db.audioDao()
 }

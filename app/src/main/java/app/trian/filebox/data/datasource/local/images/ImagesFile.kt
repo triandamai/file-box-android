@@ -5,12 +5,11 @@ import androidx.room.PrimaryKey
 
 @Entity
 data class ImagesFile(
-    @PrimaryKey val uid:Long,
-    val firstName:String,
-    var name:String,
-    var size:String,
-    var date:String,
-    var uri: String,
-    var path:String,
-    var mime:String
+    @PrimaryKey val uid:Long=0,
+    var name:String="",
+    var size:String="",
+    var date:String="",
+    var uri: String="",
+    var path:String="",
+    var mime:String=""
 )

@@ -52,9 +52,9 @@ fun BaseContainer(
                         ) {
                             FileBoxNavigationRail(
                                 items = listOf(
-                                    FileBoxBottomNavigation.Home(),
-                                    FileBoxBottomNavigation.Folder(),
-                                    FileBoxBottomNavigation.Profile()
+                                    FileBoxBottomNavigation.Send(),
+                                    FileBoxBottomNavigation.Receive(),
+                                    FileBoxBottomNavigation.History()
                                 ),
                                 currentRoute = appState.activeRoute,
                                 onItemClick = {

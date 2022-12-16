@@ -7,7 +7,6 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import app.trian.filebox.FileBoxState
-import app.trian.filebox.feature.home.ScreenHome
 
 
 object DetailFile {
@@ -25,22 +24,22 @@ object DetailFile {
         )
     )
 
-    fun getRouteName(folderId: String) = routeName
-        .plus("/")
-        .plus(folderId)
 
-    fun NavGraphBuilder.routeDetailFile(
-        router: NavHostController,
-        appState: FileBoxState
-    ) {
-        composable(
-            routeName(),
-            arguments = getArg()
-        ) {
-            val viewModel = hiltViewModel<DetailFileViewModel>()
-            ScreenHome()
-        }
-    }
 }
 
+fun getRouteName(folderId: String) = DetailFile.routeName
+    .plus("/")
+    .plus(folderId)
 
+fun NavGraphBuilder.routeDetailFile(
+    router: NavHostController,
+    appState: FileBoxState
+) {
+    composable(
+        DetailFile.routeName(),
+        arguments = DetailFile.getArg()
+    ) {
+        val viewModel = hiltViewModel<DetailFileViewModel>()
+        ScreenDetailFile()
+    }
+}

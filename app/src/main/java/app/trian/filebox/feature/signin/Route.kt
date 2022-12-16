@@ -17,19 +17,21 @@ import app.trian.filebox.FileBoxState
 import app.trian.filebox.composables.checkPermissionManageStorage
 import app.trian.filebox.composables.permissionReadWrite
 import app.trian.filebox.feature.homeSend.HomeSend
+import app.trian.filebox.feature.signin.SignIn.navigateToHome
+import app.trian.filebox.feature.signin.SignIn.navigateToSignUp
 import app.trian.filebox.feature.signup.SignUp
 
 
 object SignIn {
     const val routeName = "sign_in"
 
-    private fun NavHostController.navigateToSignUp() {
+    fun NavHostController.navigateToSignUp() {
         this.navigate(SignUp.routeName) {
             launchSingleTop = true
         }
     }
 
-    private fun NavHostController.navigateToHome() {
+    fun NavHostController.navigateToHome() {
         this.navigate(HomeSend.routeName) {
             launchSingleTop = true
             popUpTo(routeName) {
@@ -38,57 +40,60 @@ object SignIn {
         }
     }
 
-    fun NavGraphBuilder.routeSignIn(
-        router: NavHostController,
-        appState: FileBoxState
-    ) {
-        composable(routeName) {
-            val viewModel = hiltViewModel<SignInViewModel>()
-            var isLoading by remember {
-                mutableStateOf(false)
+
+}
+
+fun NavGraphBuilder.routeSignIn(
+    router: NavHostController,
+    appState: FileBoxState
+) {
+    composable(SignIn.routeName) {
+        val viewModel = hiltViewModel<SignInViewModel>()
+        var isLoading by remember {
+            mutableStateOf(false)
+        }
+        val scope = rememberCoroutineScope()
+
+        val launcher = rememberLauncherForActivityResult(
+            contract = ActivityResultContracts.RequestMultiplePermissions(),
+            onResult = { data ->
+
             }
-            val scope = rememberCoroutineScope()
+        )
 
-            val launcher = rememberLauncherForActivityResult(
-                contract = ActivityResultContracts.RequestMultiplePermissions(),
-                onResult = { data ->
+        val launcherManage = rememberLauncherForActivityResult(
+            contract = ActivityResultContracts.StartActivityForResult(),
+            onResult = { data ->
 
-                }
-            )
-
-            val launcherManage = rememberLauncherForActivityResult(
-                contract = ActivityResultContracts.StartActivityForResult(),
-                onResult = { data ->
-
-                }
-            )
-            val ctx = LocalContext.current
+            }
+        )
+        val ctx = LocalContext.current
 
 
-            LaunchedEffect(key1 = Unit, block = {
-                with(ctx) {
-                    checkPermissionManageStorage(
-                        openPermission = {
-                            launcher.launch(
-                                permissionReadWrite
-                            )
-                        },
-                        openIntent = {
-                            launcherManage.launch(it)
-                        }
-                    )
+        LaunchedEffect(key1 = Unit, block = {
+            with(ctx) {
+                checkPermissionManageStorage(
+                    openPermission = {
+                        launcher.launch(
+                            permissionReadWrite
+                        )
+                    },
+                    openIntent = {
+                        launcherManage.launch(it)
+                    }
+                )
 
-                }
+            }
 
-            })
+        })
 
 
 
-            ScreenSignIn(
-                goToSignUp = { router.navigateToSignUp() },
-                onSubmit = { email, password ->
-                    isLoading = true
-                    router.navigateToHome()
+        ScreenSignIn(
+            goToSignUp = { router.navigateToSignUp() },
+            onSubmit = { email, password ->
+                isLoading = true
+                router.navigateToHome()
 //                viewModel.signInWithEmailAndPassword(email, password){
 //                    success,message->
 //                    if(success){
@@ -99,12 +104,9 @@ object SignIn {
 //                        }
 //                    }
 //                }
-                }
-            )
-        }
+            }
+        )
     }
 }
-
-
 
 
