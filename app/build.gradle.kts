@@ -69,6 +69,10 @@ dependencies {
         implementation(materialIconExtended)
         implementation(materialWindowSizeClass)
     }
+    with(Deps.Com.Google.Accompanist){
+        implementation(pager)
+        implementation(pagerIndicator)
+    }
     implementation(Deps.AndroidX.Compose.composeRuntimeLiveData)
     with(Deps.Com.Google.Dagger){
         implementation(hiltAndroid)
@@ -79,6 +83,7 @@ dependencies {
     implementation(Deps.AndroidX.Work.workRuntime)
     implementation(Deps.AndroidX.Hilt.hiltWork)
     kapt(Deps.AndroidX.Hilt.hiltCompiler)
+
     with(Deps.Com.Google.Firebase){
         implementation(platform(firebaseBom))
         implementation(firebaseAnalytics)
@@ -87,6 +92,14 @@ dependencies {
         implementation(firebaseStorage)
     }
     implementation(Deps.Org.Jetbrains.Kotlinx.kotlinxCoroutineAndroid)
+    with(Deps.AndroidX.Room){
+        implementation(roomRuntime)
+        kapt(roomCompiler)
+        implementation(roomKtx)
+        implementation(roomPaging)
+        testImplementation(roomTesting)
+    }
+
 
     testImplementation(Deps.Junit.jUnit)
     androidTestImplementation(Deps.AndroidX.Test.extJunit)

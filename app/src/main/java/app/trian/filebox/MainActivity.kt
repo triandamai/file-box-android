@@ -8,17 +8,15 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.navigation.compose.rememberNavController
 import app.trian.filebox.components.FileBoxBottomNavigation
-import app.trian.filebox.feature.folder.Folder
-import app.trian.filebox.feature.home.Home
-import app.trian.filebox.feature.profile.Profile
+import app.trian.filebox.feature.homeHistory.HomeHistory
+import app.trian.filebox.feature.homeReceive.HomeReceive
+import app.trian.filebox.feature.homeSend.HomeSend
 import app.trian.filebox.feature.signin.SignIn
 import app.trian.filebox.feature.signup.SignUp
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -30,18 +28,15 @@ class MainActivity : ComponentActivity() {
             val router = rememberNavController()
             val appState = rememberFileBoxApplication()
             val config = LocalConfiguration.current
-            val scope = rememberCoroutineScope()
-
-
 
             router.addOnDestinationChangedListener { _, destination, _ ->
                 with(appState) {
                     setCurrentRoute(destination.route.orEmpty())
                     when (destination.route) {
                         in listOf(
-                            Home.routeName,
-                            Folder.routeName,
-                            Profile.routeName
+                            HomeSend.routeName,
+                            HomeReceive.routeName,
+                            HomeHistory.routeName
                         ) -> {
                             if (config.orientation == Configuration.ORIENTATION_LANDSCAPE) {
                                 showNavRail()
@@ -84,15 +79,12 @@ class MainActivity : ComponentActivity() {
                         BottomBarType.BASIC -> {
                             FileBoxBottomNavigation(
                                 items = listOf(
-                                    FileBoxBottomNavigation.Home(),
-                                    FileBoxBottomNavigation.Folder(),
-                                    FileBoxBottomNavigation.Profile()
+                                    FileBoxBottomNavigation.Send(),
+                                    FileBoxBottomNavigation.Receive(),
+                                    FileBoxBottomNavigation.History()
                                 ),
                                 currentRoute = appState.activeRoute,
                                 onItemClick = {
-                                    scope.launch {
-                                        appState.onBottomBarClick("Route -> " + it)
-                                    }
                                     router.navigate(it) {
                                         launchSingleTop = true
                                     }

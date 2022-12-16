@@ -21,3 +21,12 @@
     +- name
     +- uid
 ```
+
+Menu
+
+```text
+Send
+Receive
+History
+My Link
+```

@@ -4,12 +4,11 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
-import app.trian.filebox.feature.folder.Folder.routeFolder
-import app.trian.filebox.feature.home.Home.routeHome
-import app.trian.filebox.feature.homeSend.HomeSend.routeHomeSend
-import app.trian.filebox.feature.profile.Profile.routeProfile
-import app.trian.filebox.feature.signin.SignIn.routeSignIn
-import app.trian.filebox.feature.signup.SignUp.routeSignUp
+import app.trian.filebox.feature.homeHistory.routeHomeHistory
+import app.trian.filebox.feature.homeReceive.routeHomeReceive
+import app.trian.filebox.feature.homeSend.routeHomeSend
+import app.trian.filebox.feature.signin.routeSignIn
+import app.trian.filebox.feature.signup.routeSignUp
 
 @Composable
 fun AppNavigation(
@@ -29,19 +28,15 @@ fun AppNavigation(
             router = navController,
             appState = appState
         )
-        routeHome(
-            router = navController,
-            appState = appState
-        )
-        routeFolder(
-            router = navController,
-            appState = appState
-        )
-        routeProfile(
-            router = navController,
-            appState = appState
-        )
         routeHomeSend(
+            router = navController,
+            appState = appState
+        )
+        routeHomeReceive(
+            router = navController,
+            appState = appState
+        )
+        routeHomeHistory(
             router = navController,
             appState = appState
         )

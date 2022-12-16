@@ -1,4 +1,4 @@
-package app.trian.filebox.feature.homeSend
+package app.trian.filebox.feature.homeReceive
 
 import android.util.Log
 import androidx.lifecycle.LiveData
@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeSendViewModel @Inject constructor(
+class HomeReceiveViewModel @Inject constructor(
     private val getAllFilesUseCase: GetAllFilesUseCase
 ) : ViewModel() {
 
@@ -22,13 +22,17 @@ class HomeSendViewModel @Inject constructor(
     val allFiles: LiveData<Map<String, List<FileModel>>> get() = _allFiles
 
 
+    init {
+        getAllFiles()
+    }
+
     fun getAllFiles() = with(viewModelScope) {
         launch {
 
             getAllFilesUseCase().onEach {
-                Log.e("sasa", it.toString())
-                _allFiles.postValue(it)
-            }.collect()
+                Log.e("sasa",it.toString())
+                    _allFiles.postValue(it)
+                }.collect()
         }
     }
 

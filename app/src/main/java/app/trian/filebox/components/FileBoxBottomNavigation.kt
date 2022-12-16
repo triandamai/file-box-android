@@ -7,9 +7,9 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Folder
+import androidx.compose.material.icons.outlined.Download
+import androidx.compose.material.icons.outlined.History
 import androidx.compose.material.icons.outlined.Home
-import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material.icons.outlined.Upload
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.FloatingActionButton
@@ -30,18 +30,20 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import app.trian.filebox.BaseContainer
-import app.trian.filebox.feature.home.Home
+import app.trian.filebox.feature.homeHistory.HomeHistory
+import app.trian.filebox.feature.homeReceive.HomeReceive
+import app.trian.filebox.feature.homeSend.HomeSend
+import app.trian.filebox.feature.homeSend.HomeSend.routeName
 
 @Composable
 fun FileBoxBottomNavigation(
     items: List<FileBoxBottomNavigation> = listOf(),
-    currentRoute: String = Home.routeName,
+    currentRoute: String = routeName,
     onItemClick: (String) -> Unit = {}
 ) {
     NavigationBar(containerColor = MaterialTheme.colorScheme.surface) {
         items.forEach {
-            NavigationBarItem(
-                selected = currentRoute == it.routeName,
+            NavigationBarItem(selected = currentRoute == it.routeName,
                 onClick = { onItemClick(it.routeName) },
                 icon = {
                     Icon(
@@ -50,8 +52,7 @@ fun FileBoxBottomNavigation(
                         tint = if (currentRoute == it.routeName) MaterialTheme.colorScheme.primary
                         else MaterialTheme.colorScheme.tertiary
                     )
-                }
-            )
+                })
         }
     }
 
@@ -60,15 +61,14 @@ fun FileBoxBottomNavigation(
 @Composable
 fun FileBoxNavigationRail(
     items: List<FileBoxBottomNavigation> = listOf(),
-    currentRoute: String = Home.routeName,
+    currentRoute: String = routeName,
     onItemClick: (String) -> Unit = {}
 ) {
     NavigationRail(
         containerColor = MaterialTheme.colorScheme.surface
     ) {
         items.forEach {
-            NavigationRailItem(
-                selected = it.routeName == currentRoute,
+            NavigationRailItem(selected = it.routeName == currentRoute,
                 onClick = { onItemClick(it.routeName) },
                 icon = {
                     Icon(
@@ -85,99 +85,80 @@ fun FileBoxNavigationRail(
 @Composable
 fun FileBoxBottomBar(
     items: List<FileBoxBottomNavigation> = listOf(),
-    currentRoute: String = Home.routeName,
+    currentRoute: String = routeName,
     onItemClick: (String) -> Unit = {},
     onFabClick: () -> Unit = {}
 ) {
-    BottomAppBar(
-        containerColor = MaterialTheme.colorScheme.surface,
-        actions = {
-            items.forEach {
-                IconButton(onClick = { onItemClick(it.routeName) }) {
-                    Icon(
-                        it.icon,
-                        contentDescription = "Menu ${it.name}",
-                        tint = if (currentRoute == it.routeName) MaterialTheme.colorScheme.primary
-                        else MaterialTheme.colorScheme.tertiary
-                    )
-                }
-            }
-        },
-        floatingActionButton = {
-            FloatingActionButton(
-                onClick = onFabClick,
-                elevation = FloatingActionButtonDefaults.loweredElevation(
-                    defaultElevation = 0.dp
-                )
-            ) {
+    BottomAppBar(containerColor = MaterialTheme.colorScheme.surface, actions = {
+        items.forEach {
+            IconButton(onClick = { onItemClick(it.routeName) }) {
                 Icon(
-                    Icons.Outlined.Upload,
-                    contentDescription = "Upload"
+                    it.icon,
+                    contentDescription = "Menu ${it.name}",
+                    tint = if (currentRoute == it.routeName) MaterialTheme.colorScheme.primary
+                    else MaterialTheme.colorScheme.tertiary
                 )
             }
         }
-    )
+    }, floatingActionButton = {
+        FloatingActionButton(
+            onClick = onFabClick, elevation = FloatingActionButtonDefaults.loweredElevation(
+                defaultElevation = 0.dp
+            )
+        ) {
+            Icon(
+                Icons.Outlined.Upload, contentDescription = "Upload"
+            )
+        }
+    })
 }
 
 sealed class FileBoxBottomNavigation(
-    var routeName: String = "",
-    var name: String = "",
-    var icon: ImageVector = Icons.Outlined.Home
+    var routeName: String = "", var name: String = "", var icon: ImageVector = Icons.Outlined.Home
 ) {
-    class Home() : FileBoxBottomNavigation(
-        routeName = app.trian.filebox.feature.home.Home.routeName,
-        name = "Home",
-        icon = Icons.Outlined.Home
+    class Send() : FileBoxBottomNavigation(
+        routeName = HomeSend.routeName, name = "Send", icon = Icons.Outlined.Upload
     )
 
-    class Folder() : FileBoxBottomNavigation(
-        routeName = app.trian.filebox.feature.folder.Folder.routeName,
-        name = "Folder",
-        icon = Icons.Outlined.Folder
+    class Receive() : FileBoxBottomNavigation(
+        routeName = HomeReceive.routeName, name = "Receive", icon = Icons.Outlined.Download
     )
 
-    class Profile() : FileBoxBottomNavigation(
-        routeName = app.trian.filebox.feature.profile.Profile.routeName,
-        name = "Profile",
-        icon = Icons.Outlined.Person
+    class History() : FileBoxBottomNavigation(
+        routeName = HomeHistory.routeName, name = "History", icon = Icons.Outlined.History
     )
 }
 
 @Preview
 @Composable
 fun PreviewBottomAppBarNav() {
-    BaseContainer(
-        bottomBar = {
-            FileBoxBottomBar(
-                items = listOf(
-                    FileBoxBottomNavigation.Home(),
-                    FileBoxBottomNavigation.Folder(),
-                    FileBoxBottomNavigation.Profile()
-                )
+    BaseContainer(bottomBar = {
+        FileBoxBottomBar(
+            items = listOf(
+                FileBoxBottomNavigation.Send(),
+                FileBoxBottomNavigation.Receive(),
+                FileBoxBottomNavigation.History()
             )
-        }
-    )
+        )
+    })
 }
 
 @Preview
 @Composable
 fun PreviewBottomNavigation() {
-    BaseContainer(
-        bottomBar = {
-            FileBoxBottomNavigation(
-                items = listOf(
-                    FileBoxBottomNavigation.Home(),
-                    FileBoxBottomNavigation.Folder(),
-                    FileBoxBottomNavigation.Profile()
-                )
+    BaseContainer(bottomBar = {
+        FileBoxBottomNavigation(
+            items = listOf(
+                FileBoxBottomNavigation.Send(),
+                FileBoxBottomNavigation.Receive(),
+                FileBoxBottomNavigation.History()
             )
-        }
-    )
+        )
+    })
 }
 
 @Preview(
-    widthDp = 700,
-    heightDp = 400
+    widthDp = 700, heightDp = 400
 )
 @Composable
 fun PreviewBottomNavigationRail() {
@@ -185,9 +166,9 @@ fun PreviewBottomNavigationRail() {
         Row(modifier = Modifier.fillMaxSize()) {
             FileBoxNavigationRail(
                 items = listOf(
-                    FileBoxBottomNavigation.Home(),
-                    FileBoxBottomNavigation.Folder(),
-                    FileBoxBottomNavigation.Profile()
+                    FileBoxBottomNavigation.Send(),
+                    FileBoxBottomNavigation.Receive(),
+                    FileBoxBottomNavigation.History()
                 )
             )
             Column(

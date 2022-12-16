@@ -4,8 +4,9 @@ import app.trian.filebox.data.repository.StorageRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import javax.inject.Inject
 
-class GetAllFilesUseCase(
+class GetAllFilesUseCase @Inject constructor(
     private val storageRepository: StorageRepository
 ) {
 
