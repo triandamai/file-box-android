@@ -17,19 +17,20 @@ class GetImagesUseCase @Inject constructor(
 
     suspend operator fun invoke() = channelFlow {
         storageRepository.getImages().onEach {
-            imagesDao.insertImages(
-                *it.map { f ->
-                    ImagesFile(
-                        uid = f.id,
-                        name = f.name,
-                        size = f.size,
-                        date = f.date,
-                        uri = f.uri?.path.toString(),
-                        path = f.path,
-                        mime = f.mime
+            val convert = (it.map { f ->
+                ImagesFile(
+                    uid = f.id,
+                    name = f.name,
+                    size = f.size,
+                    date = f.date,
+                    uri = f.uri?.path.toString(),
+                    path = f.path,
+                    mime = f.mime
 
-                    )
-                }.toTypedArray()
+                )
+            })
+            imagesDao.insertImages(
+                *convert.toTypedArray()
             )
             send(it)
         }.collect()
