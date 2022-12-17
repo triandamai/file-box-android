@@ -6,10 +6,10 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 
 @Dao
-interface ImagesDao {
+interface ImageDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertImages(vararg images: ImagesFile)
+    suspend fun insertImages(vararg images: ImageFile)
 
     @Query("SELECT * FROM images_file")
-    fun getAll(): List<ImagesFile>
+    fun getAll(): List<ImageFile>
 }

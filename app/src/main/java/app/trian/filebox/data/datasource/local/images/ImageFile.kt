@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey
 @Entity(
     tableName = "images_file"
 )
-data class ImagesFile(
+data class ImageFile(
     @PrimaryKey
     @ColumnInfo
     val uid:Long=0,

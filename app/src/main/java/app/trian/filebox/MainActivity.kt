@@ -19,6 +19,7 @@ import app.trian.filebox.feature.homeSend.HomeSend
 import app.trian.filebox.feature.signin.SignIn
 import app.trian.filebox.feature.signup.SignUp
 import app.trian.filebox.worker.AudiosSyncWorker
+import app.trian.filebox.worker.DocumentsSyncWorker
 import app.trian.filebox.worker.ImagesSyncWorker
 import app.trian.filebox.worker.VideosSyncWorker
 import dagger.hilt.android.AndroidEntryPoint
@@ -125,12 +126,16 @@ class MainActivity : ComponentActivity() {
             .build()
         val audio = OneTimeWorkRequestBuilder<AudiosSyncWorker>()
             .build()
+        val document = OneTimeWorkRequestBuilder<DocumentsSyncWorker>()
+            .build()
+
         WorkManager.getInstance(this)
             .beginWith(
                 listOf(
                     images,
                     videos,
-                    audio
+                    audio,
+                    document
                 )
             )
             .enqueue()

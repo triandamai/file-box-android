@@ -13,8 +13,8 @@ class GetVideosUseCase @Inject constructor(
 ) {
 
     suspend operator fun invoke() = channelFlow {
-        storageRepository.getVideosFromDb().onEach { images ->
-            send(images.groupBy { it.path })
+        storageRepository.getVideosFromDb().onEach { videos ->
+            send(videos.groupBy { it.path })
         }.collect()
     }.flowOn(Dispatchers.IO)
 }

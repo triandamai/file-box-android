@@ -4,11 +4,12 @@ import android.content.Context
 import app.trian.filebox.data.datasource.StorageDataSource
 import app.trian.filebox.data.datasource.local.audio.AudioDao
 import app.trian.filebox.data.datasource.local.audio.AudioFile
-import app.trian.filebox.data.datasource.local.images.ImagesDao
-import app.trian.filebox.data.datasource.local.images.ImagesFile
+import app.trian.filebox.data.datasource.local.documents.DocumentDao
+import app.trian.filebox.data.datasource.local.documents.DocumentFile
+import app.trian.filebox.data.datasource.local.images.ImageDao
+import app.trian.filebox.data.datasource.local.images.ImageFile
 import app.trian.filebox.data.datasource.local.videos.VideosDao
 import app.trian.filebox.data.datasource.local.videos.VideosFile
-import app.trian.filebox.data.models.FileModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -23,20 +24,16 @@ import javax.inject.Singleton
 @Singleton
 class StorageRepositoryImpl @Inject constructor(
     @ApplicationContext val appContext: Context,
-    private val imagesDao: ImagesDao,
+    private val imageDao: ImageDao,
     private val videosDao: VideosDao,
-    private val audioDao:AudioDao
+    private val audioDao: AudioDao,
+    private val documentDao: DocumentDao
 ) : StorageRepository {
     //https://stackoverflow.com/questions/62782648/android-11-scoped-storage-permissions
-
-    override suspend fun getAllFiles(): Map<String, List<FileModel>> {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun syncImagesFromStorage() {
-        StorageDataSource().getImages(appContext).onEach {
+    override suspend fun syncDocumentFromStorage() {
+        StorageDataSource().getDocuments(appContext).onEach {
             val convert = (it.map { f ->
-                ImagesFile(
+                DocumentFile(
                     uid = f.id,
                     name = f.name,
                     size = f.size,
@@ -47,15 +44,41 @@ class StorageRepositoryImpl @Inject constructor(
 
                 )
             })
-            imagesDao.insertImages(
+            documentDao.insertDocuments(
                 *convert.toTypedArray()
             )
         }.collect()
     }
 
 
-    override suspend fun getImagesFromDb(): Flow<List<ImagesFile>> = flow {
-        val data = imagesDao.getAll()
+    override suspend fun getDocumentFromDb(): Flow<List<DocumentFile>> = flow {
+        val data = documentDao.getAll()
+        emit(data)
+    }.flowOn(Dispatchers.IO)
+
+    override suspend fun syncImagesFromStorage() {
+        StorageDataSource().getImages(appContext).onEach {
+            val convert = (it.map { f ->
+                ImageFile(
+                    uid = f.id,
+                    name = f.name,
+                    size = f.size,
+                    date = f.date,
+                    uri = f.uri?.path.toString(),
+                    path = f.path,
+                    mime = f.mime
+
+                )
+            })
+            imageDao.insertImages(
+                *convert.toTypedArray()
+            )
+        }.collect()
+    }
+
+
+    override suspend fun getImagesFromDb(): Flow<List<ImageFile>> = flow {
+        val data = imageDao.getAll()
         emit(data)
     }.flowOn(Dispatchers.IO)
 

@@ -26,7 +26,7 @@ import app.trian.filebox.BaseContainer
 import app.trian.filebox.components.CardItemFile
 import app.trian.filebox.composables.customTabIndicatorOffset
 import app.trian.filebox.composables.gridItems
-import app.trian.filebox.data.datasource.local.images.ImagesFile
+import app.trian.filebox.data.datasource.local.images.ImageFile
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
@@ -40,7 +40,7 @@ import kotlinx.coroutines.launch
 @Composable
 internal fun ScreenHomeSend(
     modifier: Modifier = Modifier,
-    allFiles: Map<String, List<ImagesFile>> = mapOf()
+    allFiles: Map<String, List<ImageFile>> = mapOf()
 ) {
     val tabs = listOf("PHOTOS", "VIDEOS", "AUDIO", "APPS", "CONTACT", "FILES")
     var selectedTab by remember {
@@ -120,7 +120,7 @@ fun PreviewScreenHomeSend() {
         ScreenHomeSend(
             allFiles = mapOf(
                 "2 December 2022" to listOf(
-                    ImagesFile(
+                    ImageFile(
                         name = "Imagewaha.jpg"
                     )
                 )

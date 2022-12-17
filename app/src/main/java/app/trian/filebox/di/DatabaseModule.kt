@@ -4,7 +4,8 @@ import android.content.Context
 import androidx.room.Room
 import app.trian.filebox.data.datasource.local.FileBoxDatabase
 import app.trian.filebox.data.datasource.local.audio.AudioDao
-import app.trian.filebox.data.datasource.local.images.ImagesDao
+import app.trian.filebox.data.datasource.local.documents.DocumentDao
+import app.trian.filebox.data.datasource.local.images.ImageDao
 import app.trian.filebox.data.datasource.local.videos.VideosDao
 import dagger.Module
 import dagger.Provides
@@ -25,11 +26,14 @@ object DatabaseModule {
     ).build()
 
     @Provides
-    fun provideImagesDao(db:FileBoxDatabase):ImagesDao = db.imagesDao()
+    fun provideImagesDao(db:FileBoxDatabase):ImageDao = db.imagesDao()
 
     @Provides
     fun provideVideosDao(db:FileBoxDatabase):VideosDao = db.videosDao()
 
     @Provides
     fun provideAudiosDao(db:FileBoxDatabase):AudioDao = db.audioDao()
+
+    @Provides
+    fun provideDocumentDao(db:FileBoxDatabase):DocumentDao = db.documentDao()
 }

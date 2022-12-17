@@ -16,7 +16,7 @@ class StorageDataSource {
     //https://stackoverflow.com/questions/62782648/android-11-scoped-storage-permissions
     // in android 10 or higher MediaStore.Files. have restriction(scoped storage) only  show vide,image , and video
     @SuppressLint("InlinedApi")
-    suspend fun getAllFiles(appContext: Context): Flow<List<FileModel>> = flow<List<FileModel>> {
+    suspend fun getDocuments(appContext: Context): Flow<List<FileModel>> = flow<List<FileModel>> {
         val data = mutableListOf<FileModel>()
         val uri = MediaStore.Files.getContentUri(MediaStore.VOLUME_EXTERNAL)
 
@@ -35,10 +35,17 @@ class StorageDataSource {
                     OR ${MediaStore.Files.FileColumns.MIME_TYPE}=?
                     OR ${MediaStore.Files.FileColumns.MIME_TYPE}=?
                     OR ${MediaStore.Files.FileColumns.MIME_TYPE}=?
+                    OR ${MediaStore.Files.FileColumns.MIME_TYPE}=?
+                    OR ${MediaStore.Files.FileColumns.MIME_TYPE}=?
+                    OR ${MediaStore.Files.FileColumns.MIME_TYPE}=?
                 """.trimIndent(), arrayOf(
-                    android.webkit.MimeTypeMap.getSingleton().getMimeTypeFromExtension("js"),
                     android.webkit.MimeTypeMap.getSingleton().getMimeTypeFromExtension("pdf"),
-                    android.webkit.MimeTypeMap.getSingleton().getMimeTypeFromExtension("html"),
+                    android.webkit.MimeTypeMap.getSingleton().getMimeTypeFromExtension("doc"),
+                    android.webkit.MimeTypeMap.getSingleton().getMimeTypeFromExtension("docx"),
+                    android.webkit.MimeTypeMap.getSingleton().getMimeTypeFromExtension("ppt"),
+                    android.webkit.MimeTypeMap.getSingleton().getMimeTypeFromExtension("pptx"),
+                    android.webkit.MimeTypeMap.getSingleton().getMimeTypeFromExtension("json"),
+                    android.webkit.MimeTypeMap.getSingleton().getMimeTypeFromExtension("txt"),
                 ), null
             )
         }
@@ -357,5 +364,6 @@ class StorageDataSource {
             emit(data)
         }
     }.flowOn(Dispatchers.IO)
+
 
 }

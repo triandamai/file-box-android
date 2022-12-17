@@ -8,13 +8,13 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
-class GetAudiosUseCase @Inject constructor(
+class GetDocumentsUseCase @Inject constructor(
     private val storageRepository: StorageRepository
 ) {
 
     suspend operator fun invoke() = channelFlow {
-        storageRepository.getAudiosFromDb().onEach { audios ->
-            send(audios.groupBy { it.path })
+        storageRepository.getDocumentFromDb().onEach { documents ->
+            send(documents.groupBy { it.path })
         }.collect()
     }.flowOn(Dispatchers.IO)
 }
