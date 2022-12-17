@@ -1,4 +1,4 @@
-package app.trian.filebox.data.datasource.local.audio
+package app.trian.filebox.data.datasource.local.documents
 
 import androidx.room.Dao
 import androidx.room.Insert
@@ -6,10 +6,10 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 
 @Dao
-interface AudioDao {
+interface DocumentDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertAudios(vararg images: AudioFile)
+    suspend fun insertDocuments(vararg images: DocumentFile)
 
     @Query("SELECT * FROM audio_file")
-    fun getAll(): List<AudioFile>
+    fun getAll(): List<DocumentFile>
 }

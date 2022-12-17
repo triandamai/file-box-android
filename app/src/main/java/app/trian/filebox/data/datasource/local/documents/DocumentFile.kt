@@ -1,11 +1,11 @@
-package app.trian.filebox.data.datasource.local.audio
+package app.trian.filebox.data.datasource.local.documents
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "audio_file")
-data class AudioFile(
+@Entity(tableName = "document_file")
+data class DocumentFile(
     @PrimaryKey
     @ColumnInfo
     val uid: Long,

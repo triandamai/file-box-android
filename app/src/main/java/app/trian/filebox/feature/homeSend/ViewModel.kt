@@ -1,12 +1,11 @@
 package app.trian.filebox.feature.homeSend
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import app.trian.filebox.data.domain.GetAllFilesUseCase
-import app.trian.filebox.data.models.FileModel
+import app.trian.filebox.data.datasource.local.images.ImageFile
+import app.trian.filebox.domain.GetImagesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
@@ -15,18 +14,20 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeSendViewModel @Inject constructor(
-    private val getAllFilesUseCase: GetAllFilesUseCase
+    private val getImagesUseCase: GetImagesUseCase
 ) : ViewModel() {
 
-    private val _allFiles = MutableLiveData<Map<String, List<FileModel>>>()
-    val allFiles: LiveData<Map<String, List<FileModel>>> get() = _allFiles
+    init {
+        getImages()
+    }
+
+    private val _allFiles = MutableLiveData<Map<String, List<ImageFile>>>()
+    val allFiles: LiveData<Map<String, List<ImageFile>>> get() = _allFiles
 
 
-    fun getAllFiles() = with(viewModelScope) {
+    fun getImages() = with(viewModelScope) {
         launch {
-
-            getAllFilesUseCase().onEach {
-                Log.e("sasa", it.toString())
+            getImagesUseCase().onEach {
                 _allFiles.postValue(it)
             }.collect()
         }

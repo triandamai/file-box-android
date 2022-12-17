@@ -3,6 +3,10 @@ package app.trian.filebox.di
 import android.content.Context
 import androidx.room.Room
 import app.trian.filebox.data.datasource.local.FileBoxDatabase
+import app.trian.filebox.data.datasource.local.audio.AudioDao
+import app.trian.filebox.data.datasource.local.documents.DocumentDao
+import app.trian.filebox.data.datasource.local.images.ImageDao
+import app.trian.filebox.data.datasource.local.videos.VideosDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -22,5 +26,14 @@ object DatabaseModule {
     ).build()
 
     @Provides
-    fun provideImagesDao(db:FileBoxDatabase) = db.audioDao()
+    fun provideImagesDao(db:FileBoxDatabase):ImageDao = db.imagesDao()
+
+    @Provides
+    fun provideVideosDao(db:FileBoxDatabase):VideosDao = db.videosDao()
+
+    @Provides
+    fun provideAudiosDao(db:FileBoxDatabase):AudioDao = db.audioDao()
+
+    @Provides
+    fun provideDocumentDao(db:FileBoxDatabase):DocumentDao = db.documentDao()
 }
