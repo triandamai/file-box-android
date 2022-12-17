@@ -1,13 +1,13 @@
-package app.trian.filebox.data.datasource.local.images
+package app.trian.filebox.data.datasource.local.videos
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(
-    tableName = "images_file"
+    tableName = "videos_file"
 )
-data class ImagesFile(
+data class VideosFile(
     @PrimaryKey
     @ColumnInfo
     val uid:Long=0,

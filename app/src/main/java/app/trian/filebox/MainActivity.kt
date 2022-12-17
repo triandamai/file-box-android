@@ -10,12 +10,16 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.navigation.compose.rememberNavController
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
 import app.trian.filebox.components.FileBoxBottomNavigation
 import app.trian.filebox.feature.homeHistory.HomeHistory
 import app.trian.filebox.feature.homeReceive.HomeReceive
 import app.trian.filebox.feature.homeSend.HomeSend
 import app.trian.filebox.feature.signin.SignIn
 import app.trian.filebox.feature.signup.SignUp
+import app.trian.filebox.worker.ImagesSyncWorker
+import app.trian.filebox.worker.VideosSyncWorker
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -108,6 +112,24 @@ class MainActivity : ComponentActivity() {
                 )
             }
         }
+
+        startSync()
+    }
+
+
+    private fun startSync() {
+        val images = OneTimeWorkRequestBuilder<ImagesSyncWorker>()
+            .build()
+        val videos = OneTimeWorkRequestBuilder<VideosSyncWorker>()
+            .build()
+        WorkManager.getInstance(this)
+            .beginWith(
+                listOf(
+                    images,
+                    videos
+                )
+            )
+            .enqueue()
     }
 
 
