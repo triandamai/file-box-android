@@ -1,4 +1,4 @@
-package app.trian.filebox.data.domain
+package app.trian.filebox.domain
 
 import app.trian.filebox.data.repository.StorageRepository
 import kotlinx.coroutines.Dispatchers

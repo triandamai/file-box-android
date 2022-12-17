@@ -1,4 +1,4 @@
-package app.trian.filebox.data.domain
+package app.trian.filebox.domain
 
 import app.trian.filebox.data.datasource.local.images.ImagesDao
 import app.trian.filebox.data.datasource.local.images.ImagesFile
@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
-class GetImagesUseCase @Inject constructor(
+class SyncImagesUseCase @Inject constructor(
     private val storageRepository: StorageRepository,
     private val imagesDao: ImagesDao
 ) {
@@ -32,7 +32,7 @@ class GetImagesUseCase @Inject constructor(
             imagesDao.insertImages(
                 *convert.toTypedArray()
             )
-            send(it)
+            send(true)
         }.collect()
     }.flowOn(Dispatchers.IO)
 }
