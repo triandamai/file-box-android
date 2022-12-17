@@ -2,6 +2,7 @@ package app.trian.filebox.data.datasource.local
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
+import app.trian.filebox.data.datasource.local.audio.AudioDao
 import app.trian.filebox.data.datasource.local.audio.AudioFile
 import app.trian.filebox.data.datasource.local.images.ImagesDao
 import app.trian.filebox.data.datasource.local.images.ImagesFile
@@ -20,6 +21,7 @@ import app.trian.filebox.data.datasource.local.videos.VideosFile
 abstract class FileBoxDatabase : RoomDatabase() {
     abstract fun imagesDao(): ImagesDao
     abstract fun videosDao(): VideosDao
+    abstract fun audioDao(): AudioDao
 
 
     companion object {

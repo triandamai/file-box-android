@@ -236,7 +236,91 @@ class StorageDataSource {
                         rs = if (getFolder == "0") "Internal" else getFolder
                     }
                     val contentUri = ContentUris.withAppendedId(
-                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI, id
+                        MediaStore.Video.Media.EXTERNAL_CONTENT_URI, id
+                    )
+                    // add the URI to the list
+                    // generate the thumbnail
+                    val thumbnail = try {
+
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                            val widthSize = 480
+                            val heightSize = 480
+                            val loadThumbnail = appContext.contentResolver.loadThumbnail(
+                                contentUri, Size(widthSize, heightSize), null
+                            )
+                            loadThumbnail
+                        } else {
+                            null
+                        }
+                    } catch (e: Exception) {
+                        null
+                    }
+
+                    val fileModel = FileModel(
+                        id = id,
+                        name = name,
+                        mime = mime,
+                        size = size,
+                        uri = contentUri,
+                        thumb = thumbnail,
+                        date = date,
+                        path = rs
+                    )
+                    data.add(fileModel)
+                }
+            }
+
+            emit(data)
+        }
+    }.flowOn(Dispatchers.IO)
+
+    suspend fun getAudios(appContext: Context): Flow<List<FileModel>> = flow<List<FileModel>> {
+        val data = mutableListOf<FileModel>()
+        val uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
+
+        val cursor = with(appContext) {
+            contentResolver.query(
+                uri!!,
+                arrayOf(
+                    MediaStore.Audio.AudioColumns._ID,
+                    MediaStore.Audio.AudioColumns.DISPLAY_NAME,
+                    MediaStore.Audio.AudioColumns.MIME_TYPE,
+                    MediaStore.Audio.AudioColumns.DATA,
+                    MediaStore.Audio.AudioColumns.SIZE,
+                    MediaStore.Audio.AudioColumns.DATE_ADDED,
+                ),
+                null,
+                null,
+                null,
+                null
+            )
+        }
+
+        cursor?.use {
+            it.let {
+                val idColumn = it.getColumnIndexOrThrow( MediaStore.Audio.AudioColumns._ID)
+                val nameColumn =
+                    it.getColumnIndexOrThrow( MediaStore.Audio.AudioColumns.DISPLAY_NAME)
+                val mimeColumn =
+                    it.getColumnIndexOrThrow( MediaStore.Audio.AudioColumns.MIME_TYPE)
+                val dataColumn = it.getColumnIndexOrThrow( MediaStore.Audio.AudioColumns.DATA)
+                val sizeColumn = it.getColumnIndexOrThrow( MediaStore.Audio.AudioColumns.SIZE)
+                val dateColumn = it.getColumnIndexOrThrow( MediaStore.Audio.AudioColumns.DATE_ADDED)
+
+                while (it.moveToNext()) {
+                    val id = it.getLong(idColumn)
+                    val name = it.getString(nameColumn)
+                    val mime = it.getString(mimeColumn)
+                    val dataPath = it.getString(dataColumn)
+                    val size = it.getString(sizeColumn)
+                    val date = it.getString(dateColumn)
+                    var rs = ""
+                    dataPath.split("/").apply {
+                        val getFolder = this[this.size - 2]
+                        rs = if (getFolder == "0") "Internal" else getFolder
+                    }
+                    val contentUri = ContentUris.withAppendedId(
+                        MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, id
                     )
                     // add the URI to the list
                     // generate the thumbnail
