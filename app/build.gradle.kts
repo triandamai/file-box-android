@@ -8,42 +8,45 @@ plugins {
 }
 
 android {
-    namespace= "app.trian.filebox"
-    compileSdk =33
+    namespace = AppConfig.nameSpace
+    compileSdk = 33
 
     defaultConfig {
-        applicationId ="app.trian.filebox"
-        minSdk= 21
-        targetSdk= 33
-        versionCode= 1
-        versionName ="1.0"
+        applicationId = AppConfig.applicationId
+        minSdk = 21
+        targetSdk = 33
+        versionCode = 1
+        versionName = "1.0"
         multiDexEnabled = true
 
-        testInstrumentationRunner= "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
-            useSupportLibrary =true
+            useSupportLibrary = true
         }
     }
 
     buildTypes {
         release {
-            isMinifyEnabled=false
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            isMinifyEnabled = false
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
 
         }
     }
     compileOptions {
-        sourceCompatibility =JavaVersion.VERSION_1_8
-        targetCompatibility =JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
     }
     kotlinOptions {
         jvmTarget = "1.8"
     }
     buildFeatures {
-        compose= true
+        compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion= GlobalVersion.composeVersion
+        kotlinCompilerExtensionVersion = GlobalVersion.composeVersion
     }
     packagingOptions {
         resources {
@@ -57,7 +60,7 @@ dependencies {
     implementation(Deps.AndroidX.Lifecycle.runtimeLifecycleKtx)
     implementation(Deps.AndroidX.Activity.activityCompose)
     implementation(Deps.AndroidX.Multidex.multidex)
-    with(Deps.AndroidX.Compose){
+    with(Deps.AndroidX.Compose) {
         implementation(platform(composeBom))
         androidTestImplementation(platform(composeBom))
         implementation(material3)
@@ -69,12 +72,12 @@ dependencies {
         implementation(materialIconExtended)
         implementation(materialWindowSizeClass)
     }
-    with(Deps.Com.Google.Accompanist){
+    with(Deps.Com.Google.Accompanist) {
         implementation(pager)
         implementation(pagerIndicator)
     }
     implementation(Deps.AndroidX.Compose.composeRuntimeLiveData)
-    with(Deps.Com.Google.Dagger){
+    with(Deps.Com.Google.Dagger) {
         implementation(hiltAndroid)
         kapt(hiltAndroidCompiler)
     }
@@ -84,7 +87,7 @@ dependencies {
     implementation(Deps.AndroidX.Hilt.hiltWork)
     kapt(Deps.AndroidX.Hilt.hiltCompiler)
 
-    with(Deps.Com.Google.Firebase){
+    with(Deps.Com.Google.Firebase) {
         implementation(platform(firebaseBom))
         implementation(firebaseAnalytics)
         implementation(firebaseAuth)
@@ -92,7 +95,7 @@ dependencies {
         implementation(firebaseStorage)
     }
     implementation(Deps.Org.Jetbrains.Kotlinx.kotlinxCoroutineAndroid)
-    with(Deps.AndroidX.Room){
+    with(Deps.AndroidX.Room) {
         implementation(roomRuntime)
         kapt(roomCompiler)
         implementation(roomKtx)
@@ -112,22 +115,22 @@ kapt {
 
 //https://dev.to/akdevcraft/git-pre-hook-setup-pre-push-hook-for-gradle-project-example-1nn6
 //https://emmanuelkehinde.io/setting-up-git-pre-commit-pre-push-hook-for-ktlint-check/
-tasks.create<Copy>("installGitHook"){
+tasks.create<Copy>("installGitHook") {
     var suffix = "macos"
-    if(org.apache.tools.ant.taskdefs.condition.Os.isFamily(org.apache.tools.ant.taskdefs.condition.Os.FAMILY_WINDOWS)){
+    if (org.apache.tools.ant.taskdefs.condition.Os.isFamily(org.apache.tools.ant.taskdefs.condition.Os.FAMILY_WINDOWS)) {
         suffix = "windows"
     }
 
-    copy{
-        from(File(rootProject.rootDir,"scripts/pre-push-$suffix"))
-        into{ File(rootProject.rootDir,".git/hooks") }
-        rename("pre-push-$suffix","pre-push")
+    copy {
+        from(File(rootProject.rootDir, "scripts/pre-push-$suffix"))
+        into { File(rootProject.rootDir, ".git/hooks") }
+        rename("pre-push-$suffix", "pre-push")
     }
 
-    copy{
-        from(File(rootProject.rootDir,"scripts/pre-commit-$suffix"))
-        into{ File(rootProject.rootDir,".git/hooks") }
-        rename("pre-commit-$suffix","pre-commit")
+    copy {
+        from(File(rootProject.rootDir, "scripts/pre-commit-$suffix"))
+        into { File(rootProject.rootDir, ".git/hooks") }
+        rename("pre-commit-$suffix", "pre-commit")
     }
 
     //make file executable
