@@ -12,7 +12,8 @@ import app.trian.filebox.composables.BottomBarListener
 
 enum class BottomBarType {
     BLANK,
-    BASIC
+    BASIC,
+    PICK_FILE
 }
 
 class FileBoxState internal constructor() {
