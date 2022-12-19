@@ -1,11 +1,7 @@
 package app.trian.filebox.feature.homeSend
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ScrollableTabRow
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRowDefaults
@@ -23,11 +19,16 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import app.trian.filebox.BaseContainer
-import app.trian.filebox.components.CardItemFile
 import app.trian.filebox.composables.customTabIndicatorOffset
-import app.trian.filebox.composables.gridItems
+import app.trian.filebox.data.datasource.local.audio.AudioFile
+import app.trian.filebox.data.datasource.local.documents.DocumentFile
 import app.trian.filebox.data.datasource.local.images.ImageFile
+import app.trian.filebox.data.datasource.local.videos.VideosFile
 import app.trian.filebox.data.models.DataState
+import app.trian.filebox.feature.homeSend.components.ContentAudios
+import app.trian.filebox.feature.homeSend.components.ContentDocuments
+import app.trian.filebox.feature.homeSend.components.ContentImages
+import app.trian.filebox.feature.homeSend.components.ContentVideos
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
@@ -35,13 +36,14 @@ import kotlinx.coroutines.launch
 
 @SuppressLint("NewApi")
 @OptIn(
-    ExperimentalFoundationApi::class,
     ExperimentalPagerApi::class
 )
 @Composable
 internal fun ScreenHomeSend(
-    modifier: Modifier = Modifier,
-    images: DataState<Map<String, List<ImageFile>>> = DataState.Empty
+    images: DataState<Map<String, List<ImageFile>>> = DataState.Empty,
+    videos: DataState<Map<String, List<VideosFile>>> = DataState.Empty,
+    audios: DataState<Map<String, List<AudioFile>>> = DataState.Empty,
+    documents: DataState<Map<String, List<DocumentFile>>> = DataState.Empty,
 ) {
     val tabs = listOf("PHOTOS", "VIDEOS", "AUDIO", "APPS", "CONTACT", "FILES")
     var selectedTab by remember {
@@ -92,30 +94,23 @@ internal fun ScreenHomeSend(
             state = pagerState,
             count = tabs.size
         ) {
-            LazyColumn(
-                modifier = modifier.fillMaxSize(),
-                content = {
-                    when(images){
-                        is DataState.Data -> {
-                            images.data.forEach { (group, fileModels) ->
-                                stickyHeader {
-                                    Text(
-                                        text = group,
-                                        color = MaterialTheme.colorScheme.onBackground
-                                    )
-                                }
-                                gridItems(fileModels, columnCount = 4) { file ->
-                                    CardItemFile(
-                                        name = file.name
-                                    )
-                                }
-                            }
-                        }
-                        DataState.Empty -> Unit
-                        is DataState.Error -> Unit
-                        DataState.Loading -> Unit
-                    }
-                })
+            when (tabs[selectedTab]) {
+                "PHOTOS" -> ContentImages(
+                    data = images
+                )
+
+                "VIDEOS" -> ContentVideos(
+                    data = videos
+                )
+
+                "AUDIO" -> ContentAudios(
+                    data = audios
+                )
+                "FILES" -> ContentDocuments(
+                    data = documents
+                )
+                else -> {}
+            }
         }
     }
 

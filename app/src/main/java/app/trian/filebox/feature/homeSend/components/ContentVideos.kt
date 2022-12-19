@@ -13,16 +13,15 @@ import app.trian.filebox.components.CardItemImage
 import app.trian.filebox.components.EmptyScreen
 import app.trian.filebox.components.LoadingScreen
 import app.trian.filebox.composables.gridItems
-import app.trian.filebox.data.datasource.local.images.ImageFile
+import app.trian.filebox.data.datasource.local.videos.VideosFile
 import app.trian.filebox.data.models.DataState
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun ContentImages(
+fun ContentVideos(
     modifier: Modifier = Modifier,
-    data: DataState<Map<String, List<ImageFile>>> = DataState.Loading
+    data: DataState<Map<String, List<VideosFile>>> = DataState.Loading
 ) {
-
     when (data) {
         is DataState.Data -> {
             LazyColumn(
@@ -41,9 +40,9 @@ fun ContentImages(
                                 id = file.uid
                             )
                         }
-
                     }
                 })
+
         }
         DataState.Empty -> EmptyScreen()
         is DataState.Error -> Unit
@@ -54,9 +53,9 @@ fun ContentImages(
 
 @Preview
 @Composable
-fun PreviewContetnImages() {
+fun PreviewContentVideos() {
     BaseContainer {
-        ContentImages(
+        ContentVideos(
             data = DataState.Loading
         )
     }

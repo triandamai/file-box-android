@@ -1,7 +1,9 @@
 package app.trian.filebox.domain
 
+import app.trian.filebox.data.models.DataState
 import app.trian.filebox.data.repository.StorageRepository
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flowOn
@@ -13,8 +15,17 @@ class GetAudiosUseCase @Inject constructor(
 ) {
 
     suspend operator fun invoke() = channelFlow {
+        send(DataState.Loading)
         storageRepository.getAudiosFromDb().onEach { audios ->
-            send(audios.groupBy { it.path })
-        }.collect()
+            val groupedData = audios.groupBy { it.path }
+            if (groupedData.isEmpty()) {
+                send(DataState.Empty)
+            } else {
+                send(DataState.Data(groupedData))
+            }
+        }
+            .catch {
+                send(DataState.Error(it.message.orEmpty()))
+            }.collect()
     }.flowOn(Dispatchers.IO)
 }

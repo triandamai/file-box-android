@@ -11,7 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import app.trian.filebox.BaseContainer
-import app.trian.filebox.components.CardItemFile
+import app.trian.filebox.components.CardItemImage
 import app.trian.filebox.composables.gridItems
 import app.trian.filebox.data.models.FileModel
 
@@ -45,8 +45,9 @@ internal fun ScreenHomeHistory(
                     )
                 }
                 gridItems(fileModels, columnCount = 4) { file ->
-                    CardItemFile(
-                        name = file.name
+                    CardItemImage(
+                        name = file.name,
+                        id = file.id
                     )
                 }
             }

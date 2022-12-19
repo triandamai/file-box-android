@@ -15,6 +15,7 @@ class GetImagesUseCase @Inject constructor(
 ) {
 
     suspend operator fun invoke() = channelFlow {
+        send(DataState.Loading)
         storageRepository.getImagesFromDb().onEach { images ->
             val groupData = images.groupBy { it.path }
             if (groupData.isEmpty()) {

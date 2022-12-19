@@ -20,8 +20,14 @@ fun NavGraphBuilder.routeHomeSend(
     composable(HomeSend.routeName) {
         val viewModel = hiltViewModel<HomeSendViewModel>()
         val images by viewModel.images.collectAsState()
+        val videos by viewModel.videos.collectAsState()
+        val audios by viewModel.audios.collectAsState()
+        val documents by viewModel.documents.collectAsState()
         ScreenHomeSend(
-            images = images
+            images = images,
+            videos = videos,
+            audios=audios,
+            documents=documents
         )
     }
 }
