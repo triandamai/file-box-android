@@ -20,7 +20,8 @@ import app.trian.filebox.data.models.DataState
 @Composable
 fun ContentAudios(
     modifier: Modifier = Modifier,
-    data: DataState<Map<String, List<AudioFile>>> = DataState.Loading
+    data: DataState<Map<String, List<AudioFile>>> = DataState.Loading,
+    onItemSelected:(AudioFile)->Unit={}
 ) {
     when (data) {
         is DataState.Data -> {

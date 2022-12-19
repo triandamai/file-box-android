@@ -13,7 +13,7 @@ import app.trian.filebox.composables.BottomBarListener
 enum class BottomBarType {
     BLANK,
     BASIC,
-    PICK_FILE
+    PICK_FILE,
 }
 
 class FileBoxState internal constructor() {
@@ -22,6 +22,7 @@ class FileBoxState internal constructor() {
     var showNavigationRail by mutableStateOf(false)
     var activeRoute by mutableStateOf("")
     var snackbarHostState by mutableStateOf(SnackbarHostState())
+    var selectedFileCount by mutableStateOf(0)
 
     private var onBottomBarListener: BottomBarListener<String>? = null
 
@@ -57,6 +58,7 @@ class FileBoxState internal constructor() {
     }
 
     fun changeBottomBar(type: BottomBarType) {
+
         if (bottomBarType != type) {
             bottomBarType = type
         }

@@ -24,7 +24,9 @@ import app.trian.filebox.BaseContainer
 @Composable
 fun CardItemImage(
     name: String = "",
-    id: Long
+    id: Long=0,
+    selected:Boolean=false,
+    onClick:()->Unit={}
 ) {
     val ctx = LocalContext.current
     val thumb = try {
@@ -56,8 +58,8 @@ fun CardItemImage(
         }
         RadioButton(
             modifier = Modifier.align(Alignment.TopStart),
-            selected = false,
-            onClick = { /*TODO*/ }
+            selected = selected,
+            onClick = onClick
         )
     }
 }

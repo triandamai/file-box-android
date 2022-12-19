@@ -20,7 +20,9 @@ import app.trian.filebox.data.models.DataState
 @Composable
 fun ContentImages(
     modifier: Modifier = Modifier,
-    data: DataState<Map<String, List<ImageFile>>> = DataState.Loading
+    data: DataState<Map<String, List<ImageFile>>> = DataState.Loading,
+    selectedFile: List<Long> = listOf(0),
+    onItemSelected: (ImageFile) -> Unit = {}
 ) {
 
     when (data) {
@@ -38,7 +40,11 @@ fun ContentImages(
                         gridItems(fileModels, columnCount = 4) { file ->
                             CardItemImage(
                                 name = file.name,
-                                id = file.uid
+                                id = file.uid,
+                                selected = file.uid in selectedFile,
+                                onClick = {
+                                    onItemSelected(file)
+                                }
                             )
                         }
 

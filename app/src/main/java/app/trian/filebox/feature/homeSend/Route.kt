@@ -7,6 +7,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import app.trian.filebox.FileBoxState
+import app.trian.filebox.composables.incrementSelectedFileCount
 
 
 object HomeSend {
@@ -23,11 +24,24 @@ fun NavGraphBuilder.routeHomeSend(
         val videos by viewModel.videos.collectAsState()
         val audios by viewModel.audios.collectAsState()
         val documents by viewModel.documents.collectAsState()
+
         ScreenHomeSend(
             images = images,
             videos = videos,
-            audios=audios,
-            documents=documents
+            audios = audios,
+            documents = documents,
+            onSelectedAudio = {
+                appState.incrementSelectedFileCount()
+            },
+            onSelectedDocuments = {
+                appState.incrementSelectedFileCount()
+            },
+            onSelectedImage = {
+                appState.incrementSelectedFileCount()
+            },
+            onSelectedVideo = {
+                appState.incrementSelectedFileCount()
+            }
         )
     }
 }

@@ -27,14 +27,6 @@ class HomeSendViewModel @Inject constructor(
     private val getDocumentsUseCase: GetDocumentsUseCase
 ) : ViewModel() {
 
-    init {
-        getImages()
-        getAudio()
-        getVideos()
-        getDocuments()
-    }
-
-
     private val _images =
         MutableStateFlow<DataState<Map<String, List<ImageFile>>>>(DataState.Loading)
     val images = _images.asStateFlow()
@@ -51,35 +43,45 @@ class HomeSendViewModel @Inject constructor(
         MutableStateFlow<DataState<Map<String, List<DocumentFile>>>>(DataState.Loading)
     val documents = _documents.asStateFlow()
 
+    init {
+        getImages()
+        getAudio()
+        getVideos()
+        getDocuments()
+    }
 
     fun getImages() = with(viewModelScope) {
+        _images.tryEmit(DataState.Loading)
         launch {
             getImagesUseCase().onEach {
-                _images.emit(it)
+                _images.tryEmit(it)
             }.collect()
         }
     }
 
     fun getVideos() = with(viewModelScope) {
+        _videos.tryEmit(DataState.Loading)
         launch {
             getVideosUseCase().onEach {
-                _videos.emit(it)
+                _videos.tryEmit(it)
             }.collect()
         }
     }
 
     fun getAudio() = with(viewModelScope) {
+        _audio.tryEmit(DataState.Loading)
         launch {
             getAudiosUseCase().onEach {
-                _audio.emit(it)
+                _audio.tryEmit(it)
             }.collect()
         }
     }
 
     fun getDocuments() = with(viewModelScope){
+        _documents.tryEmit(DataState.Loading)
         launch {
             getDocumentsUseCase().onEach {
-                _documents.emit(it)
+                _documents.tryEmit(it)
             }.collect()
         }
     }

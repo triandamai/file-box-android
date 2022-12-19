@@ -20,7 +20,8 @@ import app.trian.filebox.data.models.DataState
 @Composable
 fun ContentVideos(
     modifier: Modifier = Modifier,
-    data: DataState<Map<String, List<VideosFile>>> = DataState.Loading
+    data: DataState<Map<String, List<VideosFile>>> = DataState.Loading,
+    onItemSelected: (VideosFile) -> Unit = {}
 ) {
     when (data) {
         is DataState.Data -> {

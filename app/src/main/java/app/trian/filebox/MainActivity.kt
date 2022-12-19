@@ -8,10 +8,12 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.navigation.compose.rememberNavController
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
+import app.trian.filebox.components.BottomBarSelectFile
 import app.trian.filebox.components.FileBoxBottomNavigation
 import app.trian.filebox.feature.homeHistory.HomeHistory
 import app.trian.filebox.feature.homeReceive.HomeReceive
@@ -35,41 +37,42 @@ class MainActivity : ComponentActivity() {
             val appState = rememberFileBoxApplication()
             val config = LocalConfiguration.current
 
-            router.addOnDestinationChangedListener { _, destination, _ ->
-                with(appState) {
-                    setCurrentRoute(destination.route.orEmpty())
-                    when (destination.route) {
-                        in listOf(
-                            HomeSend.routeName,
-                            HomeReceive.routeName,
-                            HomeHistory.routeName
-                        ) -> {
-                            if (config.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-                                showNavRail()
-                                hideBottomBar()
-                            } else {
-                                hideNavRail()
-                                changeBottomBar(BottomBarType.BASIC)
+            LaunchedEffect(key1 = router, block = {
+                router.addOnDestinationChangedListener { _, destination, _ ->
+                    with(appState) {
+                        setCurrentRoute(destination.route.orEmpty())
+                        when (destination.route) {
+                            in listOf(
+                                HomeSend.routeName,
+                                HomeReceive.routeName,
+                                HomeHistory.routeName
+                            ) -> {
+                                if (config.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                                    showNavRail()
+                                    hideBottomBar()
+                                } else {
+                                    hideNavRail()
+                                    changeBottomBar(BottomBarType.BASIC)
+                                }
+                                showAppbar()
                             }
-                            showAppbar()
-                        }
-                        in listOf(
-                            SignIn.routeName,
-                            SignUp.routeName
-                        ) -> {
-                            hideNavRail()
-                            hideBottomBar()
-                            hideAppbar()
-                        }
-                        else -> {
-                            hideNavRail()
-                            hideBottomBar()
-                            hideAppbar()
+                            in listOf(
+                                SignIn.routeName,
+                                SignUp.routeName
+                            ) -> {
+                                hideNavRail()
+                                hideBottomBar()
+                                hideAppbar()
+                            }
+                            else -> {
+                                hideNavRail()
+                                hideBottomBar()
+                                hideAppbar()
+                            }
                         }
                     }
                 }
-            }
-
+            })
             BaseContainer(
                 topBar = {
                     if (appState.showAppbar) {
@@ -83,6 +86,7 @@ class MainActivity : ComponentActivity() {
                 bottomBar = {
                     when (appState.bottomBarType) {
                         BottomBarType.BASIC -> {
+
                             FileBoxBottomNavigation(
                                 items = listOf(
                                     FileBoxBottomNavigation.Send(),
@@ -96,6 +100,14 @@ class MainActivity : ComponentActivity() {
                                     }
                                     appState.setCurrentRoute(it)
                                 }
+                            )
+                        }
+                        BottomBarType.PICK_FILE -> {
+
+                            BottomBarSelectFile(
+                                message = "${appState.selectedFileCount} File Selected",
+                                onDetailClicked = {},
+                                onShareClicked = {}
                             )
                         }
                         else -> {}

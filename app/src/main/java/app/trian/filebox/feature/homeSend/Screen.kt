@@ -44,6 +44,10 @@ internal fun ScreenHomeSend(
     videos: DataState<Map<String, List<VideosFile>>> = DataState.Empty,
     audios: DataState<Map<String, List<AudioFile>>> = DataState.Empty,
     documents: DataState<Map<String, List<DocumentFile>>> = DataState.Empty,
+    onSelectedImage:(ImageFile)->Unit={},
+    onSelectedVideo:(VideosFile)->Unit={},
+    onSelectedAudio:(AudioFile)->Unit={},
+    onSelectedDocuments:(DocumentFile)->Unit={},
 ) {
     val tabs = listOf("PHOTOS", "VIDEOS", "AUDIO", "APPS", "CONTACT", "FILES")
     var selectedTab by remember {
@@ -96,18 +100,22 @@ internal fun ScreenHomeSend(
         ) {
             when (tabs[selectedTab]) {
                 "PHOTOS" -> ContentImages(
-                    data = images
+                    data = images,
+                    onItemSelected = onSelectedImage
                 )
 
                 "VIDEOS" -> ContentVideos(
-                    data = videos
+                    data = videos,
+                    onItemSelected = onSelectedVideo
                 )
 
                 "AUDIO" -> ContentAudios(
-                    data = audios
+                    data = audios,
+                    onItemSelected = onSelectedAudio
                 )
                 "FILES" -> ContentDocuments(
-                    data = documents
+                    data = documents,
+                    onItemSelected = onSelectedDocuments
                 )
                 else -> {}
             }
