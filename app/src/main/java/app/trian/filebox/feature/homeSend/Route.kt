@@ -1,7 +1,7 @@
 package app.trian.filebox.feature.homeSend
 
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
@@ -19,9 +19,9 @@ fun NavGraphBuilder.routeHomeSend(
 ) {
     composable(HomeSend.routeName) {
         val viewModel = hiltViewModel<HomeSendViewModel>()
-        val allFiles by viewModel.allFiles.observeAsState(initial = mapOf())
+        val images by viewModel.images.collectAsState()
         ScreenHomeSend(
-            allFiles = allFiles
+            images = images
         )
     }
 }

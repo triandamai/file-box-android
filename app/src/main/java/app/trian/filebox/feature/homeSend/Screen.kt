@@ -27,6 +27,7 @@ import app.trian.filebox.components.CardItemFile
 import app.trian.filebox.composables.customTabIndicatorOffset
 import app.trian.filebox.composables.gridItems
 import app.trian.filebox.data.datasource.local.images.ImageFile
+import app.trian.filebox.data.models.DataState
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
@@ -40,7 +41,7 @@ import kotlinx.coroutines.launch
 @Composable
 internal fun ScreenHomeSend(
     modifier: Modifier = Modifier,
-    allFiles: Map<String, List<ImageFile>> = mapOf()
+    images: DataState<Map<String, List<ImageFile>>> = DataState.Empty
 ) {
     val tabs = listOf("PHOTOS", "VIDEOS", "AUDIO", "APPS", "CONTACT", "FILES")
     var selectedTab by remember {
@@ -94,18 +95,25 @@ internal fun ScreenHomeSend(
             LazyColumn(
                 modifier = modifier.fillMaxSize(),
                 content = {
-                    allFiles.forEach { (group, fileModels) ->
-                        stickyHeader {
-                            Text(
-                                text = group,
-                                color = MaterialTheme.colorScheme.onBackground
-                            )
+                    when(images){
+                        is DataState.Data -> {
+                            images.data.forEach { (group, fileModels) ->
+                                stickyHeader {
+                                    Text(
+                                        text = group,
+                                        color = MaterialTheme.colorScheme.onBackground
+                                    )
+                                }
+                                gridItems(fileModels, columnCount = 4) { file ->
+                                    CardItemFile(
+                                        name = file.name
+                                    )
+                                }
+                            }
                         }
-                        gridItems(fileModels, columnCount = 4) { file ->
-                            CardItemFile(
-                                name = file.name
-                            )
-                        }
+                        DataState.Empty -> Unit
+                        is DataState.Error -> Unit
+                        DataState.Loading -> Unit
                     }
                 })
         }
@@ -118,13 +126,7 @@ internal fun ScreenHomeSend(
 fun PreviewScreenHomeSend() {
     BaseContainer {
         ScreenHomeSend(
-            allFiles = mapOf(
-                "2 December 2022" to listOf(
-                    ImageFile(
-                        name = "Imagewaha.jpg"
-                    )
-                )
-            )
+            images = DataState.Loading
         )
     }
 }
