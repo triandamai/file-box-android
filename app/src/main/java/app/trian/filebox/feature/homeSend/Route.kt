@@ -3,6 +3,7 @@ package app.trian.filebox.feature.homeSend
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
@@ -13,6 +14,7 @@ import app.trian.filebox.base.TAG_FAB
 import app.trian.filebox.base.decrementSelectedFileCount
 import app.trian.filebox.base.incrementSelectedFileCount
 import app.trian.filebox.data.models.DataState
+import kotlinx.coroutines.launch
 
 
 object HomeSend {
@@ -24,6 +26,7 @@ fun NavGraphBuilder.routeHomeSend(
 ) {
     composable(HomeSend.routeName) {
         val viewModel = hiltViewModel<HomeSendViewModel>()
+        val scope = rememberCoroutineScope()
         val images by viewModel.images.collectAsState(initial = DataState.Loading)
         val videos by viewModel.videos.collectAsState(initial = DataState.Loading)
         val audios by viewModel.audios.collectAsState(initial = DataState.Loading)
@@ -32,16 +35,16 @@ fun NavGraphBuilder.routeHomeSend(
 
         LaunchedEffect(key1 = appState) {
             with(appState) {
-                addBottomBarListener(object : BottomBarListener {
-                    override fun onItemClicked(tag: String, data: Map<String, String>) {
-                        if(tag == TAG_FAB){
-
+                addBottomBarListener { tag, _ ->
+                    if (tag == TAG_FAB) {
+                        scope.launch {
+                            showSnackbar("Share dong")
                         }
                     }
-
-                })
+                }
             }
         }
+
 
         ScreenHomeSend(images = images,
             videos = videos,

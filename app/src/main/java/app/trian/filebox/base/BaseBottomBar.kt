@@ -12,33 +12,37 @@ fun BaseBottomBar(
     appState: FileBoxState,
     router: NavHostController
 ) {
-    when (appState.bottomBarType) {
-        BottomBarType.BASIC -> {
+    with(appState) {
+        when (bottomBarType) {
+            BottomBarType.BASIC -> {
 
-            FileBoxBottomNavigation(
-                items = listOf(
-                    FileBoxBottomNavigation.Send(),
-                    FileBoxBottomNavigation.Receive(),
-                    FileBoxBottomNavigation.History()
-                ),
-                currentRoute = appState.activeRoute,
-                onItemClick = {
-                    router.navigate(it) {
-                        launchSingleTop = true
+                FileBoxBottomNavigation(
+                    items = listOf(
+                        FileBoxBottomNavigation.Send(),
+                        FileBoxBottomNavigation.Receive(),
+                        FileBoxBottomNavigation.History()
+                    ),
+                    currentRoute = activeRoute,
+                    onItemClick = {
+                        router.navigate(it) {
+                            launchSingleTop = true
+                        }
+                        setCurrentRoute(it)
                     }
-                    appState.setCurrentRoute(it)
-                }
-            )
-        }
-        BottomBarType.PICK_FILE -> {
+                )
+            }
+            BottomBarType.PICK_FILE -> {
 
-            BottomBarSelectFile(
-                message = "${appState.selectedFileCount} File Selected",
-                onDetailClicked = {},
-                onShareClicked = {}
-            )
+                BottomBarSelectFile(
+                    message = "${appState.selectedFileCount} File Selected",
+                    onDetailClicked = {},
+                    onShareClicked = {
+                        onBottomBarItemClick(TAG_FAB)
+                    }
+                )
+            }
+            else -> {}
         }
-        else -> {}
     }
 
 }

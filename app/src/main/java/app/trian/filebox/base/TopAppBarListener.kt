@@ -1,7 +1,7 @@
 package app.trian.filebox.base
 
-interface TopAppBarListener {
-    fun onItemClicked(tag:String ="",data:Map<String,String> = mapOf())
+fun interface TopAppBarListener {
+    fun onItemClicked(tag:String,data:Map<String,String>)
 }
 
 const val TAG_NAV_BACK = "FAB"

@@ -1,7 +1,7 @@
 package app.trian.filebox.base
 
-interface BottomBarListener {
-    fun onItemClicked(tag:String ="",data:Map<String,String> = mapOf())
+fun interface BottomBarListener {
+    fun onItemClicked(tag:String,data:Map<String,String>)
 }
 
 const val TAG_FAB = "FAB"
