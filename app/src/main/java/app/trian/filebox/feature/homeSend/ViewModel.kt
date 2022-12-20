@@ -1,6 +1,5 @@
 package app.trian.filebox.feature.homeSend
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.trian.filebox.data.datasource.local.selected.SelectedFile
@@ -15,7 +14,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.shareIn
@@ -58,10 +56,10 @@ class HomeSendViewModel @Inject constructor(
         started = SharingStarted.WhileSubscribed()
     )
 
-    private val _selectedFile =  MutableStateFlow<List<Long>>(listOf())
+    private val _selectedFile = MutableStateFlow<List<Long>>(listOf())
     val selectedFile = _selectedFile.asStateFlow()
 
-    fun loadSelectedFile()= with(viewModelScope){
+    fun loadSelectedFile() = with(viewModelScope) {
         launch {
             getSelectedFileUseCase().onEach {
                 _selectedFile.tryEmit(it)

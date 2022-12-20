@@ -1,11 +1,8 @@
 package app.trian.filebox
 
 import android.os.Bundle
-import android.view.View
-import android.widget.Button
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.platform.LocalConfiguration
