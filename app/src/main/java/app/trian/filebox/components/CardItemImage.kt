@@ -3,7 +3,6 @@ package app.trian.filebox.components
 import android.content.ContentUris
 import android.os.Build
 import android.provider.MediaStore
-import android.util.Log
 import android.util.Size
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
@@ -14,10 +13,8 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
-import androidx.compose.material3.RadioButtonColors
 import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -30,9 +27,9 @@ import app.trian.filebox.BaseContainer
 @Composable
 fun CardItemImage(
     name: String = "",
-    id: Long=0,
-    selected:()->Boolean ={false},
-    onClick:()->Unit={}
+    id: Long = 0,
+    selected: () -> Boolean = { false },
+    onClick: () -> Unit = {}
 ) {
     val ctx = LocalContext.current
     val thumb = try {
@@ -66,7 +63,7 @@ fun CardItemImage(
             modifier = Modifier.align(Alignment.TopStart),
             selected = selected(),
             onClick = onClick,
-            enabled=true,
+            enabled = true,
             colors = RadioButtonDefaults.colors(
                 selectedColor = MaterialTheme.colorScheme.primary,
                 unselectedColor = Color.LightGray
@@ -89,7 +86,7 @@ fun PreviewCardItemFile() {
                     CardItemImage(
                         name = "",
                         0,
-                        selected = {true}
+                        selected = { true }
                     )
                 }
             })

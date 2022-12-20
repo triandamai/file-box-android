@@ -1,13 +1,11 @@
 package app.trian.filebox.feature.homeSend.components
 
-import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import app.trian.filebox.BaseContainer
@@ -50,15 +48,17 @@ fun ContentImages(
                                 },
                                 onClick = {
                                     val exist = file.uid in selectedFile
-                                    onItemSelected(SelectedFile(
-                                        uid = file.uid,
-                                        name = file.name,
-                                        size = file.size,
-                                        date = file.date,
-                                        uri = file.uri,
-                                        path = file.path,
-                                        mime = file.mime
-                                    ), exist)
+                                    onItemSelected(
+                                        SelectedFile(
+                                            uid = file.uid,
+                                            name = file.name,
+                                            size = file.size,
+                                            date = file.date,
+                                            uri = file.uri,
+                                            path = file.path,
+                                            mime = file.mime
+                                        ), exist
+                                    )
                                 }
                             )
                         }

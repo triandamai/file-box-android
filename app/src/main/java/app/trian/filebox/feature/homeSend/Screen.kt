@@ -1,7 +1,6 @@
 package app.trian.filebox.feature.homeSend
 
 import android.annotation.SuppressLint
-import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.ScrollableTabRow
 import androidx.compose.material3.Tab
@@ -9,7 +8,6 @@ import androidx.compose.material3.TabRowDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -24,8 +22,8 @@ import app.trian.filebox.BaseContainer
 import app.trian.filebox.composables.customTabIndicatorOffset
 import app.trian.filebox.data.datasource.local.audio.AudioFile
 import app.trian.filebox.data.datasource.local.documents.DocumentFile
-import app.trian.filebox.data.datasource.local.selected.SelectedFile
 import app.trian.filebox.data.datasource.local.images.ImageFile
+import app.trian.filebox.data.datasource.local.selected.SelectedFile
 import app.trian.filebox.data.datasource.local.videos.VideosFile
 import app.trian.filebox.data.models.DataState
 import app.trian.filebox.feature.homeSend.components.ContentAudios
@@ -47,11 +45,11 @@ internal fun ScreenHomeSend(
     videos: DataState<Map<String, List<VideosFile>>> = DataState.Empty,
     audios: DataState<Map<String, List<AudioFile>>> = DataState.Empty,
     documents: DataState<Map<String, List<DocumentFile>>> = DataState.Empty,
-    selectedFile:List<Long> = listOf(),
-    onSelectedImage:(SelectedFile,Boolean)->Unit={_,_->},
-    onSelectedVideo:(VideosFile)->Unit={},
-    onSelectedAudio:(AudioFile)->Unit={},
-    onSelectedDocuments:(DocumentFile)->Unit={},
+    selectedFile: List<Long> = listOf(),
+    onSelectedImage: (SelectedFile, Boolean) -> Unit = { _, _ -> },
+    onSelectedVideo: (VideosFile) -> Unit = {},
+    onSelectedAudio: (AudioFile) -> Unit = {},
+    onSelectedDocuments: (DocumentFile) -> Unit = {},
 ) {
     val tabs = listOf("PHOTOS", "VIDEOS", "AUDIO", "APPS", "CONTACT", "FILES")
     var selectedTab by remember {
@@ -107,7 +105,7 @@ internal fun ScreenHomeSend(
             when (tabs[selectedTab]) {
                 "PHOTOS" -> ContentImages(
                     data = images,
-                    selectedFile=selectedFile,
+                    selectedFile = selectedFile,
                     onItemSelected = onSelectedImage
                 )
 
