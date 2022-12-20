@@ -10,8 +10,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import app.trian.filebox.base.FileBoxState
 import app.trian.filebox.base.TAG_DELETE_ALL_SELECTED_FILE
-import app.trian.filebox.base.decrementSelectedFileCount
-import app.trian.filebox.base.incrementSelectedFileCount
+import app.trian.filebox.base.updateSelectedFileCount
 import app.trian.filebox.data.models.DataState
 
 
@@ -37,7 +36,7 @@ fun NavGraphBuilder.routeHomeSend(
                     when (tag) {
                         TAG_DELETE_ALL_SELECTED_FILE -> {
                             viewModel.clearSelectedFile()
-                            decrementSelectedFileCount(
+                            updateSelectedFileCount(
                                 currentSize = 0
                             )
                         }
@@ -48,7 +47,7 @@ fun NavGraphBuilder.routeHomeSend(
         }
         LaunchedEffect(key1 = selected, block = {
             if (selected.isNotEmpty()) {
-                appState.incrementSelectedFileCount(
+                appState.updateSelectedFileCount(
                     currentSize = selected.size
                 )
             }
@@ -65,13 +64,13 @@ fun NavGraphBuilder.routeHomeSend(
                 with(appState) {
                     if (isRemove) {
                         viewModel.removeFile(selectedFile.uid)
-                        decrementSelectedFileCount(
+                        updateSelectedFileCount(
                             currentSize = selected.size - 1
                         )
                     } else {
                         viewModel.addFile(selectedFile)
-                        incrementSelectedFileCount(
-                            currentSize = selected.size + 1
+                        updateSelectedFileCount(
+                            currentSize = selected.size +1
                         )
                     }
 
