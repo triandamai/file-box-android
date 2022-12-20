@@ -8,6 +8,7 @@ import app.trian.filebox.data.datasource.local.documents.DocumentDao
 import app.trian.filebox.data.datasource.local.documents.DocumentFile
 import app.trian.filebox.data.datasource.local.images.ImageDao
 import app.trian.filebox.data.datasource.local.images.ImageFile
+import app.trian.filebox.data.datasource.local.selected.SelectedDao
 import app.trian.filebox.data.datasource.local.videos.VideosDao
 import app.trian.filebox.data.datasource.local.videos.VideosFile
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -27,7 +28,8 @@ class StorageRepositoryImpl @Inject constructor(
     private val imageDao: ImageDao,
     private val videosDao: VideosDao,
     private val audioDao: AudioDao,
-    private val documentDao: DocumentDao
+    private val documentDao: DocumentDao,
+    private val selectedDao: SelectedDao
 ) : StorageRepository {
     //https://stackoverflow.com/questions/62782648/android-11-scoped-storage-permissions
     override suspend fun syncDocumentFromStorage() {
@@ -131,4 +133,5 @@ class StorageRepositoryImpl @Inject constructor(
         val data = audioDao.getAll()
         emit(data)
     }.flowOn(Dispatchers.IO)
+
 }

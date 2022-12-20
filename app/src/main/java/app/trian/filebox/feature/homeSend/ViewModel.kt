@@ -12,9 +12,12 @@ import app.trian.filebox.domain.GetSelectedFileUseCase
 import app.trian.filebox.domain.GetVideosUseCase
 import app.trian.filebox.domain.SaveSelectedFileUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.channelFlow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -55,19 +58,29 @@ class HomeSendViewModel @Inject constructor(
         started = SharingStarted.WhileSubscribed()
     )
 
-    val selectedFile = getSelectedFileUseCase().flowOn(Dispatchers.IO)
+    private val _selectedFile =  MutableStateFlow<List<Long>>(listOf())
+    val selectedFile = _selectedFile.asStateFlow()
 
+    fun loadSelectedFile()= with(viewModelScope){
+        launch {
+            getSelectedFileUseCase().onEach {
+                _selectedFile.tryEmit(it)
+            }.collect()
+
+        }
+    }
 
     fun addFile(selected: SelectedFile) = with(viewModelScope) {
         launch {
-            Log.e("addFile", selected.toString())
             saveSelectedFileUseCase(selected)
+            loadSelectedFile()
         }
     }
 
     fun removeFile(id: Long) = with(viewModelScope) {
         launch {
             deleteSelectedFileUseCase(id)
+            loadSelectedFile()
         }
     }
 

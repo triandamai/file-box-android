@@ -1,11 +1,18 @@
 package app.trian.filebox.domain
 
 import app.trian.filebox.data.datasource.local.selected.SelectedDao
+import kotlinx.coroutines.flow.channelFlow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
 class GetSelectedFileUseCase @Inject constructor(
     private val selectedDao: SelectedDao
 ) {
 
-    operator fun invoke() = selectedDao.getAllId()
+    operator fun invoke() = channelFlow {
+        selectedDao.getAllId().onEach {
+            send(it.map { it.uid })
+        }.collect()
+    }
 }

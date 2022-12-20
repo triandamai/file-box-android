@@ -1,12 +1,10 @@
-package app.trian.filebox.composables
+package app.trian.filebox.base
 
 import android.util.Log
-import app.trian.filebox.BottomBarType
-import app.trian.filebox.FileBoxState
 
 fun FileBoxState.incrementSelectedFileCount(currentSize: Int=0) {
     with(this) {
-        changeBottomBar(BottomBarType.PICK_FILE)
+        showBottomBar(BottomBarType.PICK_FILE)
         selectedFileCount = currentSize
     }
 }
@@ -16,10 +14,10 @@ fun FileBoxState.decrementSelectedFileCount(currentSize:Int = 0) {
         selectedFileCount = currentSize
         Log.e("decrement",currentSize.toString())
         if (currentSize == 0) {
-            changeBottomBar(BottomBarType.BASIC)
+            showBottomBar(BottomBarType.BASIC)
             return
         }
-        changeBottomBar(BottomBarType.PICK_FILE)
+        showBottomBar(BottomBarType.PICK_FILE)
 
 
     }

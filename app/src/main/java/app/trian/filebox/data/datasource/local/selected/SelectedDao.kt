@@ -14,8 +14,8 @@ interface SelectedDao {
     @Query("SELECT * FROM selected_file")
     fun getAll(): List<SelectedFile>
 
-    @Query("SELECT uid FROM selected_file")
-    fun getAllId():Flow<List<Long>>
+    @Query("SELECT * FROM selected_file")
+    fun getAllId():Flow<List<SelectedFile>>
 
     @Query("DELETE FROM selected_file WHERE uid=:id")
     fun delete(id:Long)

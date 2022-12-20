@@ -16,4 +16,5 @@ interface StorageRepository {
     suspend fun getVideosFromDb(): Flow<List<VideosFile>>
     suspend fun syncAudiosFromStorage()
     suspend fun getAudiosFromDb(): Flow<List<AudioFile>>
+
 }

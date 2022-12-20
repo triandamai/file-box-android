@@ -6,7 +6,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import app.trian.filebox.FileBoxState
+import app.trian.filebox.base.FileBoxState
 
 
 object DetailFolder {

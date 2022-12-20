@@ -18,7 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import app.trian.filebox.BaseContainer
+import app.trian.filebox.base.BaseContainer
 import app.trian.filebox.composables.customTabIndicatorOffset
 import app.trian.filebox.data.datasource.local.audio.AudioFile
 import app.trian.filebox.data.datasource.local.documents.DocumentFile
@@ -46,10 +46,7 @@ internal fun ScreenHomeSend(
     audios: DataState<Map<String, List<AudioFile>>> = DataState.Empty,
     documents: DataState<Map<String, List<DocumentFile>>> = DataState.Empty,
     selectedFile: List<Long> = listOf(),
-    onSelectedImage: (SelectedFile, Boolean) -> Unit = { _, _ -> },
-    onSelectedVideo: (VideosFile) -> Unit = {},
-    onSelectedAudio: (AudioFile) -> Unit = {},
-    onSelectedDocuments: (DocumentFile) -> Unit = {},
+    onFileClicked: (SelectedFile, Boolean) -> Unit = { _, _ -> }
 ) {
     val tabs = listOf("PHOTOS", "VIDEOS", "AUDIO", "APPS", "CONTACT", "FILES")
     var selectedTab by remember {
@@ -106,21 +103,21 @@ internal fun ScreenHomeSend(
                 "PHOTOS" -> ContentImages(
                     data = images,
                     selectedFile = selectedFile,
-                    onItemSelected = onSelectedImage
+                    onItemSelected = onFileClicked
                 )
 
                 "VIDEOS" -> ContentVideos(
                     data = videos,
-                    onItemSelected = onSelectedVideo
+                    onItemSelected = onFileClicked
                 )
 
                 "AUDIO" -> ContentAudios(
                     data = audios,
-                    onItemSelected = onSelectedAudio
+                    onItemSelected = onFileClicked
                 )
                 "FILES" -> ContentDocuments(
                     data = documents,
-                    onItemSelected = onSelectedDocuments
+                    onItemSelected = onFileClicked
                 )
                 else -> {}
             }

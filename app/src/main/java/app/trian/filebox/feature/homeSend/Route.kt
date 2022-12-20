@@ -1,16 +1,17 @@
 package app.trian.filebox.feature.homeSend
 
-import android.util.Log
-import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
-import app.trian.filebox.FileBoxState
-import app.trian.filebox.composables.decrementSelectedFileCount
-import app.trian.filebox.composables.incrementSelectedFileCount
+import app.trian.filebox.base.BottomBarListener
+import app.trian.filebox.base.FileBoxState
+import app.trian.filebox.base.TAG_FAB
+import app.trian.filebox.base.decrementSelectedFileCount
+import app.trian.filebox.base.incrementSelectedFileCount
 import app.trian.filebox.data.models.DataState
 
 
@@ -28,8 +29,18 @@ fun NavGraphBuilder.routeHomeSend(
         val audios by viewModel.audios.collectAsState(initial = DataState.Loading)
         val documents by viewModel.documents.collectAsState(initial = DataState.Loading)
         val selected by viewModel.selectedFile.collectAsState(initial = listOf())
-        SideEffect {
-            Log.e("sas", selected.toString())
+
+        LaunchedEffect(key1 = appState) {
+            with(appState) {
+                addBottomBarListener(object : BottomBarListener {
+                    override fun onItemClicked(tag: String, data: Map<String, String>) {
+                        if(tag == TAG_FAB){
+
+                        }
+                    }
+
+                })
+            }
         }
 
         ScreenHomeSend(images = images,
@@ -37,30 +48,21 @@ fun NavGraphBuilder.routeHomeSend(
             audios = audios,
             documents = documents,
             selectedFile = selected,
-            onSelectedAudio = {
-                appState.incrementSelectedFileCount()
-            },
-            onSelectedDocuments = {
-                appState.incrementSelectedFileCount()
-            },
-            onSelectedImage = { image, isRemove ->
+            onFileClicked = { selectedFile, isRemove ->
                 with(appState) {
                     if (isRemove) {
-                        viewModel.removeFile(image.uid)
+                        viewModel.removeFile(selectedFile.uid)
                         decrementSelectedFileCount(
-                            currentSize = selected.size
+                            currentSize = selected.size - 1
                         )
                     } else {
-                        viewModel.addFile(image)
+                        viewModel.addFile(selectedFile)
                         incrementSelectedFileCount(
-                            currentSize = selected.size
+                            currentSize = selected.size + 1
                         )
                     }
 
                 }
-            },
-            onSelectedVideo = {
-                appState.incrementSelectedFileCount()
             })
     }
 }
