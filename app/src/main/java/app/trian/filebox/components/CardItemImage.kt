@@ -3,6 +3,7 @@ package app.trian.filebox.components
 import android.content.ContentUris
 import android.os.Build
 import android.provider.MediaStore
+import android.util.Log
 import android.util.Size
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
@@ -11,10 +12,15 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
+import androidx.compose.material3.RadioButtonColors
+import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
@@ -25,7 +31,7 @@ import app.trian.filebox.BaseContainer
 fun CardItemImage(
     name: String = "",
     id: Long=0,
-    selected:Boolean=false,
+    selected:()->Boolean ={false},
     onClick:()->Unit={}
 ) {
     val ctx = LocalContext.current
@@ -58,8 +64,13 @@ fun CardItemImage(
         }
         RadioButton(
             modifier = Modifier.align(Alignment.TopStart),
-            selected = selected,
-            onClick = onClick
+            selected = selected(),
+            onClick = onClick,
+            enabled=true,
+            colors = RadioButtonDefaults.colors(
+                selectedColor = MaterialTheme.colorScheme.primary,
+                unselectedColor = Color.LightGray
+            )
         )
     }
 }
@@ -77,7 +88,8 @@ fun PreviewCardItemFile() {
                 items(1) {
                     CardItemImage(
                         name = "",
-                        0
+                        0,
+                        selected = {true}
                     )
                 }
             })

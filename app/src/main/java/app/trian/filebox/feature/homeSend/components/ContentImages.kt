@@ -1,11 +1,13 @@
 package app.trian.filebox.feature.homeSend.components
 
+import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import app.trian.filebox.BaseContainer
@@ -14,6 +16,7 @@ import app.trian.filebox.components.EmptyScreen
 import app.trian.filebox.components.LoadingScreen
 import app.trian.filebox.composables.gridItems
 import app.trian.filebox.data.datasource.local.images.ImageFile
+import app.trian.filebox.data.datasource.local.selected.SelectedFile
 import app.trian.filebox.data.models.DataState
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -21,9 +24,10 @@ import app.trian.filebox.data.models.DataState
 fun ContentImages(
     modifier: Modifier = Modifier,
     data: DataState<Map<String, List<ImageFile>>> = DataState.Loading,
-    selectedFile: List<Long> = listOf(0),
-    onItemSelected: (ImageFile) -> Unit = {}
+    selectedFile: List<Long> = listOf(),
+    onItemSelected: (SelectedFile, Boolean) -> Unit = { _, _ -> }
 ) {
+
 
     when (data) {
         is DataState.Data -> {
@@ -41,9 +45,20 @@ fun ContentImages(
                             CardItemImage(
                                 name = file.name,
                                 id = file.uid,
-                                selected = file.uid in selectedFile,
+                                selected = {
+                                    file.uid in selectedFile
+                                },
                                 onClick = {
-                                    onItemSelected(file)
+                                    val exist = file.uid in selectedFile
+                                    onItemSelected(SelectedFile(
+                                        uid = file.uid,
+                                        name = file.name,
+                                        size = file.size,
+                                        date = file.date,
+                                        uri = file.uri,
+                                        path = file.path,
+                                        mime = file.mime
+                                    ), exist)
                                 }
                             )
                         }

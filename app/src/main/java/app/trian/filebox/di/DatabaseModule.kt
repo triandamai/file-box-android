@@ -6,6 +6,7 @@ import app.trian.filebox.data.datasource.local.FileBoxDatabase
 import app.trian.filebox.data.datasource.local.audio.AudioDao
 import app.trian.filebox.data.datasource.local.documents.DocumentDao
 import app.trian.filebox.data.datasource.local.images.ImageDao
+import app.trian.filebox.data.datasource.local.selected.SelectedDao
 import app.trian.filebox.data.datasource.local.videos.VideosDao
 import dagger.Module
 import dagger.Provides
@@ -18,22 +19,27 @@ import dagger.hilt.components.SingletonComponent
 object DatabaseModule {
     @Provides
     fun provideLocalDatabase(
-        @ApplicationContext appContext:Context,
-    ):FileBoxDatabase = Room.databaseBuilder(
+        @ApplicationContext appContext: Context,
+    ): FileBoxDatabase = Room.databaseBuilder(
         appContext,
         FileBoxDatabase::class.java,
         FileBoxDatabase.dbName
-    ).build()
+    )
+        .fallbackToDestructiveMigration()
+        .build()
 
     @Provides
-    fun provideImagesDao(db:FileBoxDatabase):ImageDao = db.imagesDao()
+    fun provideImagesDao(db: FileBoxDatabase): ImageDao = db.imagesDao()
 
     @Provides
-    fun provideVideosDao(db:FileBoxDatabase):VideosDao = db.videosDao()
+    fun provideVideosDao(db: FileBoxDatabase): VideosDao = db.videosDao()
 
     @Provides
-    fun provideAudiosDao(db:FileBoxDatabase):AudioDao = db.audioDao()
+    fun provideAudiosDao(db: FileBoxDatabase): AudioDao = db.audioDao()
 
     @Provides
-    fun provideDocumentDao(db:FileBoxDatabase):DocumentDao = db.documentDao()
+    fun provideDocumentDao(db: FileBoxDatabase): DocumentDao = db.documentDao()
+
+    @Provides
+    fun provideSelectedDao(db: FileBoxDatabase): SelectedDao = db.selectedDao()
 }

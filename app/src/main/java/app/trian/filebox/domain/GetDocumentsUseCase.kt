@@ -14,7 +14,7 @@ class GetDocumentsUseCase @Inject constructor(
     private val storageRepository: StorageRepository
 ) {
 
-    suspend operator fun invoke() = channelFlow {
+    operator fun invoke() = channelFlow {
         send(DataState.Loading)
         storageRepository.getDocumentFromDb().onEach { documents ->
             val groupedData = documents.groupBy { it.path }

@@ -1,21 +1,24 @@
 package app.trian.filebox.feature.homeSend
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import app.trian.filebox.data.datasource.local.audio.AudioFile
-import app.trian.filebox.data.datasource.local.documents.DocumentFile
-import app.trian.filebox.data.datasource.local.images.ImageFile
-import app.trian.filebox.data.datasource.local.videos.VideosFile
-import app.trian.filebox.data.models.DataState
+import app.trian.filebox.data.datasource.local.selected.SelectedDao
+import app.trian.filebox.data.datasource.local.selected.SelectedFile
+import app.trian.filebox.domain.DeleteSelectedFileUseCase
 import app.trian.filebox.domain.GetAudiosUseCase
 import app.trian.filebox.domain.GetDocumentsUseCase
 import app.trian.filebox.domain.GetImagesUseCase
+import app.trian.filebox.domain.GetSelectedFileUseCase
 import app.trian.filebox.domain.GetVideosUseCase
+import app.trian.filebox.domain.SaveSelectedFileUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -24,65 +27,50 @@ class HomeSendViewModel @Inject constructor(
     private val getImagesUseCase: GetImagesUseCase,
     private val getVideosUseCase: GetVideosUseCase,
     private val getAudiosUseCase: GetAudiosUseCase,
-    private val getDocumentsUseCase: GetDocumentsUseCase
+    private val getDocumentsUseCase: GetDocumentsUseCase,
+    private val getSelectedFileUseCase: GetSelectedFileUseCase,
+    private val saveSelectedFileUseCase: SaveSelectedFileUseCase,
+    private val deleteSelectedFileUseCase: DeleteSelectedFileUseCase,
 ) : ViewModel() {
 
-    private val _images =
-        MutableStateFlow<DataState<Map<String, List<ImageFile>>>>(DataState.Loading)
-    val images = _images.asStateFlow()
+    val images = getImagesUseCase().shareIn(
+        scope = viewModelScope,
+        replay = 1,
+        started = SharingStarted.WhileSubscribed()
+    )
 
-    private val _videos =
-        MutableStateFlow<DataState<Map<String, List<VideosFile>>>>(DataState.Loading)
-    val videos = _videos.asStateFlow()
+    val videos = getVideosUseCase().shareIn(
+        scope = viewModelScope,
+        replay = 1,
+        started = SharingStarted.WhileSubscribed()
+    )
 
-    private val _audio =
-        MutableStateFlow<DataState<Map<String, List<AudioFile>>>>(DataState.Loading)
-    val audios = _audio.asStateFlow()
+    val audios = getAudiosUseCase()
+        .shareIn(
+            scope = viewModelScope,
+            replay = 1,
+            started = SharingStarted.WhileSubscribed()
+        )
 
-    private val _documents =
-        MutableStateFlow<DataState<Map<String, List<DocumentFile>>>>(DataState.Loading)
-    val documents = _documents.asStateFlow()
+    val documents = getDocumentsUseCase().shareIn(
+        scope = viewModelScope,
+        replay = 1,
+        started = SharingStarted.WhileSubscribed()
+    )
 
-    init {
-        getImages()
-        getAudio()
-        getVideos()
-        getDocuments()
-    }
+    val selectedFile = getSelectedFileUseCase().flowOn(Dispatchers.IO)
 
-    fun getImages() = with(viewModelScope) {
-        _images.tryEmit(DataState.Loading)
+
+    fun addFile(selected: SelectedFile) = with(viewModelScope) {
         launch {
-            getImagesUseCase().onEach {
-                _images.tryEmit(it)
-            }.collect()
+            Log.e("addFile", selected.toString())
+            saveSelectedFileUseCase(selected)
         }
     }
 
-    fun getVideos() = with(viewModelScope) {
-        _videos.tryEmit(DataState.Loading)
+    fun removeFile(id: Long) = with(viewModelScope) {
         launch {
-            getVideosUseCase().onEach {
-                _videos.tryEmit(it)
-            }.collect()
-        }
-    }
-
-    fun getAudio() = with(viewModelScope) {
-        _audio.tryEmit(DataState.Loading)
-        launch {
-            getAudiosUseCase().onEach {
-                _audio.tryEmit(it)
-            }.collect()
-        }
-    }
-
-    fun getDocuments() = with(viewModelScope){
-        _documents.tryEmit(DataState.Loading)
-        launch {
-            getDocumentsUseCase().onEach {
-                _documents.tryEmit(it)
-            }.collect()
+            deleteSelectedFileUseCase(id)
         }
     }
 

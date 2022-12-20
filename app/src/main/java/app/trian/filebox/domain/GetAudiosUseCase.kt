@@ -14,7 +14,7 @@ class GetAudiosUseCase @Inject constructor(
     private val storageRepository: StorageRepository
 ) {
 
-    suspend operator fun invoke() = channelFlow {
+    operator fun invoke() = channelFlow {
         send(DataState.Loading)
         storageRepository.getAudiosFromDb().onEach { audios ->
             val groupedData = audios.groupBy { it.path }

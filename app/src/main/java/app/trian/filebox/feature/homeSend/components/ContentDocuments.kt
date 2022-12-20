@@ -14,6 +14,7 @@ import app.trian.filebox.components.EmptyScreen
 import app.trian.filebox.components.LoadingScreen
 import app.trian.filebox.composables.gridItems
 import app.trian.filebox.data.datasource.local.documents.DocumentFile
+import app.trian.filebox.data.datasource.local.selected.SelectedFile
 import app.trian.filebox.data.models.DataState
 
 @OptIn(ExperimentalFoundationApi::class)

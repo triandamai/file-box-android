@@ -6,6 +6,8 @@ import app.trian.filebox.data.datasource.local.audio.AudioDao
 import app.trian.filebox.data.datasource.local.audio.AudioFile
 import app.trian.filebox.data.datasource.local.documents.DocumentDao
 import app.trian.filebox.data.datasource.local.documents.DocumentFile
+import app.trian.filebox.data.datasource.local.selected.SelectedDao
+import app.trian.filebox.data.datasource.local.selected.SelectedFile
 import app.trian.filebox.data.datasource.local.images.ImageDao
 import app.trian.filebox.data.datasource.local.images.ImageFile
 import app.trian.filebox.data.datasource.local.videos.VideosDao
@@ -16,9 +18,10 @@ import app.trian.filebox.data.datasource.local.videos.VideosFile
         VideosFile::class,
         AudioFile::class,
         ImageFile::class,
-        DocumentFile::class
+        DocumentFile::class,
+        SelectedFile::class
     ],
-    version = 2,
+    version = 3,
     exportSchema = true
 )
 abstract class FileBoxDatabase : RoomDatabase() {
@@ -26,6 +29,7 @@ abstract class FileBoxDatabase : RoomDatabase() {
     abstract fun videosDao(): VideosDao
     abstract fun audioDao(): AudioDao
     abstract fun documentDao(): DocumentDao
+    abstract fun selectedDao():SelectedDao
 
 
     companion object {
