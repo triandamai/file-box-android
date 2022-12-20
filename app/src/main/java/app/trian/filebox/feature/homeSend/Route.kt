@@ -55,7 +55,8 @@ fun NavGraphBuilder.routeHomeSend(
         })
 
 
-        ScreenHomeSend(images = images,
+        ScreenHomeSend(
+            images = images,
             videos = videos,
             audios = audios,
             documents = documents,
