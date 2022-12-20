@@ -18,6 +18,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -133,5 +134,9 @@ class StorageRepositoryImpl @Inject constructor(
         val data = audioDao.getAll()
         emit(data)
     }.flowOn(Dispatchers.IO)
+
+    override suspend fun clearSelectedFile()= withContext(Dispatchers.IO) {
+        selectedDao.deleteAll()
+    }
 
 }

@@ -1,8 +1,10 @@
 package app.trian.filebox.feature.homeSend
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.trian.filebox.data.datasource.local.selected.SelectedFile
+import app.trian.filebox.data.repository.StorageRepository
 import app.trian.filebox.domain.DeleteSelectedFileUseCase
 import app.trian.filebox.domain.GetAudiosUseCase
 import app.trian.filebox.domain.GetDocumentsUseCase
@@ -29,6 +31,7 @@ class HomeSendViewModel @Inject constructor(
     private val getSelectedFileUseCase: GetSelectedFileUseCase,
     private val saveSelectedFileUseCase: SaveSelectedFileUseCase,
     private val deleteSelectedFileUseCase: DeleteSelectedFileUseCase,
+    private val storageRepository: StorageRepository
 ) : ViewModel() {
 
     val images = getImagesUseCase().shareIn(
@@ -59,9 +62,14 @@ class HomeSendViewModel @Inject constructor(
     private val _selectedFile = MutableStateFlow<List<Long>>(listOf())
     val selectedFile = _selectedFile.asStateFlow()
 
+    init {
+        loadSelectedFile()
+    }
+
     fun loadSelectedFile() = with(viewModelScope) {
         launch {
             getSelectedFileUseCase().onEach {
+                Log.e("hehe",it.toString())
                 _selectedFile.tryEmit(it)
             }.collect()
 
@@ -78,6 +86,13 @@ class HomeSendViewModel @Inject constructor(
     fun removeFile(id: Long) = with(viewModelScope) {
         launch {
             deleteSelectedFileUseCase(id)
+            loadSelectedFile()
+        }
+    }
+
+    fun clearSelectedFile() = with(viewModelScope) {
+        launch {
+            storageRepository.clearSelectedFile()
             loadSelectedFile()
         }
     }

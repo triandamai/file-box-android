@@ -23,7 +23,7 @@ fun ContentImages(
     modifier: Modifier = Modifier,
     data: DataState<Map<String, List<ImageFile>>> = DataState.Loading,
     selectedFile: List<Long> = listOf(),
-    onItemSelected: (SelectedFile, Boolean) -> Unit = { _, _ -> }
+    onItemSelected: (SelectedFile, Boolean) -> Unit = { _, _ -> },
 ) {
 
 

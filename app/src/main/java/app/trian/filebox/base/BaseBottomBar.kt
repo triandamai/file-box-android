@@ -34,8 +34,13 @@ fun BaseBottomBar(
             BottomBarType.PICK_FILE -> {
 
                 BottomBarSelectFile(
-                    message = "${appState.selectedFileCount} File Selected",
-                    onDetailClicked = {},
+                    message = "$selectedFileCount",
+                    onDeleteClicked = {
+                        onBottomBarItemClick(TAG_DELETE_ALL_SELECTED_FILE)
+                    },
+                    onDetailClicked = {
+                        onBottomBarItemClick(TAG_DETAIL_ALL_SELECTED_FILE)
+                    },
                     onShareClicked = {
                         onBottomBarItemClick(TAG_FAB)
                     }

@@ -9,11 +9,10 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import app.trian.filebox.base.FileBoxState
-import app.trian.filebox.base.TAG_FAB
+import app.trian.filebox.base.TAG_DELETE_ALL_SELECTED_FILE
 import app.trian.filebox.base.decrementSelectedFileCount
 import app.trian.filebox.base.incrementSelectedFileCount
 import app.trian.filebox.data.models.DataState
-import kotlinx.coroutines.launch
 
 
 object HomeSend {
@@ -35,14 +34,25 @@ fun NavGraphBuilder.routeHomeSend(
         LaunchedEffect(key1 = appState) {
             with(appState) {
                 addBottomBarListener { tag, _ ->
-                    if (tag == TAG_FAB) {
-                        scope.launch {
-                            showSnackbar("Share dong")
+                    when (tag) {
+                        TAG_DELETE_ALL_SELECTED_FILE -> {
+                            viewModel.clearSelectedFile()
+                            decrementSelectedFileCount(
+                                currentSize = 0
+                            )
                         }
+
                     }
                 }
             }
         }
+        LaunchedEffect(key1 = selected, block = {
+            if (selected.isNotEmpty()) {
+                appState.incrementSelectedFileCount(
+                    currentSize = selected.size
+                )
+            }
+        })
 
 
         ScreenHomeSend(images = images,
