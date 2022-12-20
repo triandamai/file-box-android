@@ -1,4 +1,4 @@
-package app.trian.filebox
+package app.trian.filebox.base
 
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHostState
@@ -8,32 +8,39 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import app.trian.filebox.composables.BottomBarListener
 
 enum class BottomBarType {
-    BLANK,
-    BASIC
+    HIDE,
+    BASIC,
+    PICK_FILE,
+}
+
+enum class TopAppBarType {
+    HIDE,
+    BASIC,
 }
 
 class FileBoxState internal constructor() {
-    var showAppbar by mutableStateOf(false)
-    var bottomBarType by mutableStateOf(BottomBarType.BLANK)
+    var topAppBarType by mutableStateOf(TopAppBarType.HIDE)
+    var bottomBarType by mutableStateOf(BottomBarType.HIDE)
     var showNavigationRail by mutableStateOf(false)
     var activeRoute by mutableStateOf("")
     var snackbarHostState by mutableStateOf(SnackbarHostState())
+    var selectedFileCount by mutableStateOf(0)
 
-    private var onBottomBarListener: BottomBarListener<String>? = null
+    private var onBottomBarListener: BottomBarListener? = null
+    private var onTopAppBarListener: TopAppBarListener? = null
 
 
     fun hideAppbar() {
-        if (showAppbar) {
-            showAppbar = false
+        if (topAppBarType != TopAppBarType.HIDE) {
+            topAppBarType = TopAppBarType.HIDE
         }
     }
 
-    fun showAppbar() {
-        if (!showAppbar) {
-            showAppbar = true
+    fun showAppbar(appBarType: TopAppBarType) {
+        if (topAppBarType != appBarType) {
+            topAppBarType = appBarType
         }
     }
 
@@ -50,12 +57,13 @@ class FileBoxState internal constructor() {
     }
 
     fun hideBottomBar() {
-        if (bottomBarType != BottomBarType.BLANK) {
-            bottomBarType = BottomBarType.BLANK
+        if (bottomBarType != BottomBarType.HIDE) {
+            bottomBarType = BottomBarType.HIDE
         }
     }
 
-    fun changeBottomBar(type: BottomBarType) {
+    fun showBottomBar(type: BottomBarType) {
+
         if (bottomBarType != type) {
             bottomBarType = type
         }
@@ -67,13 +75,22 @@ class FileBoxState internal constructor() {
         }
     }
 
-    fun addBottomBarListener(listener: BottomBarListener<String>) {
+    fun addBottomBarListener(listener: BottomBarListener) {
         onBottomBarListener = listener
     }
 
-    fun onBottomBarClick(data: String) {
-        onBottomBarListener?.onItemClicked(data)
+    fun addTopAppBarListener(listener: TopAppBarListener) {
+        onTopAppBarListener = listener
     }
+
+    fun onBottomBarItemClick(tag: String = "", data: Map<String, String> = mapOf()) {
+        onBottomBarListener?.onItemClicked(tag, data)
+    }
+
+    fun onTopAppBarItemClick(tag: String = "", data: Map<String, String> = mapOf()) {
+        onTopAppBarListener?.onItemClicked(tag, data)
+    }
+
 
     suspend fun showSnackbar(message: String): SnackbarResult = with(snackbarHostState) {
         showSnackbar(message)

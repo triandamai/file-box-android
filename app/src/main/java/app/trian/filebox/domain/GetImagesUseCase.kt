@@ -1,7 +1,9 @@
 package app.trian.filebox.domain
 
+import app.trian.filebox.data.models.DataState
 import app.trian.filebox.data.repository.StorageRepository
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flowOn
@@ -12,9 +14,17 @@ class GetImagesUseCase @Inject constructor(
     private val storageRepository: StorageRepository
 ) {
 
-    suspend operator fun invoke() = channelFlow {
+    operator fun invoke() = channelFlow {
+        send(DataState.Loading)
         storageRepository.getImagesFromDb().onEach { images ->
-            send(images.groupBy { it.path })
-        }.collect()
+            val groupData = images.groupBy { it.path }
+            if (groupData.isEmpty()) {
+                send(DataState.Empty)
+            } else {
+                send(DataState.Data(groupData))
+            }
+        }
+            .catch { send(DataState.Error(it.message.orEmpty())) }
+            .collect()
     }.flowOn(Dispatchers.IO)
 }

@@ -10,6 +10,6 @@ interface DocumentDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertDocuments(vararg images: DocumentFile)
 
-    @Query("SELECT * FROM audio_file")
+    @Query("SELECT * FROM document_file")
     fun getAll(): List<DocumentFile>
 }

@@ -29,7 +29,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import app.trian.filebox.BaseContainer
+import app.trian.filebox.base.BaseContainer
 import app.trian.filebox.feature.homeHistory.HomeHistory
 import app.trian.filebox.feature.homeReceive.HomeReceive
 import app.trian.filebox.feature.homeSend.HomeSend

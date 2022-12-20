@@ -1,4 +1,4 @@
-package app.trian.filebox
+package app.trian.filebox.base
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
