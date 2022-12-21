@@ -6,3 +6,5 @@ fun interface BottomBarListener {
 
 const val TAG_FAB = "FAB"
 const val TAG_ITEM = "ITEM"
+const val TAG_DELETE_ALL_SELECTED_FILE = "TAG_DELETE_ALL_SELECTED_FILE"
+const val TAG_DETAIL_ALL_SELECTED_FILE = "TAG_DETAIL_ALL_SELECTED_FILE"

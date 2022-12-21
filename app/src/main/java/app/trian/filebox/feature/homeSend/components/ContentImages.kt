@@ -1,29 +1,35 @@
 package app.trian.filebox.feature.homeSend.components
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import app.trian.filebox.base.BaseContainer
 import app.trian.filebox.components.CardItemImage
 import app.trian.filebox.components.EmptyScreen
 import app.trian.filebox.components.LoadingScreen
 import app.trian.filebox.composables.gridItems
-import app.trian.filebox.data.datasource.local.images.ImageFile
 import app.trian.filebox.data.datasource.local.selected.SelectedFile
 import app.trian.filebox.data.models.DataState
+import app.trian.filebox.data.models.FileModel
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ContentImages(
     modifier: Modifier = Modifier,
-    data: DataState<Map<String, List<ImageFile>>> = DataState.Loading,
+    data: DataState<Map<String, List<FileModel>>> = DataState.Loading,
     selectedFile: List<Long> = listOf(),
-    onItemSelected: (SelectedFile, Boolean) -> Unit = { _, _ -> }
+    onItemSelected: (SelectedFile, Boolean) -> Unit = { _, _ -> },
 ) {
 
 
@@ -34,27 +40,39 @@ fun ContentImages(
                 content = {
                     data.data.forEach { (group, fileModels) ->
                         stickyHeader {
-                            Text(
-                                text = group,
-                                color = MaterialTheme.colorScheme.onBackground
-                            )
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(
+                                        horizontal = 16.dp,
+                                        vertical = 4.dp
+                                    ),
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.Start
+                            ) {
+                                Text(
+                                    text = group,
+                                    color = MaterialTheme.colorScheme.onBackground,
+                                    style = MaterialTheme.typography.titleMedium
+                                )
+                            }
                         }
                         gridItems(fileModels, columnCount = 4) { file ->
                             CardItemImage(
                                 name = file.name,
-                                id = file.uid,
+                                id = file.id,
                                 selected = {
-                                    file.uid in selectedFile
+                                    file.id in selectedFile
                                 },
                                 onClick = {
-                                    val exist = file.uid in selectedFile
+                                    val exist = file.id in selectedFile
                                     onItemSelected(
                                         SelectedFile(
-                                            uid = file.uid,
+                                            uid = file.id,
                                             name = file.name,
                                             size = file.size,
                                             date = file.date,
-                                            uri = file.uri,
+                                            uri = file.uri.toString(),
                                             path = file.path,
                                             mime = file.mime
                                         ), exist
@@ -75,10 +93,35 @@ fun ContentImages(
 
 @Preview
 @Composable
-fun PreviewContetnImages() {
+fun PreviewContentImages() {
     BaseContainer {
         ContentImages(
-            data = DataState.Loading
+            data = DataState.Data(
+                mapOf(
+                    "Internal" to listOf(
+                        FileModel(
+                            id = 0,
+                            name = "bobo",
+                        ),
+                        FileModel(
+                            id = 0,
+                            name = "bobo",
+                        ),
+                        FileModel(
+                            id = 0,
+                            name = "bobo",
+                        ),
+                        FileModel(
+                            id = 0,
+                            name = "bobo",
+                        ),
+                        FileModel(
+                            id = 0,
+                            name = "bobo",
+                        )
+                    )
+                )
+            )
         )
     }
 }

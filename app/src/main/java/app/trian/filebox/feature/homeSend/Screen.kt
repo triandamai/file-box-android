@@ -20,12 +20,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import app.trian.filebox.base.BaseContainer
 import app.trian.filebox.composables.customTabIndicatorOffset
-import app.trian.filebox.data.datasource.local.audio.AudioFile
-import app.trian.filebox.data.datasource.local.documents.DocumentFile
-import app.trian.filebox.data.datasource.local.images.ImageFile
 import app.trian.filebox.data.datasource.local.selected.SelectedFile
-import app.trian.filebox.data.datasource.local.videos.VideosFile
 import app.trian.filebox.data.models.DataState
+import app.trian.filebox.data.models.FileModel
 import app.trian.filebox.feature.homeSend.components.ContentAudios
 import app.trian.filebox.feature.homeSend.components.ContentDocuments
 import app.trian.filebox.feature.homeSend.components.ContentImages
@@ -41,10 +38,10 @@ import kotlinx.coroutines.launch
 )
 @Composable
 internal fun ScreenHomeSend(
-    images: DataState<Map<String, List<ImageFile>>> = DataState.Empty,
-    videos: DataState<Map<String, List<VideosFile>>> = DataState.Empty,
-    audios: DataState<Map<String, List<AudioFile>>> = DataState.Empty,
-    documents: DataState<Map<String, List<DocumentFile>>> = DataState.Empty,
+    images: DataState<Map<String, List<FileModel>>> = DataState.Empty,
+    videos: DataState<Map<String, List<FileModel>>> = DataState.Empty,
+    audios: DataState<Map<String, List<FileModel>>> = DataState.Empty,
+    documents: DataState<Map<String, List<FileModel>>> = DataState.Empty,
     selectedFile: List<Long> = listOf(),
     onFileClicked: (SelectedFile, Boolean) -> Unit = { _, _ -> }
 ) {

@@ -1,14 +1,13 @@
 package app.trian.filebox.feature.homeSend
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.trian.filebox.data.datasource.local.selected.SelectedFile
+import app.trian.filebox.data.repository.StorageRepository
 import app.trian.filebox.domain.DeleteSelectedFileUseCase
-import app.trian.filebox.domain.GetAudiosUseCase
-import app.trian.filebox.domain.GetDocumentsUseCase
 import app.trian.filebox.domain.GetImagesUseCase
 import app.trian.filebox.domain.GetSelectedFileUseCase
-import app.trian.filebox.domain.GetVideosUseCase
 import app.trian.filebox.domain.SaveSelectedFileUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -23,12 +22,10 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeSendViewModel @Inject constructor(
     private val getImagesUseCase: GetImagesUseCase,
-    private val getVideosUseCase: GetVideosUseCase,
-    private val getAudiosUseCase: GetAudiosUseCase,
-    private val getDocumentsUseCase: GetDocumentsUseCase,
     private val getSelectedFileUseCase: GetSelectedFileUseCase,
     private val saveSelectedFileUseCase: SaveSelectedFileUseCase,
     private val deleteSelectedFileUseCase: DeleteSelectedFileUseCase,
+    private val storageRepository: StorageRepository
 ) : ViewModel() {
 
     val images = getImagesUseCase().shareIn(
@@ -37,31 +34,17 @@ class HomeSendViewModel @Inject constructor(
         started = SharingStarted.WhileSubscribed()
     )
 
-    val videos = getVideosUseCase().shareIn(
-        scope = viewModelScope,
-        replay = 1,
-        started = SharingStarted.WhileSubscribed()
-    )
-
-    val audios = getAudiosUseCase()
-        .shareIn(
-            scope = viewModelScope,
-            replay = 1,
-            started = SharingStarted.WhileSubscribed()
-        )
-
-    val documents = getDocumentsUseCase().shareIn(
-        scope = viewModelScope,
-        replay = 1,
-        started = SharingStarted.WhileSubscribed()
-    )
-
     private val _selectedFile = MutableStateFlow<List<Long>>(listOf())
     val selectedFile = _selectedFile.asStateFlow()
+
+    init {
+        loadSelectedFile()
+    }
 
     fun loadSelectedFile() = with(viewModelScope) {
         launch {
             getSelectedFileUseCase().onEach {
+                Log.e("hehe", it.toString())
                 _selectedFile.tryEmit(it)
             }.collect()
 
@@ -78,6 +61,13 @@ class HomeSendViewModel @Inject constructor(
     fun removeFile(id: Long) = with(viewModelScope) {
         launch {
             deleteSelectedFileUseCase(id)
+            loadSelectedFile()
+        }
+    }
+
+    fun clearSelectedFile() = with(viewModelScope) {
+        launch {
+            storageRepository.clearSelectedFile()
             loadSelectedFile()
         }
     }

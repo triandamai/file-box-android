@@ -14,14 +14,14 @@ import app.trian.filebox.components.EmptyScreen
 import app.trian.filebox.components.LoadingScreen
 import app.trian.filebox.composables.gridItems
 import app.trian.filebox.data.datasource.local.selected.SelectedFile
-import app.trian.filebox.data.datasource.local.videos.VideosFile
 import app.trian.filebox.data.models.DataState
+import app.trian.filebox.data.models.FileModel
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ContentVideos(
     modifier: Modifier = Modifier,
-    data: DataState<Map<String, List<VideosFile>>> = DataState.Loading,
+    data: DataState<Map<String, List<FileModel>>> = DataState.Loading,
     onItemSelected: (SelectedFile, Boolean) -> Unit = { _, _ -> }
 ) {
     when (data) {
@@ -39,7 +39,7 @@ fun ContentVideos(
                         gridItems(fileModels, columnCount = 4) { file ->
                             CardItemImage(
                                 name = file.name,
-                                id = file.uid
+                                id = file.id
                             )
                         }
                     }

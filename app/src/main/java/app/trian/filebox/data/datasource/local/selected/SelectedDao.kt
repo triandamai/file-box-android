@@ -19,4 +19,7 @@ interface SelectedDao {
 
     @Query("DELETE FROM selected_file WHERE uid=:id")
     fun delete(id:Long)
+
+    @Query("DELETE FROM selected_file")
+    fun deleteAll()
 }
