@@ -15,16 +15,14 @@ class GetImagesUseCase @Inject constructor(
 ) {
 
     operator fun invoke() = channelFlow {
-        send(DataState.Loading)
-        storageRepository.getImagesFromDb().onEach { images ->
-            val groupData = images.groupBy { it.path }
-            if (groupData.isEmpty()) {
+        storageRepository.getAllImagesFromStorage().onEach { datas ->
+            val data = datas.groupBy { it.path }
+            if (data.isEmpty()) {
                 send(DataState.Empty)
             } else {
-                send(DataState.Data(groupData))
+                send(DataState.Data(data))
             }
-        }
-            .catch { send(DataState.Error(it.message.orEmpty())) }
+        }.catch { send(DataState.Error(it.message.orEmpty())) }
             .collect()
     }.flowOn(Dispatchers.IO)
 }

@@ -13,15 +13,15 @@ import app.trian.filebox.components.CardItemImage
 import app.trian.filebox.components.EmptyScreen
 import app.trian.filebox.components.LoadingScreen
 import app.trian.filebox.composables.gridItems
-import app.trian.filebox.data.datasource.local.images.ImageFile
 import app.trian.filebox.data.datasource.local.selected.SelectedFile
 import app.trian.filebox.data.models.DataState
+import app.trian.filebox.data.models.FileModel
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ContentImages(
     modifier: Modifier = Modifier,
-    data: DataState<Map<String, List<ImageFile>>> = DataState.Loading,
+    data: DataState<Map<String, List<FileModel>>> = DataState.Loading,
     selectedFile: List<Long> = listOf(),
     onItemSelected: (SelectedFile, Boolean) -> Unit = { _, _ -> },
 ) {
@@ -42,19 +42,19 @@ fun ContentImages(
                         gridItems(fileModels, columnCount = 4) { file ->
                             CardItemImage(
                                 name = file.name,
-                                id = file.uid,
+                                id = file.id,
                                 selected = {
-                                    file.uid in selectedFile
+                                    file.id in selectedFile
                                 },
                                 onClick = {
-                                    val exist = file.uid in selectedFile
+                                    val exist = file.id in selectedFile
                                     onItemSelected(
                                         SelectedFile(
-                                            uid = file.uid,
+                                            uid = file.id,
                                             name = file.name,
                                             size = file.size,
                                             date = file.date,
-                                            uri = file.uri,
+                                            uri = file.uri.toString(),
                                             path = file.path,
                                             mime = file.mime
                                         ), exist

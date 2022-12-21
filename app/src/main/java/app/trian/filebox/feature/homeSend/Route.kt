@@ -23,11 +23,7 @@ fun NavGraphBuilder.routeHomeSend(
 ) {
     composable(HomeSend.routeName) {
         val viewModel = hiltViewModel<HomeSendViewModel>()
-        val scope = rememberCoroutineScope()
         val images by viewModel.images.collectAsState(initial = DataState.Loading)
-        val videos by viewModel.videos.collectAsState(initial = DataState.Loading)
-        val audios by viewModel.audios.collectAsState(initial = DataState.Loading)
-        val documents by viewModel.documents.collectAsState(initial = DataState.Loading)
         val selected by viewModel.selectedFile.collectAsState(initial = listOf())
 
         LaunchedEffect(key1 = appState) {
@@ -56,9 +52,9 @@ fun NavGraphBuilder.routeHomeSend(
 
         ScreenHomeSend(
             images = images,
-            videos = videos,
-            audios = audios,
-            documents = documents,
+            videos = DataState.Loading,
+            audios = DataState.Loading,
+            documents = DataState.Loading,
             selectedFile = selected,
             onFileClicked = { selectedFile, isRemove ->
                 with(appState) {

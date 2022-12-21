@@ -8,18 +8,12 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.compose.rememberNavController
-import androidx.work.OneTimeWorkRequestBuilder
-import androidx.work.WorkManager
 import app.trian.filebox.base.BaseBottomBar
 import app.trian.filebox.base.BaseContainer
 import app.trian.filebox.base.BaseTopAppBar
 import app.trian.filebox.base.listenChanges
 import app.trian.filebox.base.rememberFileBoxApplication
 import app.trian.filebox.feature.signin.SignIn
-import app.trian.filebox.worker.AudiosSyncWorker
-import app.trian.filebox.worker.DocumentsSyncWorker
-import app.trian.filebox.worker.ImagesSyncWorker
-import app.trian.filebox.worker.VideosSyncWorker
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -65,30 +59,6 @@ class MainActivity : ComponentActivity() {
 
     override fun onStart() {
         super.onStart()
-        startSync()
-    }
-
-
-    private fun startSync() {
-        val images = OneTimeWorkRequestBuilder<ImagesSyncWorker>()
-            .build()
-        val videos = OneTimeWorkRequestBuilder<VideosSyncWorker>()
-            .build()
-        val audio = OneTimeWorkRequestBuilder<AudiosSyncWorker>()
-            .build()
-        val document = OneTimeWorkRequestBuilder<DocumentsSyncWorker>()
-            .build()
-
-        WorkManager.getInstance(this)
-            .beginWith(
-                listOf(
-                    images,
-                    videos,
-                    audio,
-                    document
-                )
-            )
-            .enqueue()
     }
 
 

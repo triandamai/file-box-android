@@ -5,6 +5,7 @@ import android.content.ContentUris
 import android.content.Context
 import android.os.Build
 import android.provider.MediaStore
+import android.util.Log
 import android.util.Size
 import app.trian.filebox.data.models.FileModel
 import kotlinx.coroutines.Dispatchers
@@ -74,34 +75,14 @@ class StorageDataSource {
                         val getFolder = this[this.size - 2]
                         rs = if (getFolder == "0") "Internal" else getFolder
                     }
-                    val contentUri = ContentUris.withAppendedId(
-                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI, id
-                    )
-                    // add the URI to the list
-                    // generate the thumbnail
-                    val thumbnail = try {
-
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                            val widthSize = 480
-                            val heightSize = 480
-                            val loadThumbnail = appContext.contentResolver.loadThumbnail(
-                                contentUri, Size(widthSize, heightSize), null
-                            )
-                            loadThumbnail
-                        } else {
-                            null
-                        }
-                    } catch (e: Exception) {
-                        null
-                    }
 
                     val fileModel = FileModel(
                         id = id,
                         name = name,
                         mime = mime,
                         size = size,
-                        uri = contentUri,
-                        thumb = thumbnail,
+                        uri = null,
+                        thumb = null,
                         date = date,
                         path = rs
                     )
@@ -137,63 +118,55 @@ class StorageDataSource {
 
         cursor?.use {
             it.let {
-                val idColumn = it.getColumnIndexOrThrow(MediaStore.Images.ImageColumns._ID)
-                val nameColumn =
-                    it.getColumnIndexOrThrow(MediaStore.Images.ImageColumns.DISPLAY_NAME)
-                val mimeColumn =
-                    it.getColumnIndexOrThrow(MediaStore.Images.ImageColumns.MIME_TYPE)
-                val dataColumn = it.getColumnIndexOrThrow(MediaStore.Images.ImageColumns.DATA)
-                val sizeColumn = it.getColumnIndexOrThrow(MediaStore.Images.ImageColumns.SIZE)
-                val dateColumn = it.getColumnIndexOrThrow(MediaStore.Images.ImageColumns.DATE_ADDED)
 
-                while (it.moveToNext()) {
-                    val id = it.getLong(idColumn)
-                    val name = it.getString(nameColumn)
-                    val mime = it.getString(mimeColumn)
-                    val dataPath = it.getString(dataColumn)
-                    val size = it.getString(sizeColumn)
-                    val date = it.getString(dateColumn)
-                    var rs = ""
-                    dataPath.split("/").apply {
-                        val getFolder = this[this.size - 2]
-                        rs = if (getFolder == "0") "Internal" else getFolder
-                    }
-                    val contentUri = ContentUris.withAppendedId(
-                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI, id
-                    )
-                    // add the URI to the list
-                    // generate the thumbnail
-                    val thumbnail = try {
 
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                            val widthSize = 480
-                            val heightSize = 480
-                            val loadThumbnail = appContext.contentResolver.loadThumbnail(
-                                contentUri, Size(widthSize, heightSize), null
-                            )
-                            loadThumbnail
-                        } else {
-                            null
+                if(it.moveToLast()) {
+                    do {
+
+                        val idColumn = it.getColumnIndexOrThrow(MediaStore.Images.ImageColumns._ID)
+                        val nameColumn =
+                            it.getColumnIndexOrThrow(MediaStore.Images.ImageColumns.DISPLAY_NAME)
+                        val mimeColumn =
+                            it.getColumnIndexOrThrow(MediaStore.Images.ImageColumns.MIME_TYPE)
+                        val dataColumn =
+                            it.getColumnIndexOrThrow(MediaStore.Images.ImageColumns.DATA)
+                        val sizeColumn =
+                            it.getColumnIndexOrThrow(MediaStore.Images.ImageColumns.SIZE)
+                        val dateColumn =
+                            it.getColumnIndexOrThrow(MediaStore.Images.ImageColumns.DATE_ADDED)
+
+                        val id = it.getLong(idColumn)
+                        val name = it.getString(nameColumn)
+                        val mime = it.getString(mimeColumn)
+                        val dataPath = it.getString(dataColumn)
+                        val size = it.getString(sizeColumn)
+                        val date = it.getString(dateColumn)
+                        var rs = ""
+                        dataPath.split("/").apply {
+                            val getFolder = this[this.size - 2]
+                            rs = if (getFolder == "0") "Internal" else getFolder
                         }
-                    } catch (e: Exception) {
-                        null
-                    }
 
-                    val fileModel = FileModel(
-                        id = id,
-                        name = name,
-                        mime = mime,
-                        size = size,
-                        uri = contentUri,
-                        thumb = thumbnail,
-                        date = date,
-                        path = rs
-                    )
-                    data.add(fileModel)
+                        // add the URI to the list
+                        // generate the thumbnail
+
+                        val fileModel = FileModel(
+                            id = id,
+                            name = name,
+                            mime = mime,
+                            size = size,
+                            uri = null,
+                            thumb = null,
+                            date = date,
+                            path = rs
+                        )
+                        data.add(fileModel)
+                    } while (it.moveToPrevious())
+                    it.close()
                 }
+                emit(data)
             }
 
-            emit(data)
         }
     }.flowOn(Dispatchers.IO)
 
@@ -242,34 +215,13 @@ class StorageDataSource {
                         val getFolder = this[this.size - 2]
                         rs = if (getFolder == "0") "Internal" else getFolder
                     }
-                    val contentUri = ContentUris.withAppendedId(
-                        MediaStore.Video.Media.EXTERNAL_CONTENT_URI, id
-                    )
-                    // add the URI to the list
-                    // generate the thumbnail
-                    val thumbnail = try {
-
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                            val widthSize = 480
-                            val heightSize = 480
-                            val loadThumbnail = appContext.contentResolver.loadThumbnail(
-                                contentUri, Size(widthSize, heightSize), null
-                            )
-                            loadThumbnail
-                        } else {
-                            null
-                        }
-                    } catch (e: Exception) {
-                        null
-                    }
-
                     val fileModel = FileModel(
                         id = id,
                         name = name,
                         mime = mime,
                         size = size,
-                        uri = contentUri,
-                        thumb = thumbnail,
+                        uri = null,
+                        thumb = null,
                         date = date,
                         path = rs
                     )
@@ -305,14 +257,14 @@ class StorageDataSource {
 
         cursor?.use {
             it.let {
-                val idColumn = it.getColumnIndexOrThrow( MediaStore.Audio.AudioColumns._ID)
+                val idColumn = it.getColumnIndexOrThrow(MediaStore.Audio.AudioColumns._ID)
                 val nameColumn =
-                    it.getColumnIndexOrThrow( MediaStore.Audio.AudioColumns.DISPLAY_NAME)
+                    it.getColumnIndexOrThrow(MediaStore.Audio.AudioColumns.DISPLAY_NAME)
                 val mimeColumn =
-                    it.getColumnIndexOrThrow( MediaStore.Audio.AudioColumns.MIME_TYPE)
-                val dataColumn = it.getColumnIndexOrThrow( MediaStore.Audio.AudioColumns.DATA)
-                val sizeColumn = it.getColumnIndexOrThrow( MediaStore.Audio.AudioColumns.SIZE)
-                val dateColumn = it.getColumnIndexOrThrow( MediaStore.Audio.AudioColumns.DATE_ADDED)
+                    it.getColumnIndexOrThrow(MediaStore.Audio.AudioColumns.MIME_TYPE)
+                val dataColumn = it.getColumnIndexOrThrow(MediaStore.Audio.AudioColumns.DATA)
+                val sizeColumn = it.getColumnIndexOrThrow(MediaStore.Audio.AudioColumns.SIZE)
+                val dateColumn = it.getColumnIndexOrThrow(MediaStore.Audio.AudioColumns.DATE_ADDED)
 
                 while (it.moveToNext()) {
                     val id = it.getLong(idColumn)
@@ -326,34 +278,14 @@ class StorageDataSource {
                         val getFolder = this[this.size - 2]
                         rs = if (getFolder == "0") "Internal" else getFolder
                     }
-                    val contentUri = ContentUris.withAppendedId(
-                        MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, id
-                    )
-                    // add the URI to the list
-                    // generate the thumbnail
-                    val thumbnail = try {
-
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                            val widthSize = 480
-                            val heightSize = 480
-                            val loadThumbnail = appContext.contentResolver.loadThumbnail(
-                                contentUri, Size(widthSize, heightSize), null
-                            )
-                            loadThumbnail
-                        } else {
-                            null
-                        }
-                    } catch (e: Exception) {
-                        null
-                    }
 
                     val fileModel = FileModel(
                         id = id,
                         name = name,
                         mime = mime,
                         size = size,
-                        uri = contentUri,
-                        thumb = thumbnail,
+                        uri = null,
+                        thumb = null,
                         date = date,
                         path = rs
                     )
