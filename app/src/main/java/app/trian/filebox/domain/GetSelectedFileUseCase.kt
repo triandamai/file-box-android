@@ -1,6 +1,8 @@
 package app.trian.filebox.domain
 
 import app.trian.filebox.data.datasource.local.selected.SelectedDao
+import app.trian.filebox.data.models.DataState
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
@@ -11,8 +13,17 @@ class GetSelectedFileUseCase @Inject constructor(
 ) {
 
     operator fun invoke() = channelFlow {
-        selectedDao.getAllId().onEach {
-            send(it.map { it.uid })
-        }.collect()
+        send(DataState.Loading)
+        selectedDao.getAll().onEach {
+            if (it.isEmpty()) {
+                send(DataState.Empty)
+            } else {
+                send(DataState.Data(it))
+            }
+        }
+            .catch {
+                send(DataState.Error(it.message.toString()))
+            }
+            .collect()
     }
 }
