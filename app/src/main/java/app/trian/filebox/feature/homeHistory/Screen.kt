@@ -11,7 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import app.trian.filebox.base.BaseContainer
-import app.trian.filebox.components.CardItemImage
+import app.trian.filebox.feature.homeSend.components.CardItemImage
 import app.trian.filebox.composables.gridItems
 import app.trian.filebox.data.models.FileModel
 

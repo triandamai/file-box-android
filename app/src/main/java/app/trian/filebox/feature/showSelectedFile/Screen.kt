@@ -3,9 +3,6 @@ package app.trian.filebox.feature.showSelectedFile
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ListItem
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -15,8 +12,6 @@ import app.trian.filebox.components.LoadingScreen
 import app.trian.filebox.data.datasource.local.selected.SelectedFile
 import app.trian.filebox.data.models.DataState
 
-
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun ScreenShowSelectedFile(
     data: DataState<List<SelectedFile>> = DataState.Loading
@@ -26,18 +21,17 @@ internal fun ScreenShowSelectedFile(
             LazyColumn(
                 modifier = Modifier.fillMaxSize(),
                 content = {
-                items(data.data) {
-                    ListItem(
-                        leadingContent = {},
-                        headlineText = {
-                            Text(text = it.name)
-                        },
-
+                    items(data.data) {
+                        CardItemSelectedFile(
+                            id = it.uid,
+                            name = it.name
                         )
-                }
-            })
+                    }
+                })
         }
-        DataState.Empty -> {EmptyScreen()}
+        DataState.Empty -> {
+            EmptyScreen()
+        }
         is DataState.Error -> {}
         DataState.Loading -> {
             LoadingScreen()
