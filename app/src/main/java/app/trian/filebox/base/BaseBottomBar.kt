@@ -1,11 +1,12 @@
 package app.trian.filebox.base
 
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import app.trian.filebox.components.BottomBarSelectFile
-import app.trian.filebox.components.FileBoxBottomNavigation
+import app.trian.filebox.components.bottombar.BottomBarSelectFile
+import app.trian.filebox.components.bottombar.FileBoxBottomNavigation
 
 @Composable
 fun BaseBottomBar(
@@ -52,6 +53,7 @@ fun BaseBottomBar(
 
 }
 
+@OptIn(ExperimentalMaterialApi::class)
 @Preview
 @Composable
 fun PreviewBottomBar() {

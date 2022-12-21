@@ -14,8 +14,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import app.trian.filebox.components.FileBoxBottomNavigation
-import app.trian.filebox.components.FileBoxNavigationRail
+import app.trian.filebox.components.bottombar.FileBoxBottomNavigation
+import app.trian.filebox.components.bottombar.FileBoxNavigationRail
 import app.trian.filebox.ui.theme.FileBoxTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -35,6 +35,7 @@ fun BaseContainer(
                 .fillMaxSize(),
             color = MaterialTheme.colorScheme.background,
         ) {
+
             Scaffold(
                 contentColor = MaterialTheme.colorScheme.background,
                 containerColor = MaterialTheme.colorScheme.background,
@@ -84,6 +85,8 @@ fun BaseContainer(
                     }
                 }
             }
+
+
         }
     }
 }

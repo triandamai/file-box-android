@@ -19,6 +19,7 @@ fun NavGraphBuilder.routeSendTarget(
 ) {
     composable(PickSendTarget.routeName) {
         val viewModel = hiltViewModel<SendTargetViewModel>()
+
         ScreenSendTarget()
     }
 }

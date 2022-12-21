@@ -10,6 +10,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.compose.rememberNavController
 import app.trian.filebox.base.BaseBottomBar
 import app.trian.filebox.base.BaseContainer
+import app.trian.filebox.base.BaseSnackBar
 import app.trian.filebox.base.BaseTopAppBar
 import app.trian.filebox.base.listenChanges
 import app.trian.filebox.base.rememberFileBoxApplication
@@ -19,17 +20,20 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             val router = rememberNavController()
             val appState = rememberFileBoxApplication()
+
             val ctx = LocalContext.current
             val config = LocalConfiguration.current
 
             LaunchedEffect(key1 = router, block = {
                 router.listenChanges(appState, ctx, config)
             })
+
             BaseContainer(
                 topBar = {
                     BaseTopAppBar(appState = appState, router = router)
@@ -41,7 +45,12 @@ class MainActivity : ComponentActivity() {
                     )
                 },
                 snackbarHost = {
-                    SnackbarHost(hostState = appState.snackbarHostState)
+                    SnackbarHost(
+                        hostState = appState.snackbarHostState,
+                        snackbar = {
+                            BaseSnackBar(appState = appState, router = router, data = it)
+                        }
+                    )
                 },
                 appState = appState,
                 router = router
