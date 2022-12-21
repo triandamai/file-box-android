@@ -25,7 +25,7 @@ fun NavGraphBuilder.routeHomeSend(
         val images by viewModel.images.collectAsState(initial = DataState.Loading)
         val selected by viewModel.selectedFile.collectAsState(initial = listOf())
 
-        LaunchedEffect(key1 = appState) {
+        LaunchedEffect(appState, selected) {
             with(appState) {
                 addBottomBarListener { tag, _ ->
                     when (tag) {
@@ -39,14 +39,12 @@ fun NavGraphBuilder.routeHomeSend(
                     }
                 }
             }
-        }
-        LaunchedEffect(key1 = selected, block = {
             if (selected.isNotEmpty()) {
                 appState.updateSelectedFileCount(
                     currentSize = selected.size
                 )
             }
-        })
+        }
 
 
         ScreenHomeSend(
