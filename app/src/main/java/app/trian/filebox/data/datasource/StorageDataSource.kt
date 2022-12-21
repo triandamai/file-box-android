@@ -1,12 +1,8 @@
 package app.trian.filebox.data.datasource
 
 import android.annotation.SuppressLint
-import android.content.ContentUris
 import android.content.Context
-import android.os.Build
 import android.provider.MediaStore
-import android.util.Log
-import android.util.Size
 import app.trian.filebox.data.models.FileModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -120,7 +116,7 @@ class StorageDataSource {
             it.let {
 
 
-                if(it.moveToLast()) {
+                if (it.moveToLast()) {
                     do {
 
                         val idColumn = it.getColumnIndexOrThrow(MediaStore.Images.ImageColumns._ID)

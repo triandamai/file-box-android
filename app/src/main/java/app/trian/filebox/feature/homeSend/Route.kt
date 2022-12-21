@@ -3,7 +3,6 @@ package app.trian.filebox.feature.homeSend
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
@@ -66,7 +65,7 @@ fun NavGraphBuilder.routeHomeSend(
                     } else {
                         viewModel.addFile(selectedFile)
                         updateSelectedFileCount(
-                            currentSize = selected.size +1
+                            currentSize = selected.size + 1
                         )
                     }
 
