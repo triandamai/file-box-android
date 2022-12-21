@@ -5,8 +5,6 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import app.trian.filebox.base.FileBoxState
-import app.trian.filebox.feature.blank.Blank
-import app.trian.filebox.feature.blank.BlankViewModel
 
 
 object PickSendTarget {
