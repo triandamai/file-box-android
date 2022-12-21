@@ -6,6 +6,7 @@ import androidx.navigation.NavHostController
 import app.trian.filebox.feature.homeHistory.HomeHistory
 import app.trian.filebox.feature.homeReceive.HomeReceive
 import app.trian.filebox.feature.homeSend.HomeSend
+import app.trian.filebox.feature.showSelectedFile.ShowSelectedFile
 import app.trian.filebox.feature.signin.SignIn
 import app.trian.filebox.feature.signup.SignUp
 
@@ -35,6 +36,9 @@ fun NavHostController.listenChanges(appState: FileBoxState, ctx: Context, config
                     hideNavRail()
                     hideBottomBar()
                     hideAppbar()
+                }
+                in listOf(ShowSelectedFile.routeName) ->{
+                    showAppbar(TopAppBarType.SHOW_SELECTED_FILE)
                 }
                 else -> {
                     hideNavRail()

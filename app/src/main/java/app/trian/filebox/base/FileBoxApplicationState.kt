@@ -12,12 +12,12 @@ import androidx.compose.runtime.setValue
 enum class BottomBarType {
     HIDE,
     BASIC,
-    PICK_FILE,
 }
 
 enum class TopAppBarType {
     HIDE,
     BASIC,
+    SHOW_SELECTED_FILE
 }
 
 enum class SnackBarType {

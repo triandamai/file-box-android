@@ -1,6 +1,7 @@
 package app.trian.filebox.feature.homeSend.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -10,21 +11,31 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Clear
+import androidx.compose.material.icons.outlined.CopyAll
+import androidx.compose.material.icons.outlined.Delete
+import androidx.compose.material.icons.outlined.FileCopy
 import androidx.compose.material.icons.outlined.Link
+import androidx.compose.material.icons.outlined.Send
 import androidx.compose.material3.Divider
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import app.trian.filebox.base.BaseContainer
 
 @Composable
-fun BottomSheetOption() {
+fun BottomSheetOption(
+    onViewList:()->Unit={}
+) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -45,53 +56,39 @@ fun BottomSheetOption() {
                 "1 Selected",
                 color = MaterialTheme.colorScheme.onSurface
             )
-            TextButton(onClick = { /*TODO*/ }) {
+            TextButton(onClick = onViewList) {
                 Text(text = "View List")
             }
         }
         Divider()
         Spacer(modifier = Modifier.height(8.dp))
-        ItemBottomSheetOption("Send files")
-        ItemBottomSheetOption("Share link")
-        ItemBottomSheetOption("Copy")
-        ItemBottomSheetOption("Move")
-        ItemBottomSheetOption("Delete")
-        ItemBottomSheetOption("Clear Selection")
+        ItemBottomSheetOption(text = "Send files", icon = Icons.Outlined.Send, onClick = {})
+        ItemBottomSheetOption(text = "Share link", icon = Icons.Outlined.Link, onClick = {})
+        ItemBottomSheetOption(text = "Copy", icon = Icons.Outlined.CopyAll, onClick = {})
+        ItemBottomSheetOption(text = "Move", icon = Icons.Outlined.FileCopy, onClick = {})
+        ItemBottomSheetOption(text = "Delete", icon = Icons.Outlined.Delete, onClick = {})
+        ItemBottomSheetOption(text = "Clear Selection", icon = Icons.Outlined.Clear, onClick = {})
 
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ItemBottomSheetOption(
-    text: String = ""
+    text: String = "",
+    icon: ImageVector = Icons.Outlined.Send,
+    onClick: () -> Unit = {}
 ) {
-    Row(
-        Modifier
-            .fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween
-    ) {
+    ListItem(
+        modifier = Modifier.clickable { },
+        headlineText = {
+            Text(text = text)
+        },
+        leadingContent = {
+            Icon(imageVector = icon, contentDescription = "")
+        },
 
-        Spacer(modifier = Modifier.height(4.dp))
-        Icon(
-            modifier = Modifier.padding(
-                all = 16.dp
-            ),
-            imageVector = Icons.Outlined.Link,
-            contentDescription = "",
-            tint = MaterialTheme.colorScheme.onSurface
         )
-        Spacer(modifier = Modifier.height(16.dp))
-        Column(
-            modifier = Modifier.fillMaxWidth(),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.Start
-        ) {
-            Text(text = text, color = MaterialTheme.colorScheme.onSurface)
-            Spacer(modifier = Modifier.height(16.dp))
-            Divider()
-        }
-    }
 }
 
 @Preview

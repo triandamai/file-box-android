@@ -21,6 +21,7 @@ import app.trian.filebox.base.TAG_ACTION_SEND
 import app.trian.filebox.base.updateSelectedFileCount
 import app.trian.filebox.data.models.DataState
 import app.trian.filebox.feature.homeSend.components.BottomSheetOption
+import app.trian.filebox.feature.showSelectedFile.ShowSelectedFile
 import kotlinx.coroutines.launch
 
 
@@ -89,7 +90,13 @@ fun NavGraphBuilder.routeHomeSend(
 
         ModalBottomSheetLayout(
             sheetState = sheetState, sheetContent = {
-                BottomSheetOption()
+                BottomSheetOption(
+                    onViewList = {
+                        router.navigate(ShowSelectedFile.routeName){
+                            launchSingleTop = true
+                        }
+                    }
+                )
             }) {
             ScreenHomeSend(
                 images = images,

@@ -1,9 +1,10 @@
-package app.trian.filebox.feature.pickSendTarget
+package app.trian.filebox.feature.showSelectedFile
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -13,27 +14,18 @@ import app.trian.filebox.base.BaseContainer
 
 
 @Composable
-internal fun ScreenSendTarget(
+internal fun ScreenShowSelectedFile(
     modifier: Modifier = Modifier,
 ) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(
-                horizontal = 16.dp
-            ),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
+    LazyColumn(content = {
 
-
-    }
+    })
 }
 
 @Preview
 @Composable
-fun PreviewScreenSendTarget() {
+fun PreviewShowSelectedFile() {
     BaseContainer {
-        ScreenSendTarget()
+        ScreenShowSelectedFile()
     }
 }
