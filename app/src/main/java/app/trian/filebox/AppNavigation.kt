@@ -9,6 +9,7 @@ import app.trian.filebox.base.rememberFileBoxApplication
 import app.trian.filebox.feature.homeHistory.routeHomeHistory
 import app.trian.filebox.feature.homeReceive.routeHomeReceive
 import app.trian.filebox.feature.homeSend.routeHomeSend
+import app.trian.filebox.feature.pickSendTarget.routeSendTarget
 import app.trian.filebox.feature.signin.routeSignIn
 import app.trian.filebox.feature.signup.routeSignUp
 
@@ -41,6 +42,10 @@ fun AppNavigation(
         routeHomeHistory(
             router = navController,
             appState = appState
+        )
+        routeSendTarget(
+            router=navController,
+            appState=appState
         )
     }
 }
