@@ -1,4 +1,4 @@
-package app.trian.filebox.components
+package app.trian.filebox.components.bottombar
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

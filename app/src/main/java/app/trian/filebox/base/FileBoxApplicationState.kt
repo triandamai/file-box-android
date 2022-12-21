@@ -1,5 +1,6 @@
 package app.trian.filebox.base
 
+import android.util.Log
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
@@ -20,16 +21,26 @@ enum class TopAppBarType {
     BASIC,
 }
 
+enum class SnackBarType {
+    BASIC,
+    PICK_FILE
+}
+
+
 class FileBoxState internal constructor() {
     var topAppBarType by mutableStateOf(TopAppBarType.HIDE)
     var bottomBarType by mutableStateOf(BottomBarType.HIDE)
+    var snackBarType by mutableStateOf(SnackBarType.BASIC)
+
     var showNavigationRail by mutableStateOf(false)
     var activeRoute by mutableStateOf("")
     var snackbarHostState by mutableStateOf(SnackbarHostState())
     var selectedFileCount by mutableStateOf(0)
 
+
     private var onBottomBarListener: BottomBarListener? = null
     private var onTopAppBarListener: TopAppBarListener? = null
+    private var onSnackbarBarListener: SnackbarBarListener? = null
 
 
     fun hideAppbar() {
@@ -69,6 +80,7 @@ class FileBoxState internal constructor() {
         }
     }
 
+
     fun setCurrentRoute(route: String) {
         if (activeRoute != route) {
             activeRoute = route
@@ -83,6 +95,10 @@ class FileBoxState internal constructor() {
         onTopAppBarListener = listener
     }
 
+    fun addSnackbarListener(listener: SnackbarBarListener) {
+        onSnackbarBarListener = listener
+    }
+
     fun onBottomBarItemClick(tag: String = "", data: Map<String, String> = mapOf()) {
         onBottomBarListener?.onItemClicked(tag, data)
     }
@@ -91,9 +107,30 @@ class FileBoxState internal constructor() {
         onTopAppBarListener?.onItemClicked(tag, data)
     }
 
+    fun onSnackbarActionClick(tag: String = "", data: Map<String, String> = mapOf()) {
+        onSnackbarBarListener?.onItemClicked(tag, data)
+    }
+
 
     suspend fun showSnackbar(message: String): SnackbarResult = with(snackbarHostState) {
+        if (snackBarType != SnackBarType.BASIC) {
+            snackBarType = SnackBarType.BASIC
+        }
         showSnackbar(message)
+    }
+
+    suspend fun showSnackbar(message: String, type: SnackBarType): SnackbarResult =
+        with(snackbarHostState) {
+            if (snackBarType != type) {
+                snackBarType = type
+            }
+           return if(currentSnackbarData == null) {
+               showSnackbar(message, duration = SnackbarDuration.Indefinite)
+           }else SnackbarResult.Dismissed
+        }
+
+    fun hideSnackbar() = with(snackbarHostState) {
+        currentSnackbarData?.dismiss()
     }
 
     suspend fun showSnackbar(
@@ -103,6 +140,9 @@ class FileBoxState internal constructor() {
         duration: SnackbarDuration =
             if (actionLabel == null) SnackbarDuration.Short else SnackbarDuration.Indefinite
     ) = with(snackbarHostState) {
+        if (snackBarType != SnackBarType.BASIC) {
+            snackBarType = SnackBarType.BASIC
+        }
         showSnackbar(
             message = message,
             actionLabel = actionLabel,
@@ -115,9 +155,7 @@ class FileBoxState internal constructor() {
 
 @Composable
 fun rememberFileBoxApplication(): FileBoxState {
-    val state = remember {
+    return remember {
         FileBoxState()
     }
-
-    return state
 }

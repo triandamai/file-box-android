@@ -1,4 +1,4 @@
-package app.trian.filebox.components
+package app.trian.filebox.components.bottombar
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Delete

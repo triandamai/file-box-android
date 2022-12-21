@@ -1,11 +1,13 @@
 package app.trian.filebox.base
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -14,11 +16,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import app.trian.filebox.components.FileBoxBottomNavigation
-import app.trian.filebox.components.FileBoxNavigationRail
+import app.trian.filebox.components.bottombar.FileBoxBottomNavigation
+import app.trian.filebox.components.bottombar.FileBoxNavigationRail
 import app.trian.filebox.ui.theme.FileBoxTheme
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
 @Composable
 fun BaseContainer(
     topBar: @Composable () -> Unit = {},
@@ -35,6 +37,7 @@ fun BaseContainer(
                 .fillMaxSize(),
             color = MaterialTheme.colorScheme.background,
         ) {
+
             Scaffold(
                 contentColor = MaterialTheme.colorScheme.background,
                 containerColor = MaterialTheme.colorScheme.background,
@@ -84,6 +87,8 @@ fun BaseContainer(
                     }
                 }
             }
+
+
         }
     }
 }
