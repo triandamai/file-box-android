@@ -1,6 +1,5 @@
 package app.trian.filebox.base
 
-import android.util.Log
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
@@ -124,9 +123,9 @@ class FileBoxState internal constructor() {
             if (snackBarType != type) {
                 snackBarType = type
             }
-           return if(currentSnackbarData == null) {
-               showSnackbar(message, duration = SnackbarDuration.Indefinite)
-           }else SnackbarResult.Dismissed
+            return if (currentSnackbarData == null) {
+                showSnackbar(message, duration = SnackbarDuration.Indefinite)
+            } else SnackbarResult.Dismissed
         }
 
     fun hideSnackbar() = with(snackbarHostState) {
