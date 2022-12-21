@@ -1,13 +1,19 @@
 package app.trian.filebox.feature.homeSend.components
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import app.trian.filebox.base.BaseContainer
 import app.trian.filebox.components.CardItemImage
 import app.trian.filebox.components.EmptyScreen
@@ -34,10 +40,22 @@ fun ContentImages(
                 content = {
                     data.data.forEach { (group, fileModels) ->
                         stickyHeader {
-                            Text(
-                                text = group,
-                                color = MaterialTheme.colorScheme.onBackground
-                            )
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(
+                                        horizontal = 16.dp,
+                                        vertical = 4.dp
+                                    ),
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.Start
+                            ) {
+                                Text(
+                                    text = group,
+                                    color = MaterialTheme.colorScheme.onBackground,
+                                    style = MaterialTheme.typography.titleMedium
+                                )
+                            }
                         }
                         gridItems(fileModels, columnCount = 4) { file ->
                             CardItemImage(
@@ -75,10 +93,35 @@ fun ContentImages(
 
 @Preview
 @Composable
-fun PreviewContetnImages() {
+fun PreviewContentImages() {
     BaseContainer {
         ContentImages(
-            data = DataState.Loading
+            data = DataState.Data(
+                mapOf(
+                    "Internal" to listOf(
+                        FileModel(
+                            id = 0,
+                            name = "bobo",
+                        ),
+                        FileModel(
+                            id = 0,
+                            name = "bobo",
+                        ),
+                        FileModel(
+                            id = 0,
+                            name = "bobo",
+                        ),
+                        FileModel(
+                            id = 0,
+                            name = "bobo",
+                        ),
+                        FileModel(
+                            id = 0,
+                            name = "bobo",
+                        )
+                    )
+                )
+            )
         )
     }
 }
