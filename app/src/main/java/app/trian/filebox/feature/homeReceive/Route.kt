@@ -6,7 +6,6 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import app.trian.filebox.base.FileBoxState
 import app.trian.filebox.data.models.FileModel
-import app.trian.filebox.feature.homeSend.HomeSendViewModel
 
 
 object HomeReceive {
@@ -18,10 +17,8 @@ fun NavGraphBuilder.routeHomeReceive(
     appState: FileBoxState
 ) {
     composable(HomeReceive.routeName) {
-        val viewModel = hiltViewModel<HomeSendViewModel>()
+        val viewModel = hiltViewModel<HomeReceiveViewModel>()
         val allFiles = mapOf<String, List<FileModel>>()
-        ScreenHomeReceive(
-            allFiles = allFiles
-        )
+        ScreenHomeReceive()
     }
 }

@@ -18,10 +18,7 @@ fun NavGraphBuilder.routeHomeHistory(
     appState: FileBoxState
 ) {
     composable(HomeHistory.routeName) {
-        val viewModel = hiltViewModel<HomeSendViewModel>()
-        val allFiles = mapOf<String, List<FileModel>>()
-        ScreenHomeHistory(
-            allFiles = allFiles
-        )
+        val viewModel = hiltViewModel<HomeHistoryViewModel>()
+        ScreenHomeHistory()
     }
 }

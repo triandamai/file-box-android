@@ -54,11 +54,11 @@ fun NavGraphBuilder.routeSendFileOverview(
         }
         ModalBottomSheetLayout(
             sheetState = sheetState,
-            sheetBackgroundColor = MaterialTheme.colorScheme.secondary,
-            sheetContentColor = MaterialTheme.colorScheme.secondary,
+            sheetBackgroundColor = MaterialTheme.colorScheme.surface,
+            sheetContentColor = MaterialTheme.colorScheme.surface,
             scrimColor = Color.Transparent,
             sheetShape = RectangleShape,
-            sheetElevation = 2.dp,
+            sheetElevation = 5.dp,
             sheetContent = {
                 BottomSheetListDevice(
                     isExpanded = sheetState.currentValue == ModalBottomSheetValue.Expanded,
