@@ -1,6 +1,5 @@
 package app.trian.filebox.feature.sendFileOverview
 
-import android.util.Log
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetLayout
 import androidx.compose.material.ModalBottomSheetValue
@@ -18,7 +17,6 @@ import androidx.navigation.compose.composable
 import app.trian.filebox.base.FileBoxState
 import app.trian.filebox.base.listener.ActionTopAppBar
 import app.trian.filebox.feature.sendFileOverview.components.BottomSheetListDevice
-import kotlinx.coroutines.launch
 
 
 object SendFileOverview {
@@ -56,8 +54,8 @@ fun NavGraphBuilder.routeSendFileOverview(
         }
         ModalBottomSheetLayout(
             sheetState = sheetState,
-            sheetBackgroundColor=MaterialTheme.colorScheme.secondary,
-            sheetContentColor=MaterialTheme.colorScheme.secondary,
+            sheetBackgroundColor = MaterialTheme.colorScheme.secondary,
+            sheetContentColor = MaterialTheme.colorScheme.secondary,
             scrimColor = Color.Transparent,
             sheetShape = RectangleShape,
             sheetElevation = 2.dp,
