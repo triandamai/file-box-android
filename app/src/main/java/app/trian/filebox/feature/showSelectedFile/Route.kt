@@ -5,6 +5,7 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.pullrefresh.PullRefreshIndicator
 import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -19,6 +20,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import app.trian.filebox.base.FileBoxState
 import app.trian.filebox.base.listener.ActionAppState
+import app.trian.filebox.base.listener.ActionTopAppBar
+import app.trian.filebox.feature.sendFileOverview.SendFileOverview
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -52,6 +55,24 @@ fun NavGraphBuilder.routeShowSelectedFile(
         }
 
         val refreshState = rememberPullRefreshState(refreshing, ::refresh)
+
+        LaunchedEffect(appState){
+            with(appState){
+                addTopAppBarListener{
+                    tag->
+                    when(tag){
+                        ActionTopAppBar.ACTION_NOTHING -> Unit
+                        ActionTopAppBar.ACTION_NAV_BACK -> Unit
+                        ActionTopAppBar.ACTION_SEND -> {
+                            router.navigate(SendFileOverview.routeName){
+                                launchSingleTop = true
+                            }
+                        }
+                        ActionTopAppBar.ACTION_SHARE_LINK -> Unit
+                    }
+                }
+            }
+        }
 
 
         Box(modifier = Modifier.pullRefresh(refreshState)){

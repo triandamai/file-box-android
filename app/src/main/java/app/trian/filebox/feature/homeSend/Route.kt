@@ -24,6 +24,7 @@ import app.trian.filebox.base.extensions.updateSelectedFileCount
 import app.trian.filebox.base.listener.ActionSnackBar
 import app.trian.filebox.data.models.DataState
 import app.trian.filebox.feature.homeSend.components.BottomSheetOption
+import app.trian.filebox.feature.sendFileOverview.SendFileOverview
 import app.trian.filebox.feature.showSelectedFile.ShowSelectedFile
 import kotlinx.coroutines.launch
 
@@ -69,7 +70,9 @@ fun NavGraphBuilder.routeHomeSend(
                         ActionSnackBar.ACTION_NOTHING -> Unit
                         ActionSnackBar.ACTION_SEND_FILES -> {
                             scope.launch {
-                                hideSnackbar()
+                                router.navigate(SendFileOverview.routeName){
+                                    launchSingleTop = true
+                                }
                             }
                         }
                         ActionSnackBar.ACTION_MORE_OPTION -> {
