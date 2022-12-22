@@ -1,13 +1,19 @@
 package app.trian.filebox.base
 
-import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.SnackbarResult
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import app.trian.filebox.base.listener.ActionAppState
+import app.trian.filebox.base.listener.ActionSnackBar
+import app.trian.filebox.base.listener.ActionTopAppBar
+import app.trian.filebox.base.listener.ActionBottomBar
+import app.trian.filebox.base.listener.AppStateListener
+import app.trian.filebox.base.listener.BottomBarListener
+import app.trian.filebox.base.listener.SnackbarBarListener
+import app.trian.filebox.base.listener.TopAppBarListener
 
 enum class BottomBarType {
     HIDE,
@@ -40,51 +46,12 @@ class FileBoxState internal constructor() {
     private var onBottomBarListener: BottomBarListener? = null
     private var onTopAppBarListener: TopAppBarListener? = null
     private var onSnackbarBarListener: SnackbarBarListener? = null
+    private var onAppStateListener: AppStateListener? = null
 
-
-    fun hideAppbar() {
-        if (topAppBarType != TopAppBarType.HIDE) {
-            topAppBarType = TopAppBarType.HIDE
-        }
+    fun addOnMessageListener(listener: AppStateListener){
+        onAppStateListener = listener
     }
 
-    fun showAppbar(appBarType: TopAppBarType) {
-        if (topAppBarType != appBarType) {
-            topAppBarType = appBarType
-        }
-    }
-
-    fun showNavRail() {
-        if (!showNavigationRail) {
-            showNavigationRail = true
-        }
-    }
-
-    fun hideNavRail() {
-        if (showNavigationRail) {
-            showNavigationRail = false
-        }
-    }
-
-    fun hideBottomBar() {
-        if (bottomBarType != BottomBarType.HIDE) {
-            bottomBarType = BottomBarType.HIDE
-        }
-    }
-
-    fun showBottomBar(type: BottomBarType) {
-
-        if (bottomBarType != type) {
-            bottomBarType = type
-        }
-    }
-
-
-    fun setCurrentRoute(route: String) {
-        if (activeRoute != route) {
-            activeRoute = route
-        }
-    }
 
     fun addBottomBarListener(listener: BottomBarListener) {
         onBottomBarListener = listener
@@ -98,56 +65,20 @@ class FileBoxState internal constructor() {
         onSnackbarBarListener = listener
     }
 
-    fun onBottomBarItemClick(tag: String = "", data: Map<String, String> = mapOf()) {
-        onBottomBarListener?.onItemClicked(tag, data)
+    fun onBottomBarItemClick(tag: ActionBottomBar=ActionBottomBar.ACTION_NOTHING) {
+        onBottomBarListener?.onItemClicked(tag)
     }
 
-    fun onTopAppBarItemClick(tag: String = "", data: Map<String, String> = mapOf()) {
-        onTopAppBarListener?.onItemClicked(tag, data)
+    fun onTopAppBarItemClick(tag: ActionTopAppBar=ActionTopAppBar.ACTION_NOTHING) {
+        onTopAppBarListener?.onAction(tag)
     }
 
-    fun onSnackbarActionClick(tag: String = "", data: Map<String, String> = mapOf()) {
-        onSnackbarBarListener?.onItemClicked(tag, data)
+    fun onSnackbarActionClick(tag: ActionSnackBar = ActionSnackBar.ACTION_NOTHING) {
+        onSnackbarBarListener?.onAction(tag)
     }
 
-
-    suspend fun showSnackbar(message: String): SnackbarResult = with(snackbarHostState) {
-        if (snackBarType != SnackBarType.BASIC) {
-            snackBarType = SnackBarType.BASIC
-        }
-        showSnackbar(message)
-    }
-
-    suspend fun showSnackbar(message: String, type: SnackBarType): SnackbarResult =
-        with(snackbarHostState) {
-            if (snackBarType != type) {
-                snackBarType = type
-            }
-            return if (currentSnackbarData == null) {
-                showSnackbar(message, duration = SnackbarDuration.Indefinite)
-            } else SnackbarResult.Dismissed
-        }
-
-    fun hideSnackbar() = with(snackbarHostState) {
-        currentSnackbarData?.dismiss()
-    }
-
-    suspend fun showSnackbar(
-        message: String,
-        actionLabel: String? = null,
-        withDismissAction: Boolean = false,
-        duration: SnackbarDuration =
-            if (actionLabel == null) SnackbarDuration.Short else SnackbarDuration.Indefinite
-    ) = with(snackbarHostState) {
-        if (snackBarType != SnackBarType.BASIC) {
-            snackBarType = SnackBarType.BASIC
-        }
-        showSnackbar(
-            message = message,
-            actionLabel = actionLabel,
-            withDismissAction = withDismissAction,
-            duration = duration
-        )
+    fun sendMessage(tag:ActionAppState = ActionAppState.NOTHING,data:Map<String,String> = mapOf()){
+        onAppStateListener?.onMessage(tag,data)
     }
 
 }

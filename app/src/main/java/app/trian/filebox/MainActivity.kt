@@ -12,7 +12,7 @@ import app.trian.filebox.base.BaseBottomBar
 import app.trian.filebox.base.BaseContainer
 import app.trian.filebox.base.BaseSnackBar
 import app.trian.filebox.base.BaseTopAppBar
-import app.trian.filebox.base.listenChanges
+import app.trian.filebox.base.extensions.listenChanges
 import app.trian.filebox.base.rememberFileBoxApplication
 import app.trian.filebox.feature.signin.SignIn
 import dagger.hilt.android.AndroidEntryPoint

@@ -4,6 +4,7 @@ import androidx.compose.material3.Snackbar
 import androidx.compose.material3.SnackbarData
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
+import app.trian.filebox.base.listener.ActionSnackBar
 import app.trian.filebox.components.snackbar.SnackBarPickFile
 
 @Composable
@@ -19,12 +20,12 @@ fun BaseSnackBar(
             }
             SnackBarType.PICK_FILE -> {
                 SnackBarPickFile(
-                    message = "${appState.selectedFileCount} Selected",
+                    message = "$selectedFileCount Selected",
                     onActionClick = {
-                        appState.onSnackbarActionClick(TAG_ACTION_SEND)
+                        onSnackbarActionClick(ActionSnackBar.ACTION_SEND_FILES)
                     },
                     onMoreClick = {
-                        appState.onSnackbarActionClick(TAG_ACTION_MORE)
+                        onSnackbarActionClick(ActionSnackBar.ACTION_MORE_OPTION)
                     }
                 )
             }

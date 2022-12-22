@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import app.trian.filebox.base.extensions.setCurrentRoute
 import app.trian.filebox.components.bottombar.FileBoxBottomNavigation
 
 @Composable

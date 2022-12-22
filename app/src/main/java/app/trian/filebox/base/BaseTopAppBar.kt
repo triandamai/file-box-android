@@ -7,7 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import app.trian.filebox.components.topappbar.TopAppBarShowSelectedFile
+import app.trian.filebox.feature.showSelectedFile.components.TopAppBarShowSelectedFile
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

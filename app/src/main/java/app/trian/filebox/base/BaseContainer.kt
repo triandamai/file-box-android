@@ -14,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import app.trian.filebox.base.extensions.setCurrentRoute
 import app.trian.filebox.components.bottombar.FileBoxBottomNavigation
 import app.trian.filebox.components.bottombar.FileBoxNavigationRail
 import app.trian.filebox.ui.theme.FileBoxTheme
@@ -57,12 +58,12 @@ fun BaseContainer(
                                     FileBoxBottomNavigation.Receive(),
                                     FileBoxBottomNavigation.History()
                                 ),
-                                currentRoute = appState.activeRoute,
+                                currentRoute = activeRoute,
                                 onItemClick = {
                                     router.navigate(it) {
                                         launchSingleTop = true
                                     }
-                                    appState.setCurrentRoute(it)
+                                    setCurrentRoute(it)
                                 }
                             )
 

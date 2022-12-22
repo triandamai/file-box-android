@@ -18,6 +18,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import app.trian.filebox.base.FileBoxState
+import app.trian.filebox.base.listener.ActionAppState
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -55,7 +56,10 @@ fun NavGraphBuilder.routeShowSelectedFile(
 
         Box(modifier = Modifier.pullRefresh(refreshState)){
             ScreenShowSelectedFile(
-                data = selectedFile
+                data = selectedFile,
+                onShowSelection = {
+                    appState.sendMessage(ActionAppState.SHOW_SELECTION)
+                }
             )
             PullRefreshIndicator(refreshing, refreshState, Modifier.align(Alignment.TopCenter))
         }
