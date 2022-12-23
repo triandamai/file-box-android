@@ -1,5 +1,6 @@
 package app.trian.filebox.domain
 
+import android.annotation.SuppressLint
 import app.trian.filebox.data.models.DataState
 import app.trian.filebox.data.repository.StorageRepository
 import kotlinx.coroutines.Dispatchers
@@ -8,15 +9,29 @@ import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.onEach
+import java.sql.Date
+import java.text.SimpleDateFormat
 import javax.inject.Inject
 
 class GetImagesUseCase @Inject constructor(
     private val storageRepository: StorageRepository
 ) {
 
+    @SuppressLint("SimpleDateFormat")
     operator fun invoke() = channelFlow {
         storageRepository.getAllImagesFromStorage().onEach { datas ->
-            val data = datas.groupBy { it.path }
+            val data = datas.map {
+                it.apply {
+                    val dt = try {
+                        val sdf = SimpleDateFormat("dd MMMM yyyy")
+                        val netDate = Date(date.toLong() * 1000)
+                        sdf.format(netDate)
+                    } catch (e: Exception) {
+                        e.toString()
+                    }
+                    date = dt
+                }
+            }.groupBy { it.date }
             if (data.isEmpty()) {
                 send(DataState.Empty)
             } else {

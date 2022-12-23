@@ -8,7 +8,7 @@ import app.trian.filebox.base.FileBoxState
 
 
 object Blank {
-    const val routeName = "sign_in"
+    const val routeName = "blank"
 
 
 }

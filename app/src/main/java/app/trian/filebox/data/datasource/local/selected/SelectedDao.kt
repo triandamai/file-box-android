@@ -12,10 +12,7 @@ interface SelectedDao {
     suspend fun insertSelectedFile(vararg data: SelectedFile)
 
     @Query("SELECT * FROM selected_file")
-    fun getAll(): List<SelectedFile>
-
-    @Query("SELECT * FROM selected_file")
-    fun getAllId():Flow<List<SelectedFile>>
+    fun getAll(): Flow<List<SelectedFile>>
 
     @Query("DELETE FROM selected_file WHERE uid=:id")
     fun delete(id:Long)

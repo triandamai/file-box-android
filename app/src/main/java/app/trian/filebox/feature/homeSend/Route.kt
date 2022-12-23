@@ -16,11 +16,16 @@ import androidx.navigation.compose.composable
 import app.trian.filebox.base.BottomBarType
 import app.trian.filebox.base.FileBoxState
 import app.trian.filebox.base.SnackBarType
-import app.trian.filebox.base.TAG_ACTION_MORE
-import app.trian.filebox.base.TAG_ACTION_SEND
-import app.trian.filebox.base.updateSelectedFileCount
+import app.trian.filebox.base.extensions.hideBottomBar
+import app.trian.filebox.base.extensions.hideSnackbar
+import app.trian.filebox.base.extensions.showBottomBar
+import app.trian.filebox.base.extensions.showSnackbar
+import app.trian.filebox.base.extensions.updateSelectedFileCount
+import app.trian.filebox.base.listener.ActionSnackBar
 import app.trian.filebox.data.models.DataState
 import app.trian.filebox.feature.homeSend.components.BottomSheetOption
+import app.trian.filebox.feature.sendFileOverview.SendFileOverview
+import app.trian.filebox.feature.showSelectedFile.ShowSelectedFile
 import kotlinx.coroutines.launch
 
 
@@ -60,19 +65,22 @@ fun NavGraphBuilder.routeHomeSend(
 
         LaunchedEffect(appState, selected,sheetState) {
             with(appState) {
-                addSnackbarListener { tag, _ ->
-                    when (tag) {
-                        TAG_ACTION_MORE -> {
+                addSnackbarListener { tag ->
+                    when(tag){
+                        ActionSnackBar.ACTION_NOTHING -> Unit
+                        ActionSnackBar.ACTION_SEND_FILES -> {
                             scope.launch {
-                                appState.hideSnackbar()
-                                appState.hideBottomBar()
-                                sheetState.animateTo(ModalBottomSheetValue.Expanded)
-                                sheetState.show()
+                                router.navigate(SendFileOverview.routeName){
+                                    launchSingleTop = true
+                                }
                             }
                         }
-                        TAG_ACTION_SEND -> {
+                        ActionSnackBar.ACTION_MORE_OPTION -> {
                             scope.launch {
-                                appState.hideSnackbar()
+                                hideSnackbar()
+                                hideBottomBar()
+                                sheetState.animateTo(ModalBottomSheetValue.Expanded)
+                                sheetState.show()
                             }
                         }
                     }
@@ -89,7 +97,13 @@ fun NavGraphBuilder.routeHomeSend(
 
         ModalBottomSheetLayout(
             sheetState = sheetState, sheetContent = {
-                BottomSheetOption()
+                BottomSheetOption(
+                    onViewList = {
+                        router.navigate(ShowSelectedFile.routeName){
+                            launchSingleTop = true
+                        }
+                    }
+                )
             }) {
             ScreenHomeSend(
                 images = images,

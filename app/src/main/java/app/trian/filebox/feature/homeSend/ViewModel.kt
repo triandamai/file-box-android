@@ -7,7 +7,7 @@ import app.trian.filebox.data.datasource.local.selected.SelectedFile
 import app.trian.filebox.data.repository.StorageRepository
 import app.trian.filebox.domain.DeleteSelectedFileUseCase
 import app.trian.filebox.domain.GetImagesUseCase
-import app.trian.filebox.domain.GetSelectedFileUseCase
+import app.trian.filebox.domain.GetSelectedFileIdUseCase
 import app.trian.filebox.domain.SaveSelectedFileUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -22,7 +22,7 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeSendViewModel @Inject constructor(
     private val getImagesUseCase: GetImagesUseCase,
-    private val getSelectedFileUseCase: GetSelectedFileUseCase,
+    private val getSelectedFileIdUseCase: GetSelectedFileIdUseCase,
     private val saveSelectedFileUseCase: SaveSelectedFileUseCase,
     private val deleteSelectedFileUseCase: DeleteSelectedFileUseCase,
     private val storageRepository: StorageRepository
@@ -43,7 +43,7 @@ class HomeSendViewModel @Inject constructor(
 
     fun loadSelectedFile() = with(viewModelScope) {
         launch {
-            getSelectedFileUseCase().onEach {
+            getSelectedFileIdUseCase().onEach {
                 Log.e("hehe", it.toString())
                 _selectedFile.tryEmit(it)
             }.collect()

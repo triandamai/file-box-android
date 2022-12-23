@@ -5,8 +5,6 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import app.trian.filebox.base.FileBoxState
-import app.trian.filebox.data.models.FileModel
-import app.trian.filebox.feature.homeSend.HomeSendViewModel
 
 
 object HomeHistory {
@@ -18,10 +16,7 @@ fun NavGraphBuilder.routeHomeHistory(
     appState: FileBoxState
 ) {
     composable(HomeHistory.routeName) {
-        val viewModel = hiltViewModel<HomeSendViewModel>()
-        val allFiles = mapOf<String, List<FileModel>>()
-        ScreenHomeHistory(
-            allFiles = allFiles
-        )
+        val viewModel = hiltViewModel<HomeHistoryViewModel>()
+        ScreenHomeHistory()
     }
 }

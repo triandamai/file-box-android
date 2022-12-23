@@ -1,4 +1,4 @@
-package app.trian.filebox.components
+package app.trian.filebox.feature.homeSend.components
 
 import android.content.ContentUris
 import android.os.Build
