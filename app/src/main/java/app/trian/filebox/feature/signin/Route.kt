@@ -1,3 +1,8 @@
+/***
+ * Copyright trian.app
+ * Author Trian Damai-triandamai@gmail.com
+ * Created at 24/12/22 23.48
+ */
 package app.trian.filebox.feature.signin
 
 import androidx.activity.compose.rememberLauncherForActivityResult

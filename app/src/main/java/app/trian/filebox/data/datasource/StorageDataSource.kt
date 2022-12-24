@@ -1,3 +1,8 @@
+/***
+ * Copyright trian.app
+ * Author Trian Damai-triandamai@gmail.com
+ * Created at 24/12/22 23.44
+ */
 package app.trian.filebox.data.datasource
 
 import android.annotation.SuppressLint
@@ -11,7 +16,7 @@ import kotlinx.coroutines.flow.flowOn
 
 class StorageDataSource {
     //https://stackoverflow.com/questions/62782648/android-11-scoped-storage-permissions
-    // in android 10 or higher MediaStore.Files. have restriction(scoped storage) only  show vide,image , and video
+    // in android 10 or higher MediaStore.Files. have restriction(scoped storage) only  show video,image,and,audio
     @SuppressLint("InlinedApi")
     suspend fun getDocuments(appContext: Context): Flow<List<FileModel>> = flow<List<FileModel>> {
         val data = mutableListOf<FileModel>()
