@@ -13,8 +13,8 @@ class SyncDeviceFromCloudUseCase @Inject constructor(
     suspend operator fun invoke() {
         deviceRepository
             .syncDeviceFromCloud()
-            .onEach { it ->
-                val deviceToInsert = it.filter { !it.isDelete }.map {
+            .onEach { devices ->
+                val deviceToInsert = devices.filter { !it.isDelete }.map {
                     Device(
                         deviceName = it.deviceName,
                         deviceUniq = it.deviceUnique,
@@ -22,7 +22,7 @@ class SyncDeviceFromCloudUseCase @Inject constructor(
                     )
                 }
 
-                val deviceToDelete = it.filter { it.isDelete }.map {
+                val deviceToDelete = devices.filter { it.isDelete }.map {
                     Device(
                         deviceName = it.deviceName,
                         deviceUniq = it.deviceUnique,

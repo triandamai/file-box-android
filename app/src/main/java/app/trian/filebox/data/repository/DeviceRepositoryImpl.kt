@@ -5,6 +5,7 @@ import app.trian.filebox.data.datasource.local.device.DeviceDao
 import app.trian.filebox.data.models.DataState
 import app.trian.filebox.data.models.DeviceModel
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthException
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -34,7 +35,7 @@ class DeviceRepositoryImpl @Inject constructor(
     }.flowOn(Dispatchers.IO)
 
     override suspend fun syncDeviceFromCloud(): Flow<List<DeviceModel>> = flow {
-        val auth = firebaseAuth.currentUser ?: throw Exception("user not logged in")
+        val auth = firebaseAuth.currentUser ?: throw FirebaseAuthException("user not logged in","")
 
         val listDevices = firebaseFirestore.collection("USER").document(auth.uid)
             .collection("DEVICE")
@@ -58,7 +59,7 @@ class DeviceRepositoryImpl @Inject constructor(
     }.flowOn(Dispatchers.IO)
 
     override suspend fun deleteDevice(device: List<Device>): Flow<Pair<Boolean, String>> =
-        flow<Pair<Boolean, String>> {
+        flow {
             deviceDao.deleteDevices(
                 *device.toTypedArray()
             )
