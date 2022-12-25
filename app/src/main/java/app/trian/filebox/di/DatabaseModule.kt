@@ -8,7 +8,9 @@ package app.trian.filebox.di
 import android.content.Context
 import androidx.room.Room
 import app.trian.filebox.data.datasource.local.FileBoxDatabase
+import app.trian.filebox.data.datasource.local.device.DeviceDao
 import app.trian.filebox.data.datasource.local.selected.SelectedDao
+import app.trian.filebox.data.datasource.local.sendFile.SendFileDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -32,4 +34,10 @@ object DatabaseModule {
 
     @Provides
     fun provideSelectedDao(db: FileBoxDatabase): SelectedDao = db.selectedDao()
+
+    @Provides
+    fun provideSendFileDao(db:FileBoxDatabase):SendFileDao = db.sendFileDao()
+
+    @Provides
+    fun provideDeviceDao(db:FileBoxDatabase):DeviceDao = db.deviceDao()
 }

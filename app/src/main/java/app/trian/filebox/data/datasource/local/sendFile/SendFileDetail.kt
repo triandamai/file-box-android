@@ -5,6 +5,7 @@
  */
 package app.trian.filebox.data.datasource.local.sendFile
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
@@ -14,5 +15,14 @@ import androidx.room.PrimaryKey
 data class SendFileDetail(
     @PrimaryKey
     val id:Long,
-    val sendId:String
+    @ColumnInfo
+    val sendId:String,
+    @ColumnInfo
+    val fileId:Long,
+    @ColumnInfo
+    var isUploaded:Boolean,
+    @ColumnInfo
+    var fileName:String,
+    @ColumnInfo
+    var mime:String
 )
