@@ -9,9 +9,7 @@ import androidx.room.PrimaryKey
 )
 data class Device(
     @PrimaryKey
-    var id:Long,
-    @ColumnInfo
-    val deviceId:String,
+    var deviceId:String,
     @ColumnInfo
     val deviceName:String,
     @ColumnInfo

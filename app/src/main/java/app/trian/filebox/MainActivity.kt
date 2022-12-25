@@ -13,6 +13,8 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.compose.rememberNavController
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
 import app.trian.filebox.base.BaseBottomBar
 import app.trian.filebox.base.BaseContainer
 import app.trian.filebox.base.BaseSnackBar
@@ -20,6 +22,7 @@ import app.trian.filebox.base.BaseTopAppBar
 import app.trian.filebox.base.extensions.listenChanges
 import app.trian.filebox.base.rememberFileBoxApplication
 import app.trian.filebox.feature.signin.SignIn
+import app.trian.filebox.worker.SyncDeviceWorker
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -67,12 +70,22 @@ class MainActivity : ComponentActivity() {
                 )
             }
         }
-
-
     }
 
     override fun onStart() {
         super.onStart()
+        syncDevice()
+    }
+
+    private fun syncDevice(){
+        val worker = OneTimeWorkRequestBuilder<SyncDeviceWorker>()
+            .build()
+
+        WorkManager.getInstance(this)
+            .beginWith(
+                listOf(worker)
+            )
+            .enqueue()
     }
 
 
