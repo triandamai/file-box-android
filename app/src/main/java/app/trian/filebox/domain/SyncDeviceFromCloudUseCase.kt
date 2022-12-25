@@ -18,7 +18,7 @@ class SyncDeviceFromCloudUseCase @Inject constructor(
                     Device(
                         deviceName = it.deviceName,
                         deviceUniq = it.deviceUnique,
-                        deviceId =  it.deviceId
+                        deviceId = it.deviceId
                     )
                 }
 
@@ -26,13 +26,13 @@ class SyncDeviceFromCloudUseCase @Inject constructor(
                     Device(
                         deviceName = it.deviceName,
                         deviceUniq = it.deviceUnique,
-                        deviceId =  it.deviceId
+                        deviceId = it.deviceId
                     )
                 }
                 deviceRepository.insertDevice(deviceToInsert)
                 deviceRepository.deleteDevice(deviceToDelete)
             }
-            .catch {  }
+            .catch { }
             .collect()
     }
 }

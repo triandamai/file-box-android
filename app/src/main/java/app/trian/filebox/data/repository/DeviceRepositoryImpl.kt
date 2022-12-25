@@ -41,26 +41,27 @@ class DeviceRepositoryImpl @Inject constructor(
             .get()
             .await()
 
-       val data =  listDevices.documents.map {
+        val data = listDevices.documents.map {
             it.toObject(DeviceModel::class.java)!!
         }
         emit(data)
 
     }.flowOn(Dispatchers.IO)
 
-    override suspend fun insertDevice(device:List<Device>): Flow<Pair<Boolean, String>> = flow {
+    override suspend fun insertDevice(device: List<Device>): Flow<Pair<Boolean, String>> = flow {
 
         deviceDao.insertDevice(
             * device.toTypedArray()
         )
 
-        emit(Pair(true,""))
+        emit(Pair(true, ""))
     }.flowOn(Dispatchers.IO)
 
-    override suspend fun deleteDevice(device: List<Device>): Flow<Pair<Boolean, String>> = flow<Pair<Boolean, String>> {
-        deviceDao.deleteDevices(
-            *device.toTypedArray()
-        )
-        emit(Pair(true,""))
-    }.flowOn(Dispatchers.IO)
+    override suspend fun deleteDevice(device: List<Device>): Flow<Pair<Boolean, String>> =
+        flow<Pair<Boolean, String>> {
+            deviceDao.deleteDevices(
+                *device.toTypedArray()
+            )
+            emit(Pair(true, ""))
+        }.flowOn(Dispatchers.IO)
 }
