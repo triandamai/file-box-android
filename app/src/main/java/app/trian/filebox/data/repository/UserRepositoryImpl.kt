@@ -24,9 +24,32 @@ class UserRepositoryImpl @Inject constructor(
         email: String,
         password: String
     ): Flow<Pair<Boolean, String>> = flow {
-        firebaseFirestore.collection("").get().await()
-        firebaseAuth.currentUser
-        emit(Pair(false, "gagall"))
+        try {
+            val credential = firebaseAuth.signInWithEmailAndPassword(email,password).await()
+            if(credential.user != null){
+                emit(Pair(false,""))
+            }else{
+                emit(Pair(true,""))
+            }
+        }catch (e:Exception){
+            emit(Pair(false,e.message.orEmpty()))
+        }
+    }.flowOn(Dispatchers.IO)
+
+    override suspend fun signUpWithEmailAndPassword(
+        email: String,
+        password: String
+    ): Flow<Pair<Boolean, String>> = flow {
+        try {
+            val credential = firebaseAuth.createUserWithEmailAndPassword(email,password).await()
+            if(credential.user != null){
+                emit(Pair(false,""))
+            }else{
+                emit(Pair(true,""))
+            }
+        }catch (e:Exception){
+            emit(Pair(false,e.message.orEmpty()))
+        }
     }.flowOn(Dispatchers.IO)
 
 }

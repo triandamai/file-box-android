@@ -17,7 +17,9 @@ import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -39,6 +41,7 @@ import app.trian.filebox.ui.theme.FileBoxTheme
 @Composable
 internal fun ScreenSignUp(
     modifier: Modifier = Modifier,
+    isLoading:Boolean=false,
     goToSingIn: () -> Unit = {},
     onSubmit: (String, String) -> Unit = { _, _ -> }
 ) {
@@ -51,7 +54,6 @@ internal fun ScreenSignUp(
     var name by remember {
         mutableStateOf("")
     }
-
 
 
     Column(
@@ -89,7 +91,9 @@ internal fun ScreenSignUp(
         Spacer(modifier = modifier.height(24.dp))
         Button(
             onClick = {
-                onSubmit(email, password)
+                if(!isLoading) {
+                    onSubmit(email, password)
+                }
             },
             colors = ButtonDefaults.buttonColors(
 
@@ -99,7 +103,13 @@ internal fun ScreenSignUp(
             ),
             modifier = modifier.fillMaxWidth()
         ) {
-            Text(text = stringResource(R.string.button_sign_in))
+            if(!isLoading) {
+                Text(text = stringResource(R.string.button_sign_in))
+            }else{
+                CircularProgressIndicator(
+                    color = MaterialTheme.colorScheme.onPrimary
+                )
+            }
         }
         Spacer(modifier = modifier.height(30.dp))
         TextWithAction(

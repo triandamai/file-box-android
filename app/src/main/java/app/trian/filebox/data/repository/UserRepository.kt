@@ -12,4 +12,9 @@ interface UserRepository {
         email:String,
         password:String
     ):Flow<Pair<Boolean,String>>
+
+    suspend fun signUpWithEmailAndPassword(
+        email:String,
+        password: String
+    ):Flow<Pair<Boolean,String>>
 }
