@@ -8,6 +8,7 @@ package app.trian.filebox
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
+import app.trian.filebox.base.EventListener
 import app.trian.filebox.base.FileBoxState
 import app.trian.filebox.feature.homeHistory.routeHomeHistory
 import app.trian.filebox.feature.homeReceive.routeHomeReceive
@@ -19,38 +20,48 @@ import app.trian.filebox.feature.signup.routeSignUp
 
 @Composable
 fun AppNavigation(
-    navController: NavHostController, appState: FileBoxState, startDestination: String = ""
+    navController: NavHostController,
+    appState: FileBoxState,
+    startDestination: String = "",
+    event: EventListener= EventListener()
 ) {
     NavHost(
         navController = navController, startDestination = startDestination
     ) {
         routeSignIn(
             router = navController,
-            appState = appState
+            appState = appState,
+            event=event
         )
         routeSignUp(
             router = navController,
-            appState = appState
+            appState = appState,
+            event=event
         )
         routeHomeSend(
             router = navController,
-            appState = appState
+            appState = appState,
+            event=event
         )
         routeHomeReceive(
             router = navController,
-            appState = appState
+            appState = appState,
+            event=event
         )
         routeHomeHistory(
             router = navController,
-            appState = appState
+            appState = appState,
+            event=event
         )
         routeShowSelectedFile(
             router = navController,
-            appState = appState
+            appState = appState,
+            event=event
         )
         routeSendFileOverview(
             router = navController,
-            appState = appState
+            appState = appState,
+            event=event
         )
     }
 }

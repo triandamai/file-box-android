@@ -11,6 +11,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.MoreVert
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Snackbar
 import androidx.compose.material3.SnackbarDefaults
 import androidx.compose.material3.Text
@@ -31,10 +32,10 @@ fun SnackBarPickFile(
         ),
         actionOnNewLine = false,
         shape = SnackbarDefaults.shape,
-        containerColor = SnackbarDefaults.color,
-        contentColor = SnackbarDefaults.contentColor,
-        actionContentColor = SnackbarDefaults.actionContentColor,
-        dismissActionContentColor = SnackbarDefaults.dismissActionContentColor,
+        containerColor = MaterialTheme.colorScheme.surface,
+        contentColor = MaterialTheme.colorScheme.onSurface,
+        actionContentColor = MaterialTheme.colorScheme.primary,
+        dismissActionContentColor = MaterialTheme.colorScheme.onSurface,
         dismissAction = {
             IconButton(onClick = onMoreClick) {
                 Icon(imageVector = Icons.Outlined.MoreVert, contentDescription = "")

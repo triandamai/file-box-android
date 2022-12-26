@@ -32,30 +32,31 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import app.trian.filebox.base.BaseContainer
+import app.trian.filebox.base.EventListener
 import app.trian.filebox.base.FileBoxState
 import app.trian.filebox.base.listener.ActionAppState
+import app.trian.filebox.base.listener.ActionTopAppBar
 import app.trian.filebox.base.rememberFileBoxApplication
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopAppBarShowSelectedFile(
     appState: FileBoxState = rememberFileBoxApplication(),
-    router: NavHostController = rememberNavController()
+    router: NavHostController = rememberNavController(),
+    event: EventListener = EventListener()
 ) {
     var showSelection by remember {
         mutableStateOf(false)
     }
     LaunchedEffect(key1 = appState, block = {
-        with(appState) {
-            addOnMessageListener { tag, _ ->
-                when (tag) {
-                    ActionAppState.NOTHING -> Unit
-                    ActionAppState.SHOW_SELECTION -> {
-                        showSelection = true
-                    }
-                    ActionAppState.HIDE_SELECTION -> {
-                        showSelection = false
-                    }
+        event.addAppEventListener { tag, data ->
+            when (tag) {
+                ActionAppState.NOTHING -> Unit
+                ActionAppState.SHOW_SELECTION -> {
+                    showSelection = true
+                }
+                ActionAppState.HIDE_SELECTION -> {
+                    showSelection = false
                 }
             }
         }
@@ -63,7 +64,7 @@ fun TopAppBarShowSelectedFile(
     TopAppBar(
         actions = {
             TextButton(onClick = {
-                appState.onTopAppBarItemClick()
+                event.send(ActionTopAppBar.ACTION_SEND)
             }) {
                 Text(
                     text = "Send"

@@ -11,6 +11,8 @@ import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
@@ -19,8 +21,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
+import app.trian.filebox.base.EventListener
 import app.trian.filebox.base.FileBoxState
 import app.trian.filebox.base.listener.ActionTopAppBar
+import app.trian.filebox.data.models.DataState
 import app.trian.filebox.feature.sendFileOverview.components.BottomSheetListDevice
 
 
@@ -33,10 +37,14 @@ object SendFileOverview {
 @OptIn(ExperimentalMaterialApi::class)
 fun NavGraphBuilder.routeSendFileOverview(
     router: NavHostController,
-    appState: FileBoxState
+    appState: FileBoxState,
+    event: EventListener
 ) {
     composable(SendFileOverview.routeName) {
         val viewModel = hiltViewModel<SendFileOverviewViewModel>()
+
+        val devices by viewModel.devices.collectAsState(initial = DataState.Loading)
+
         val scope = rememberCoroutineScope()
         val sheetState = rememberModalBottomSheetState(
             initialValue = ModalBottomSheetValue.HalfExpanded,
@@ -45,9 +53,9 @@ fun NavGraphBuilder.routeSendFileOverview(
                 it != ModalBottomSheetValue.Hidden
             }
         )
-        LaunchedEffect(appState) {
-            with(appState) {
-                addTopAppBarListener { tag ->
+        LaunchedEffect(event) {
+            with(event) {
+                addTopAppBarEventListener { tag ->
                     when (tag) {
                         ActionTopAppBar.ACTION_NOTHING -> Unit
                         ActionTopAppBar.ACTION_NAV_BACK -> Unit
@@ -66,6 +74,7 @@ fun NavGraphBuilder.routeSendFileOverview(
             sheetElevation = 5.dp,
             sheetContent = {
                 BottomSheetListDevice(
+                    devices=devices,
                     isExpanded = sheetState.currentValue == ModalBottomSheetValue.Expanded,
                     onExpandClick = {}
                 )

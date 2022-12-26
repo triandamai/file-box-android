@@ -9,6 +9,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
+import app.trian.filebox.base.EventListener
 import app.trian.filebox.base.FileBoxState
 import app.trian.filebox.data.models.FileModel
 
@@ -19,7 +20,8 @@ object HomeReceive {
 
 fun NavGraphBuilder.routeHomeReceive(
     router: NavHostController,
-    appState: FileBoxState
+    appState: FileBoxState,
+    event: EventListener
 ) {
     composable(HomeReceive.routeName) {
         val viewModel = hiltViewModel<HomeReceiveViewModel>()

@@ -5,6 +5,8 @@
  */
 package app.trian.filebox.di
 
+import app.trian.filebox.data.repository.DeviceRepository
+import app.trian.filebox.data.repository.DeviceRepositoryImpl
 import app.trian.filebox.data.repository.StorageRepository
 import app.trian.filebox.data.repository.StorageRepositoryImpl
 import app.trian.filebox.data.repository.UserRepository
@@ -22,4 +24,7 @@ interface RepositoryModule {
 
     @Binds
     fun bindStorageRepository(impl: StorageRepositoryImpl): StorageRepository
+
+    @Binds
+    fun bindDeviceRepository(impl: DeviceRepositoryImpl): DeviceRepository
 }

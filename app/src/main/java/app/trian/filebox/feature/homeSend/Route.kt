@@ -19,6 +19,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import app.trian.filebox.base.BottomBarType
+import app.trian.filebox.base.EventListener
 import app.trian.filebox.base.FileBoxState
 import app.trian.filebox.base.SnackBarType
 import app.trian.filebox.base.extensions.hideBottomBar
@@ -41,7 +42,8 @@ object HomeSend {
 @OptIn(ExperimentalMaterialApi::class)
 fun NavGraphBuilder.routeHomeSend(
     router: NavHostController,
-    appState: FileBoxState
+    appState: FileBoxState,
+    event: EventListener
 ) {
     composable(HomeSend.routeName) {
         val viewModel = hiltViewModel<HomeSendViewModel>()
@@ -68,30 +70,30 @@ fun NavGraphBuilder.routeHomeSend(
             }
         )
 
-        LaunchedEffect(appState, selected,sheetState) {
-            with(appState) {
-                addSnackbarListener { tag ->
-                    when(tag){
-                        ActionSnackBar.ACTION_NOTHING -> Unit
-                        ActionSnackBar.ACTION_SEND_FILES -> {
-                            scope.launch {
-                                router.navigate(SendFileOverview.routeName){
-                                    launchSingleTop = true
-                                }
-                            }
-                        }
-                        ActionSnackBar.ACTION_MORE_OPTION -> {
-                            scope.launch {
-                                hideSnackbar()
-                                hideBottomBar()
-                                sheetState.animateTo(ModalBottomSheetValue.Expanded)
-                                sheetState.show()
+        LaunchedEffect(event,sheetState){
+            event.addSnackbarEventListener{
+                tag->
+                when(tag){
+                    ActionSnackBar.ACTION_NOTHING -> Unit
+                    ActionSnackBar.ACTION_SEND_FILES -> {
+                        scope.launch {
+                            router.navigate(SendFileOverview.routeName){
+                                launchSingleTop = true
                             }
                         }
                     }
+                    ActionSnackBar.ACTION_MORE_OPTION -> {
+                        Log.e("homeSend","More Option")
+                        scope.launch {
+                            appState.hideSnackbar()
+                            appState.hideBottomBar()
+                            sheetState.show()
+                        }
+                    }
                 }
-
             }
+        }
+        LaunchedEffect(selected) {
             if (selected.isNotEmpty()) {
                 scope.launch {
                     appState.selectedFileCount = selected.size

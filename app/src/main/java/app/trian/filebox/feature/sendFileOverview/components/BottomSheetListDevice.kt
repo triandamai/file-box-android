@@ -29,11 +29,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import app.trian.filebox.base.BaseContainer
+import app.trian.filebox.data.datasource.local.device.Device
+import app.trian.filebox.data.models.DataState
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BottomSheetListDevice(
+    devices:DataState<List<Device>> = DataState.Empty,
     isExpanded: Boolean = false,
     onExpandClick: () -> Unit = {}
 ) {
@@ -70,21 +73,28 @@ fun BottomSheetListDevice(
                     }
                 }
             }
-            items(
-                listOf("sasa", "sas")
-            ) {
-                ListItem(
-                    modifier = Modifier.background(MaterialTheme.colorScheme.surfaceVariant),
-                    colors = ListItemDefaults.colors(
-                        containerColor = MaterialTheme.colorScheme.surfaceVariant,
-                    ),
-                    headlineText = {
-                        Text(text = "Macbook Pro", color = MaterialTheme.colorScheme.primary)
-                    },
-                    supportingText = {
-                        Text(text = "Macbook Pro", color = MaterialTheme.colorScheme.primary)
+            when(devices){
+                is DataState.Data -> {
+                    items(
+                        devices.data
+                    ) {
+                        ListItem(
+                            modifier = Modifier.background(MaterialTheme.colorScheme.surfaceVariant),
+                            colors = ListItemDefaults.colors(
+                                containerColor = MaterialTheme.colorScheme.surfaceVariant,
+                            ),
+                            headlineText = {
+                                Text(text = it.deviceName, color = MaterialTheme.colorScheme.primary)
+                            },
+                            supportingText = {
+                                Text(text = "Laptop", color = MaterialTheme.colorScheme.primary)
+                            }
+                        )
                     }
-                )
+                }
+                DataState.Empty -> {}
+                is DataState.Error -> {}
+                DataState.Loading -> {}
             }
         })
 
