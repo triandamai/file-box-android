@@ -18,6 +18,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
+import app.trian.filebox.base.EventListener
 import app.trian.filebox.base.FileBoxState
 import app.trian.filebox.composables.checkPermissionManageStorage
 import app.trian.filebox.composables.permissionReadWrite
@@ -50,7 +51,8 @@ object SignIn {
 
 fun NavGraphBuilder.routeSignIn(
     router: NavHostController,
-    appState: FileBoxState
+    appState: FileBoxState,
+    event: EventListener
 ) {
     composable(SignIn.routeName) {
         val viewModel = hiltViewModel<SignInViewModel>()

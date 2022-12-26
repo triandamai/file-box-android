@@ -8,7 +8,6 @@ package app.trian.filebox
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.material3.SnackbarHost
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
@@ -19,6 +18,7 @@ import app.trian.filebox.base.BaseBottomBar
 import app.trian.filebox.base.BaseContainer
 import app.trian.filebox.base.BaseSnackBar
 import app.trian.filebox.base.BaseTopAppBar
+import app.trian.filebox.base.EventListener
 import app.trian.filebox.base.extensions.listenChanges
 import app.trian.filebox.base.rememberFileBoxApplication
 import app.trian.filebox.feature.signin.SignIn
@@ -27,6 +27,7 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+    lateinit var eventListener: EventListener
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,29 +45,34 @@ class MainActivity : ComponentActivity() {
 
             BaseContainer(
                 topBar = {
-                    BaseTopAppBar(appState = appState, router = router)
+                    BaseTopAppBar(
+                        appState = appState,
+                        router = router,
+                        event = eventListener
+                    )
                 },
                 bottomBar = {
                     BaseBottomBar(
                         appState = appState,
-                        router = router
+                        router = router,
+                        event = eventListener
                     )
                 },
                 snackbarHost = {
-                    SnackbarHost(
-                        hostState = appState.snackbarHostState,
-                        snackbar = {
-                            BaseSnackBar(appState = appState, router = router, data = it)
-                        }
+                    BaseSnackBar(
+                        appState = appState,
+                        router = router,
+                        event=eventListener
                     )
                 },
                 appState = appState,
-                router = router
+                router = router,
             ) {
                 AppNavigation(
                     navController = router,
                     appState = appState,
                     startDestination = SignIn.routeName,
+                    event = eventListener
                 )
             }
         }
@@ -74,10 +80,11 @@ class MainActivity : ComponentActivity() {
 
     override fun onStart() {
         super.onStart()
+        eventListener = EventListener()
         syncDevice()
     }
 
-    private fun syncDevice(){
+    private fun syncDevice() {
         val worker = OneTimeWorkRequestBuilder<SyncDeviceWorker>()
             .build()
 

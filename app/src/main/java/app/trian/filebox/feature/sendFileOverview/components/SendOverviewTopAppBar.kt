@@ -19,6 +19,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import app.trian.filebox.base.BaseContainer
+import app.trian.filebox.base.EventListener
 import app.trian.filebox.base.FileBoxState
 import app.trian.filebox.base.listener.ActionAppState
 import app.trian.filebox.base.rememberFileBoxApplication
@@ -27,11 +28,12 @@ import app.trian.filebox.base.rememberFileBoxApplication
 @Composable
 fun SendOverviewTopAppBar(
     appState:FileBoxState = rememberFileBoxApplication(),
-    router:NavHostController = rememberNavController()
+    router:NavHostController = rememberNavController(),
+    event:EventListener=EventListener()
 ) {
-    LaunchedEffect(appState){
-        with(appState){
-            addOnMessageListener{
+    LaunchedEffect(event){
+        with(event){
+            addAppEventListener{
                 tag,data->
                 when(tag){
                     ActionAppState.NOTHING -> Unit

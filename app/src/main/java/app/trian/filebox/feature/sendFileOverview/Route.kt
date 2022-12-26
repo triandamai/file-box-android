@@ -21,6 +21,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
+import app.trian.filebox.base.EventListener
 import app.trian.filebox.base.FileBoxState
 import app.trian.filebox.base.listener.ActionTopAppBar
 import app.trian.filebox.data.models.DataState
@@ -36,7 +37,8 @@ object SendFileOverview {
 @OptIn(ExperimentalMaterialApi::class)
 fun NavGraphBuilder.routeSendFileOverview(
     router: NavHostController,
-    appState: FileBoxState
+    appState: FileBoxState,
+    event: EventListener
 ) {
     composable(SendFileOverview.routeName) {
         val viewModel = hiltViewModel<SendFileOverviewViewModel>()
@@ -51,9 +53,9 @@ fun NavGraphBuilder.routeSendFileOverview(
                 it != ModalBottomSheetValue.Hidden
             }
         )
-        LaunchedEffect(appState) {
-            with(appState) {
-                addTopAppBarListener { tag ->
+        LaunchedEffect(event) {
+            with(event) {
+                addTopAppBarEventListener { tag ->
                     when (tag) {
                         ActionTopAppBar.ACTION_NOTHING -> Unit
                         ActionTopAppBar.ACTION_NAV_BACK -> Unit

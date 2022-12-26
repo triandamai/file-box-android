@@ -18,7 +18,8 @@ import app.trian.filebox.feature.showSelectedFile.components.TopAppBarShowSelect
 @Composable
 fun BaseTopAppBar(
     appState: FileBoxState,
-    router: NavHostController
+    router: NavHostController,
+    event: EventListener = EventListener()
 ) {
     when (appState.topAppBarType) {
         TopAppBarType.HIDE -> {}
@@ -32,7 +33,8 @@ fun BaseTopAppBar(
         TopAppBarType.SHOW_SELECTED_FILE -> {
             TopAppBarShowSelectedFile(
                 appState=appState,
-                router=router
+                router=router,
+                event=event
             )
         }
     }
@@ -45,7 +47,9 @@ fun PreviewBBaseTopAppBar() {
     BaseContainer(
         bottomBar = {
             BaseTopAppBar(
-                appState = rememberFileBoxApplication(), router = rememberNavController()
+                appState = rememberFileBoxApplication(),
+                router = rememberNavController(),
+
             )
         }
     ) {}

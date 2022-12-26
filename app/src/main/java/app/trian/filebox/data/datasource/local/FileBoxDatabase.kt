@@ -22,7 +22,7 @@ import app.trian.filebox.data.datasource.local.sendFile.SendFileDetail
         SendFileDetail::class,
         Device::class
     ],
-    version = 5,
+    version = 6,
     exportSchema = true
 )
 abstract class FileBoxDatabase : RoomDatabase() {

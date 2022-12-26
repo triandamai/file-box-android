@@ -15,7 +15,8 @@ import app.trian.filebox.components.bottombar.FileBoxBottomNavigation
 @Composable
 fun BaseBottomBar(
     appState: FileBoxState,
-    router: NavHostController
+    router: NavHostController,
+    event: EventListener = EventListener()
 ) {
     with(appState) {
         when (bottomBarType) {

@@ -9,6 +9,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
+import app.trian.filebox.base.EventListener
 import app.trian.filebox.base.FileBoxState
 
 
@@ -18,7 +19,8 @@ object HomeHistory {
 
 fun NavGraphBuilder.routeHomeHistory(
     router: NavHostController,
-    appState: FileBoxState
+    appState: FileBoxState,
+    event: EventListener
 ) {
     composable(HomeHistory.routeName) {
         val viewModel = hiltViewModel<HomeHistoryViewModel>()

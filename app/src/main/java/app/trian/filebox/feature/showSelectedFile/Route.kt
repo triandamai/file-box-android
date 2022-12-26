@@ -23,6 +23,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
+import app.trian.filebox.base.EventListener
 import app.trian.filebox.base.FileBoxState
 import app.trian.filebox.base.listener.ActionAppState
 import app.trian.filebox.base.listener.ActionTopAppBar
@@ -40,7 +41,8 @@ object ShowSelectedFile {
 @OptIn(ExperimentalMaterialApi::class)
 fun NavGraphBuilder.routeShowSelectedFile(
     router: NavHostController,
-    appState: FileBoxState
+    appState: FileBoxState,
+    event: EventListener
 ) {
     composable(ShowSelectedFile.routeName) {
         val viewModel = hiltViewModel<ShowSelectedFileViewModel>()
@@ -61,9 +63,9 @@ fun NavGraphBuilder.routeShowSelectedFile(
 
         val refreshState = rememberPullRefreshState(refreshing, ::refresh)
 
-        LaunchedEffect(appState){
-            with(appState){
-                addTopAppBarListener{
+        LaunchedEffect(event){
+            with(event){
+                addTopAppBarEventListener{
                     tag->
                     when(tag){
                         ActionTopAppBar.ACTION_NOTHING -> Unit
@@ -84,7 +86,8 @@ fun NavGraphBuilder.routeShowSelectedFile(
             ScreenShowSelectedFile(
                 data = selectedFile,
                 onShowSelection = {
-                    appState.sendMessage(ActionAppState.SHOW_SELECTION)
+                    event.sendAppEvent(ActionAppState.SHOW_SELECTION, mapOf())
+//                    appState.sendMessage(ActionAppState.SHOW_SELECTION)
                 }
             )
             PullRefreshIndicator(refreshing, refreshState, Modifier.align(Alignment.TopCenter))
