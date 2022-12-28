@@ -21,7 +21,7 @@ import app.trian.filebox.base.BaseTopAppBar
 import app.trian.filebox.base.EventListener
 import app.trian.filebox.base.extensions.listenChanges
 import app.trian.filebox.base.rememberFileBoxApplication
-import app.trian.filebox.feature.signin.SignIn
+import app.trian.filebox.feature.splash.Splash
 import app.trian.filebox.worker.SyncDeviceWorker
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -62,7 +62,7 @@ class MainActivity : ComponentActivity() {
                     BaseSnackBar(
                         appState = appState,
                         router = router,
-                        event=eventListener
+                        event = eventListener
                     )
                 },
                 appState = appState,
@@ -71,7 +71,7 @@ class MainActivity : ComponentActivity() {
                 AppNavigation(
                     navController = router,
                     appState = appState,
-                    startDestination = SignIn.routeName,
+                    startDestination = Splash.routeName,
                     event = eventListener
                 )
             }

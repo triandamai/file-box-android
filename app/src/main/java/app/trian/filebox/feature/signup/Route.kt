@@ -5,7 +5,11 @@
  */
 package app.trian.filebox.feature.signup
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
@@ -38,10 +42,22 @@ fun NavGraphBuilder.routeSignUp(
     composable(SignUp.routeName) {
         val viewModel = hiltViewModel<SignUpViewModel>()
         val scope = rememberCoroutineScope()
+        var isLoading by remember {
+            mutableStateOf(false)
+        }
 
         ScreenSignUp(
             goToSingIn = { router.navigateToSignIn() },
-            onSubmit = { _, _ -> }
+            isLoading = isLoading,
+            onSubmit = { email, password ->
+                isLoading = true
+                viewModel.signUp(email, password) { succes, message ->
+                    isLoading = false
+                    if (succes) {
+                        router.navigateToSignIn()
+                    }
+                }
+            }
         )
     }
 }

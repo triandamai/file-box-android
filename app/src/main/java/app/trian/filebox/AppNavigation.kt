@@ -17,6 +17,7 @@ import app.trian.filebox.feature.sendFileOverview.routeSendFileOverview
 import app.trian.filebox.feature.showSelectedFile.routeShowSelectedFile
 import app.trian.filebox.feature.signin.routeSignIn
 import app.trian.filebox.feature.signup.routeSignUp
+import app.trian.filebox.feature.splash.routeSplash
 
 @Composable
 fun AppNavigation(
@@ -28,6 +29,9 @@ fun AppNavigation(
     NavHost(
         navController = navController, startDestination = startDestination
     ) {
+        routeSplash(
+            navController
+        )
         routeSignIn(
             router = navController,
             appState = appState,

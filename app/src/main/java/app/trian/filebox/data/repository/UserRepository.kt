@@ -8,8 +8,14 @@ package app.trian.filebox.data.repository
 import kotlinx.coroutines.flow.Flow
 
 interface UserRepository {
+    suspend fun isLoggedIn():Boolean
     suspend fun signInWithEmailAndPassword(
         email:String,
         password:String
+    ):Flow<Pair<Boolean,String>>
+
+    suspend fun signUpWithEmailAndPassword(
+        email:String,
+        password: String
     ):Flow<Pair<Boolean,String>>
 }
