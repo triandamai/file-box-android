@@ -23,7 +23,7 @@ class SignUpViewModel @Inject constructor(
         launch {
             userRepository.signUpWithEmailAndPassword(email,password)
                 .onEach {
-
+                    callback(it.first,it.second)
                 }
                 .collect()
         }

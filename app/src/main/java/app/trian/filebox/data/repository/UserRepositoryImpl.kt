@@ -20,19 +20,23 @@ class UserRepositoryImpl @Inject constructor(
     private val firebaseAuth: FirebaseAuth,
     private val firebaseFirestore: FirebaseFirestore
 ) : UserRepository {
+    override suspend fun isLoggedIn(): Boolean {
+        return firebaseAuth.currentUser != null
+    }
+
     override suspend fun signInWithEmailAndPassword(
         email: String,
         password: String
     ): Flow<Pair<Boolean, String>> = flow {
         try {
-            val credential = firebaseAuth.signInWithEmailAndPassword(email,password).await()
-            if(credential.user != null){
-                emit(Pair(false,""))
-            }else{
-                emit(Pair(true,""))
+            val credential = firebaseAuth.signInWithEmailAndPassword(email, password).await()
+            if (credential.user != null) {
+                emit(Pair(false, ""))
+            } else {
+                emit(Pair(true, ""))
             }
-        }catch (e:Exception){
-            emit(Pair(false,e.message.orEmpty()))
+        } catch (e: Exception) {
+            emit(Pair(false, e.message.orEmpty()))
         }
     }.flowOn(Dispatchers.IO)
 
@@ -41,14 +45,14 @@ class UserRepositoryImpl @Inject constructor(
         password: String
     ): Flow<Pair<Boolean, String>> = flow {
         try {
-            val credential = firebaseAuth.createUserWithEmailAndPassword(email,password).await()
-            if(credential.user != null){
-                emit(Pair(false,""))
-            }else{
-                emit(Pair(true,""))
+            val credential = firebaseAuth.createUserWithEmailAndPassword(email, password).await()
+            if (credential.user != null) {
+                emit(Pair(false, ""))
+            } else {
+                emit(Pair(true, ""))
             }
-        }catch (e:Exception){
-            emit(Pair(false,e.message.orEmpty()))
+        } catch (e: Exception) {
+            emit(Pair(false, e.message.orEmpty()))
         }
     }.flowOn(Dispatchers.IO)
 
