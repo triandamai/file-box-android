@@ -36,13 +36,12 @@ import app.trian.filebox.R
 import app.trian.filebox.base.BaseContainer
 import app.trian.filebox.components.AnnotationTextItem
 import app.trian.filebox.components.TextWithAction
-import app.trian.filebox.ui.theme.FileBoxTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun ScreenSignUp(
     modifier: Modifier = Modifier,
-    isLoading:Boolean=false,
+    isLoading: Boolean = false,
     goToSingIn: () -> Unit = {},
     onSubmit: (String, String) -> Unit = { _, _ -> }
 ) {
@@ -92,7 +91,7 @@ internal fun ScreenSignUp(
         Spacer(modifier = modifier.height(24.dp))
         Button(
             onClick = {
-                if(!isLoading) {
+                if (!isLoading) {
                     onSubmit(email, password)
                 }
             },
@@ -104,9 +103,9 @@ internal fun ScreenSignUp(
             ),
             modifier = modifier.fillMaxWidth()
         ) {
-            if(!isLoading) {
+            if (!isLoading) {
                 Text(text = stringResource(R.string.button_sign_in))
-            }else{
+            } else {
                 CircularProgressIndicator(
                     color = MaterialTheme.colorScheme.onPrimary
                 )
@@ -130,7 +129,7 @@ internal fun ScreenSignUp(
 @Preview
 @Composable
 fun PreviewScreenSignIn() {
-    BaseContainer(){
+    BaseContainer() {
         ScreenSignUp()
     }
 }

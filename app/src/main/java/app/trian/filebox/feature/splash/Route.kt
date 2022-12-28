@@ -7,28 +7,27 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import app.trian.filebox.feature.homeSend.HomeSend
 import app.trian.filebox.feature.signin.SignIn
-import app.trian.filebox.feature.signup.SignUp
 import app.trian.filebox.feature.splash.Splash.navigateToHome
 import app.trian.filebox.feature.splash.Splash.navigateToSignIn
 
 object Splash {
     const val routeName = "Splash"
 
-    fun NavHostController.navigateToHome(){
-        navigate(HomeSend.routeName){
-            popUpTo(routeName){
+    fun NavHostController.navigateToHome() {
+        navigate(HomeSend.routeName) {
+            popUpTo(routeName) {
                 inclusive = true
             }
-            launchSingleTop=true
+            launchSingleTop = true
         }
     }
 
-    fun NavHostController.navigateToSignIn(){
-        navigate(SignIn.routeName){
-            popUpTo(routeName){
+    fun NavHostController.navigateToSignIn() {
+        navigate(SignIn.routeName) {
+            popUpTo(routeName) {
                 inclusive = true
             }
-            launchSingleTop=true
+            launchSingleTop = true
         }
     }
 }
@@ -38,7 +37,7 @@ fun NavGraphBuilder.routeSplash(
 ) {
     composable(Splash.routeName) {
         val viewModel = hiltViewModel<SplashViewModel>()
-        LaunchedEffect(viewModel){
+        LaunchedEffect(viewModel) {
             viewModel.isLoggedIn {
                 with(router) {
                     if (it) {
