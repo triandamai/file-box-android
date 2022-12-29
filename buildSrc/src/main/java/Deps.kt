@@ -11,6 +11,7 @@ object Deps {
                 val firebaseFirestore by lazy {"com.google.firebase:firebase-firestore-ktx"}
                 val firebaseAuth by lazy { "com.google.firebase:firebase-auth-ktx" }
                 val firebaseStorage by lazy { "com.google.firebase:firebase-storage-ktx" }
+                val firebaseInstallation by lazy { "com.google.firebase:firebase-installations:17.1.0" }
             }
             object Accompanist{
                 private const val pagerVersion = "0.28.0"
