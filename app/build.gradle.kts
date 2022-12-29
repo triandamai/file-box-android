@@ -93,6 +93,7 @@ dependencies {
         implementation(firebaseAuth)
         implementation(firebaseFirestore)
         implementation(firebaseStorage)
+        implementation(Deps.Com.Google.Firebase.firebaseInstallation)
     }
     implementation(Deps.Org.Jetbrains.Kotlinx.kotlinxCoroutineAndroid)
     with(Deps.AndroidX.Room) {
