@@ -1,5 +1,6 @@
 package app.trian.filebox.data.repository
 
+import android.os.Build
 import app.trian.filebox.data.datasource.local.device.Device
 import app.trian.filebox.data.datasource.local.device.DeviceDao
 import app.trian.filebox.data.models.DataState
@@ -24,33 +25,19 @@ class DeviceRepositoryImpl @Inject constructor(
     private val firebaseFirestore: FirebaseFirestore,
     private val firebaseInstallations: FirebaseInstallations
 ) : DeviceRepository {
-    override suspend fun getDeviceUniqueId(): Flow<Triple<Boolean, String, DeviceModel>> =
-        flow {
-            try {
-                val id = firebaseInstallations.id.await()
-                val deviceModel = DeviceModel(
-                    deviceId = id,
-                    deviceName = android.os.Build.MODEL,
-                    deviceUnique = id,
-                    isDelete = false
-                )
-                emit(
-                    Triple(
-                        true,
-                        "",
-                        deviceModel
-                    )
-                )
-            } catch (e: Exception) {
-                emit(
-                    Triple(
-                        false,
-                        e.message.orEmpty(),
-                        DeviceModel()
-                    )
-                )
-            }
-        }.flowOn(Dispatchers.IO)
+    override suspend fun getDeviceUniqueId():DeviceModel? {
+        return try {
+            val id = firebaseInstallations.id.await()
+            DeviceModel(
+                deviceId = id,
+                deviceName = Build.MODEL,
+                deviceUnique = id,
+                isDelete = false
+            )
+        } catch (e: Exception) {
+            null
+        }
+    }
 
     override suspend fun getDevices(): Flow<DataState<List<Device>>> = flow {
         emit(DataState.Loading)
