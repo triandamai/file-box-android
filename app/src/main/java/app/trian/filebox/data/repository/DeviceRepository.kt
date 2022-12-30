@@ -6,6 +6,8 @@ import app.trian.filebox.data.models.DeviceModel
 import kotlinx.coroutines.flow.Flow
 
 interface DeviceRepository {
+    suspend fun getDeviceUniqueId():Flow<Triple<Boolean,String,DeviceModel>>
+
     suspend fun getDevices(): Flow<DataState<List<Device>>>
 
     suspend fun syncDeviceFromCloud():Flow<List<DeviceModel>>

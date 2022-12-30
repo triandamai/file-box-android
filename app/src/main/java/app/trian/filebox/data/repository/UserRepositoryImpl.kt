@@ -5,8 +5,12 @@
  */
 package app.trian.filebox.data.repository
 
+import app.trian.filebox.data.AuthException
+import app.trian.filebox.data.models.DeviceModel
+import app.trian.filebox.data.models.toFirestore
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.SetOptions
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -26,33 +30,58 @@ class UserRepositoryImpl @Inject constructor(
 
     override suspend fun signInWithEmailAndPassword(
         email: String,
-        password: String
+        password: String,
+        deviceModel: DeviceModel
     ): Flow<Pair<Boolean, String>> = flow {
         try {
             val credential = firebaseAuth.signInWithEmailAndPassword(email, password).await()
-            if (credential.user != null) {
-                emit(Pair(false, ""))
-            } else {
-                emit(Pair(true, ""))
+                ?: throw AuthException("Sign in failed")
+
+            val deviceRef = firebaseFirestore.collection("USER")
+                .document(credential.user?.uid.orEmpty())
+                .collection("DEVICE")
+                .document(deviceModel.deviceUnique)
+
+            val exist = deviceRef.get().await().exists()
+            if (!exist) {
+                deviceRef.set(
+                    deviceModel.toFirestore(),
+                    SetOptions.merge()
+                ).await()
             }
+            emit(Pair(true, "Success signin"))
         } catch (e: Exception) {
-            emit(Pair(false, e.message.orEmpty()))
+            throw  AuthException(e.message.orEmpty())
         }
     }.flowOn(Dispatchers.IO)
 
     override suspend fun signUpWithEmailAndPassword(
         email: String,
-        password: String
+        password: String,
+        deviceModel: DeviceModel
     ): Flow<Pair<Boolean, String>> = flow {
         try {
             val credential = firebaseAuth.createUserWithEmailAndPassword(email, password).await()
-            if (credential.user != null) {
-                emit(Pair(false, ""))
-            } else {
-                emit(Pair(true, ""))
+                ?: throw  AuthException("Authentication failed")
+            //only accept new user
+            if (credential.additionalUserInfo?.isNewUser != true) {
+                firebaseAuth.signOut()
+                throw AuthException("User already exist!")
             }
+
+            firebaseFirestore.collection("USER")
+                .document(credential.user?.uid.orEmpty())
+                .collection("DEVICE")
+                .document(deviceModel.deviceUnique)
+                .set(
+                    deviceModel.toFirestore(),
+                    SetOptions.merge()
+                )
+                .await()
+
+            emit(Pair(true, "Success register"))
         } catch (e: Exception) {
-            emit(Pair(false, e.message.orEmpty()))
+            throw  AuthException(e.message.orEmpty())
         }
     }.flowOn(Dispatchers.IO)
 
