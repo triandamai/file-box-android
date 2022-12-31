@@ -20,6 +20,12 @@
     <string name="already_have_account">Already have account?</string>
     <string name="sign_in_here">Sign in here</string>
     <string name="button_sign_up">Sign In now</string>
-<!-- end region   -->
+    <string name="message_sign_up_user_exist">User sudah terdaftar,Silahkan masuk untuk melanjutkan</string>
+    <string name="message_authentication_failed">Authentication failed</string>
+    <string name="message_sign_up_success">Registrasi berhasil</string>
+    <string name="message_sign_in_success">Success signin</string>
+    <string name="message_sign_in_failed">Sign in failed</string>
+    <string name="message_sign_in_email_not_verified">Email belum di verifikasi, silahkan cek kembali email anda!</string>
+    <!-- end region   -->
 
 </resources>

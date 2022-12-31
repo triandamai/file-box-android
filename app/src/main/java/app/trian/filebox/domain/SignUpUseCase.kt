@@ -14,7 +14,7 @@ class SignUpUseCase @Inject constructor(
     private val deviceRepository: DeviceRepository,
     private val userRepository: UserRepository
 ) {
-    suspend operator fun invoke(email: String, password: String) =
+    suspend operator fun invoke(email: String, password: String,userName:String) =
         channelFlow {
 
             val device = deviceRepository.getDeviceUniqueId()
@@ -23,6 +23,7 @@ class SignUpUseCase @Inject constructor(
                     .signUpWithEmailAndPassword(
                         email,
                         password,
+                        userName,
                         device
                     )
                     .onEach {

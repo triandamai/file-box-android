@@ -70,6 +70,21 @@ suspend fun FileBoxState.showSnackbar(message: String): SnackbarResult = with(sn
     showSnackbar(message)
 }
 
+suspend fun FileBoxState.showShortSnackbar(message: String): SnackbarResult = with(snackbarHostState) {
+    if (snackBarType != SnackBarType.BASIC) {
+        snackBarType = SnackBarType.BASIC
+    }
+    showSnackbar(message, duration = SnackbarDuration.Short)
+}
+
+suspend fun FileBoxState.showLongSnackbar(message: String): SnackbarResult = with(snackbarHostState) {
+    if (snackBarType != SnackBarType.BASIC) {
+        snackBarType = SnackBarType.BASIC
+    }
+    showSnackbar(message, duration = SnackbarDuration.Long)
+}
+
+
 suspend fun FileBoxState.showSnackbar(message: String, type: SnackBarType): SnackbarResult =
     with(snackbarHostState) {
         if (snackBarType != type) {

@@ -19,6 +19,7 @@ interface UserRepository {
     suspend fun signUpWithEmailAndPassword(
         email:String,
         password: String,
+        userName:String,
         deviceModel: DeviceModel
     ):Flow<Pair<Boolean,String>>
 }
