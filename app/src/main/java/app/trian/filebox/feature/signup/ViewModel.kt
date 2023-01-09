@@ -7,7 +7,7 @@ package app.trian.filebox.feature.signup
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import app.trian.filebox.data.repository.UserRepository
+import app.trian.filebox.domain.SignUpUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
@@ -16,14 +16,19 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SignUpViewModel @Inject constructor(
-    private val userRepository: UserRepository
-):ViewModel(){
+    private val signUpUseCase: SignUpUseCase
+) : ViewModel() {
 
-    fun signUp(email:String, password:String, callback:(Boolean, String)->Unit) = with(viewModelScope){
+    fun signUp(
+        email: String,
+        password: String,
+        userName: String,
+        callback: (Boolean, String) -> Unit
+    ) = with(viewModelScope) {
         launch {
-            userRepository.signUpWithEmailAndPassword(email,password)
+            signUpUseCase(email, password, userName)
                 .onEach {
-                    callback(it.first,it.second)
+                    callback(it.first, it.second)
                 }
                 .collect()
         }

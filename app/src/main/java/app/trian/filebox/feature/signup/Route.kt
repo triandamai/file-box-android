@@ -16,8 +16,10 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import app.trian.filebox.base.EventListener
 import app.trian.filebox.base.FileBoxState
+import app.trian.filebox.base.extensions.showShortSnackbar
 import app.trian.filebox.feature.signin.SignIn
 import app.trian.filebox.feature.signup.SignUp.navigateToSignIn
+import kotlinx.coroutines.launch
 
 object SignUp {
     const val routeName = "sign_up"
@@ -49,12 +51,17 @@ fun NavGraphBuilder.routeSignUp(
         ScreenSignUp(
             goToSingIn = { router.navigateToSignIn() },
             isLoading = isLoading,
-            onSubmit = { email, password ->
-                isLoading = true
-                viewModel.signUp(email, password) { succes, message ->
-                    isLoading = false
-                    if (succes) {
-                        router.navigateToSignIn()
+            onSubmit = { email, password, name ->
+                with(viewModel) {
+                    isLoading = true
+                    signUp(email, password, name) { success, message ->
+                        isLoading = false
+                        scope.launch {
+                            appState.showShortSnackbar(message)
+                        }
+                        if (success) {
+                            router.navigateToSignIn()
+                        }
                     }
                 }
             }

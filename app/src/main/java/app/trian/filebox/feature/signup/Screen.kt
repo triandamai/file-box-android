@@ -43,7 +43,7 @@ internal fun ScreenSignUp(
     modifier: Modifier = Modifier,
     isLoading: Boolean = false,
     goToSingIn: () -> Unit = {},
-    onSubmit: (String, String) -> Unit = { _, _ -> }
+    onSubmit: (String, String,String) -> Unit = { _, _,_ -> }
 ) {
     var email by remember {
         mutableStateOf("")
@@ -92,7 +92,7 @@ internal fun ScreenSignUp(
         Button(
             onClick = {
                 if (!isLoading) {
-                    onSubmit(email, password)
+                    onSubmit(email, password,name)
                 }
             },
             colors = ButtonDefaults.buttonColors(

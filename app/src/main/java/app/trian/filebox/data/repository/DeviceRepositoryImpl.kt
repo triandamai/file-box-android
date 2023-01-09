@@ -1,5 +1,6 @@
 package app.trian.filebox.data.repository
 
+import android.os.Build
 import app.trian.filebox.data.datasource.local.device.Device
 import app.trian.filebox.data.datasource.local.device.DeviceDao
 import app.trian.filebox.data.models.DataState
@@ -7,6 +8,7 @@ import app.trian.filebox.data.models.DeviceModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthException
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.installations.FirebaseInstallations
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
@@ -20,8 +22,23 @@ import javax.inject.Singleton
 class DeviceRepositoryImpl @Inject constructor(
     private val deviceDao: DeviceDao,
     private val firebaseAuth: FirebaseAuth,
-    private val firebaseFirestore: FirebaseFirestore
+    private val firebaseFirestore: FirebaseFirestore,
+    private val firebaseInstallations: FirebaseInstallations
 ) : DeviceRepository {
+    override suspend fun getDeviceUniqueId():DeviceModel? {
+        return try {
+            val id = firebaseInstallations.id.await()
+            DeviceModel(
+                deviceId = id,
+                deviceName = Build.MODEL,
+                deviceUnique = id,
+                isDelete = false
+            )
+        } catch (e: Exception) {
+            null
+        }
+    }
+
     override suspend fun getDevices(): Flow<DataState<List<Device>>> = flow {
         emit(DataState.Loading)
         val devices = deviceDao.getListDevices()
@@ -35,7 +52,7 @@ class DeviceRepositoryImpl @Inject constructor(
     }.flowOn(Dispatchers.IO)
 
     override suspend fun syncDeviceFromCloud(): Flow<List<DeviceModel>> = flow {
-        val auth = firebaseAuth.currentUser ?: throw FirebaseAuthException("user not logged in","")
+        val auth = firebaseAuth.currentUser ?: throw FirebaseAuthException("user not logged in", "")
 
         val listDevices = firebaseFirestore.collection("USER").document(auth.uid)
             .collection("DEVICE")

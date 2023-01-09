@@ -5,17 +5,21 @@
  */
 package app.trian.filebox.data.repository
 
+import app.trian.filebox.data.models.DeviceModel
 import kotlinx.coroutines.flow.Flow
 
 interface UserRepository {
     suspend fun isLoggedIn():Boolean
     suspend fun signInWithEmailAndPassword(
         email:String,
-        password:String
+        password:String,
+        deviceModel:DeviceModel
     ):Flow<Pair<Boolean,String>>
 
     suspend fun signUpWithEmailAndPassword(
         email:String,
-        password: String
+        password: String,
+        userName:String,
+        deviceModel: DeviceModel
     ):Flow<Pair<Boolean,String>>
 }
